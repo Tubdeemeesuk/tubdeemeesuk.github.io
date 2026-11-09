@@ -1,0 +1,18 @@
+{
+  "name": "ตับดีมีสุข by LT CMU",
+  "short_name": "ตับดีมีสุข",
+  "description": "แอปดูแลผู้ป่วยปลูกถ่ายตับ สำหรับผู้ป่วย ครอบครัว และทีมรักษา",
+  "lang": "th",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4F8F7",
+  "theme_color": "#3A8A86",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
