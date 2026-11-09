@@ -1441,6 +1441,33 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .lg-foot2 b{color:var(--brand)}
 .lg-foot2{flex-wrap:wrap;gap:8px}
 .inst-btn .ic{width:18px;height:18px}
+
+/* ===== v24 · pre-test / post-test ===== */
+.ptc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;align-items:center;gap:6px;background:var(--surface);border-radius:16px;padding:8px 10px;box-shadow:var(--sh1)}
+.ptc-s{display:flex;flex-direction:column;align-items:center;line-height:1.2}
+.ptc-s span{font-size:.7rem;color:var(--ink-2)}
+.ptc-s b{font-family:var(--f-display);font-size:1.05rem;color:var(--ink)}
+.ptc-s.up b{color:#2C8A4B}
+.ptc .btn{white-space:nowrap}
+.ptc .btn .ic{width:16px;height:16px}
+@media (max-width:420px){.ptc{grid-template-columns:repeat(3,minmax(0,1fr))}.ptc .btn{grid-column:1/-1;justify-content:center}}
+.qz-o.picked{background:#FFF6DE;border-color:#F4C76A}
+.qz-o.picked .qz-l{background:#E7A93A;color:#fff}
+.pt-intro{margin-top:8vh}
+.pt-ico{width:84px;height:84px;border-radius:26px;background:rgba(255,255,255,.14);display:grid;place-items:center}
+.pt-ico .ic{width:44px;height:44px;color:#F6D58E}
+.pt-meta{font-size:.9rem;opacity:.8}
+.pt-up{font-family:var(--f-display);font-weight:700;font-size:2.4rem;color:#fff}
+.pt-up.pos{color:#A9F0C0}
+.pt-bars{width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px;margin:6px 0}
+.pt-bar{display:grid;grid-template-columns:72px 1fr 40px;align-items:center;gap:8px;font-size:.9rem}
+.pt-bar span{text-align:left;opacity:.85}
+.pt-bar i{height:14px;border-radius:99px;background:rgba(255,255,255,.15);overflow:hidden}
+.pt-bar em{display:block;height:100%;border-radius:99px;transition:width .6s}
+.pt-bar em.pre{background:rgba(255,255,255,.55)}
+.pt-bar em.post{background:#F4C76A}
+.pt-bar b{font-family:var(--f-display)}
+.pt-cta{background:#F4C76A!important;color:#1F2E2D!important;border-color:#F4C76A!important}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -2724,11 +2751,64 @@ const quizDone={};
 const qOrder=(vid,qi,n)=>{let h=0;for(const ch of vid+'#'+qi)h=(h*31+ch.charCodeAt(0))>>>0;const r=h%n;return Array.from({length:n},(_x,k)=>(k+r)%n)};
 const qKey=vid=>`${S.user?.id}|${vid}`;
 const nextVid=vid=>{const i=VIDEOS.findIndex(v=>v.id===vid);return VIDEOS[i+1]||null};
+/* ---------- v24 · pre-test / post-test per series ---------- */
+const PT={
+1:[
+ ['คะแนน MELD-Na เท่าไรขึ้นไป ที่การปลูกถ่ายตับมักให้ประโยชน์มากกว่าความเสี่ยง','From what MELD-Na score does a transplant usually offer more benefit than risk?',[['ตั้งแต่ 15 ขึ้นไป','15 or above'],['ตั้งแต่ 5 ขึ้นไป','5 or above'],['ต้อง 40 ขึ้นไปเท่านั้น','Only 40 or above']],0,'ทีมแพทย์ใช้คะแนน MELD-Na ช่วยตัดสินใจ ตั้งแต่ 15 ขึ้นไปมักได้ประโยชน์มากกว่าความเสี่ยง','Doctors use the MELD-Na score; at 15 or above a transplant usually offers more benefit than risk.'],
+ ['ถ้าต้องฉีดวัคซีนเชื้อเป็นก่อนผ่าตัด ต้องฉีดล่วงหน้าอย่างน้อยกี่สัปดาห์','If a live vaccine is needed before surgery, how many weeks before must it be given?',[['อย่างน้อย 4 สัปดาห์','At least 4 weeks'],['1 สัปดาห์ก็พอ','1 week is enough'],['ฉีดวันผ่าตัดได้เลย','On the day of surgery']],0,'วัคซีนเชื้อเป็นต้องฉีดก่อนผ่าตัดอย่างน้อย 4 สัปดาห์ และห้ามฉีดหลังปลูกถ่าย','A live vaccine must be given at least 4 weeks before surgery, and never after a transplant.'],
+ ['ถ้ามีท้องมานหรือบวม ควรจำกัดเกลือประมาณเท่าไรต่อวัน','With ascites or swelling, about how much salt should you limit yourself to each day?',[['ประมาณ 1 ช้อนชา','About 1 teaspoon'],['ไม่ต้องจำกัด','No limit'],['ประมาณ 3 ช้อนโต๊ะ','About 3 tablespoons']],0,'ถ้ามีท้องมานหรือบวม ให้จำกัดเกลือประมาณ 1 ช้อนชาต่อวัน','With ascites or swelling, limit salt to about 1 teaspoon a day.'],
+ ['ผู้ที่เคยดื่มสุรา ต้องหยุดดื่มอย่างน้อยนานเท่าไรก่อนเข้ารายชื่อ','If you used to drink alcohol, how long must you have stopped before listing?',[['อย่างน้อย 6 เดือน','At least 6 months'],['1 เดือน','1 month'],['ไม่ต้องหยุด','No need to stop']],0,'ต้องหยุดดื่มเด็ดขาดอย่างน้อย 6 เดือน และได้รับการประเมินจากจิตแพทย์','You must stop completely for at least 6 months and be assessed by a psychiatrist.'],
+ ['ระหว่างรอปลูกถ่าย ถ้าอาเจียนเป็นเลือดหรือถ่ายดำ ควรทำอย่างไร','While waiting, what should you do if you vomit blood or pass black stools?',[['ไปห้องฉุกเฉินหรือโทร 1669 ทันที','Go to emergency or call 1669 at once'],['รอแจ้งหมอในนัดครั้งหน้า','Tell the doctor at the next visit'],['กินยาลดกรดแล้วสังเกตอาการ','Take an antacid and wait']],0,'อาเจียนเป็นเลือดหรือถ่ายดำเป็นภาวะฉุกเฉิน ต้องไปโรงพยาบาลหรือโทร 1669 ทันที','Vomiting blood or black stools is an emergency: go to hospital or call 1669 at once.']],
+2:[
+ ['หลังผ่าตัดปลูกถ่ายตับ ผู้ป่วยจะพักฟื้นที่ใดก่อน','Where do you stay first after the transplant operation?',[['หอผู้ป่วยวิกฤต (ICU)','The intensive care unit (ICU)'],['หอผู้ป่วยทั่วไป','A general ward'],['กลับบ้านได้เลย','Straight home']],0,'หลังผ่าตัดจะอยู่ ICU ก่อน เพื่อให้ทีมดูแลอย่างใกล้ชิด','After surgery you stay in the ICU so the team can watch you closely.'],
+ ['การเริ่มขยับร่างกายเร็วหลังผ่าตัดมีประโยชน์อย่างไร','How does moving early after surgery help?',[['ฟื้นตัวเร็ว ลดปัญหาปอด กลับบ้านได้เร็วขึ้น','Faster recovery, fewer lung problems, home sooner'],['ไม่มีประโยชน์ ควรนอนนิ่ง ๆ','No benefit; lie still'],['ช่วยให้แผลหายโดยไม่ต้องดูแล','The wound heals with no care']],0,'ขยับเร็วช่วยให้หย่าเครื่องช่วยหายใจได้เร็ว ลดภาวะแทรกซ้อนที่ปอด และกลับบ้านได้เร็วขึ้น','Moving early helps you come off the ventilator sooner, reduces lung problems and gets you home sooner.'],
+ ['วิธีลุกจากเตียงที่ถูกต้องหลังผ่าตัดคือข้อใด','What is the right way to get out of bed after surgery?',[['ตะแคงตัวก่อน แล้วใช้แขนดันตัวขึ้นนั่ง','Roll onto your side, then push up with your arms'],['ลุกนั่งตรง ๆ โดยเกร็งหน้าท้อง','Sit straight up using your belly muscles'],['ดึงสายระบายช่วยพยุงตัว','Pull on the drains to help']],0,'ตะแคงตัวก่อนแล้วดันตัวขึ้น ช่วยลดแรงที่หน้าท้องและแผล','Rolling onto your side first puts less strain on your belly and wound.'],
+ ['ญาติที่มีไข้ ไอ หรือเป็นหวัด ควรทำอย่างไร','What should a relative with fever, cough or a cold do?',[['งดเยี่ยม และสวมหน้ากากเมื่ออยู่ใกล้ผู้ป่วย','Not visit, and wear a mask near the patient'],['เยี่ยมได้ถ้าอยู่ไม่นาน','Visit if only briefly'],['ส่งดอกไม้สดไปแทน','Send fresh flowers instead']],0,'ผู้ป่วยภูมิคุ้มกันต่ำ ญาติที่ไม่สบายควรงดเยี่ยม และไม่นำดอกไม้สดหรือต้นไม้เข้าหอผู้ป่วย','The patient’s immunity is low: unwell relatives shouldn’t visit, and fresh flowers or plants aren’t allowed.'],
+ ['ก่อนกลับบ้าน ผู้ป่วยและผู้ดูแลต้องรู้เรื่องยาอย่างไร','Before going home, what should the patient and caregiver know about medicines?',[['ชื่อยา ขนาด และเวลากินของยาแต่ละตัว','Each medicine’s name, dose and time'],['แค่สียาก็พอ','Just the colour of the pills'],['ไม่ต้องรู้ พยาบาลจะโทรบอก','Nothing; a nurse will call']],0,'ทั้งผู้ป่วยและผู้ดูแลควรรู้ชื่อยา ขนาด และเวลากินของยาทุกตัวก่อนกลับบ้าน','Both should know every medicine’s name, dose and time before going home.']],
+3:[
+ ['ยาโปรกราฟ (Prograf) กินอย่างไร','How is Prograf taken?',[['วันละ 2 ครั้ง ห่างกัน 12 ชั่วโมง','Twice a day, 12 hours apart'],['วันละครั้งตอนไหนก็ได้','Once a day, any time'],['กินเฉพาะเมื่อมีอาการ','Only when you have symptoms']],0,'โปรกราฟกินวันละ 2 ครั้ง เช้าและเย็น ห่างกัน 12 ชั่วโมง เวลาเดิมทุกวัน','Prograf is taken twice a day, morning and evening, 12 hours apart, at the same times daily.'],
+ ['ลืมกินโปรกราฟมื้อ 6 โมงเช้า แล้วนึกได้ตอน 11 โมง ควรทำอย่างไร','You missed the 6 am Prograf dose and remember at 11 am. What should you do?',[['กินทันที แล้วกินมื้อ 6 โมงเย็นตามปกติ','Take it now, then the 6 pm dose as usual'],['ข้ามไปเลย','Skip it'],['กินเพิ่มเป็น 2 เท่าตอนเย็น','Take a double dose in the evening']],0,'ยังไม่เกิน 6 ชั่วโมง ให้กินทันที และห้ามกินเพิ่มเป็น 2 เท่า','It’s under 6 hours, so take it now — and never double a dose.'],
+ ['ผลไม้ใดห้ามกินร่วมกับยากดภูมิคุ้มกัน','Which fruit should not be eaten with anti-rejection medicine?',[['ส้มโอ','Pomelo'],['กล้วยน้ำว้า','Banana'],['แตงโม','Watermelon']],0,'ห้ามกินเกรปฟรุต ส้มเปลือกหนา ส้มเขียวหวาน ส้มโอ มะนาว หรือน้ำผลไม้เหล่านี้ เพราะอาจทำให้ระดับยาสูงอันตราย','Avoid grapefruit, thick-skinned oranges, mandarins, pomelo, lime and their juices — they can raise drug levels dangerously.'],
+ ['ควรกินโปรกราฟหรืออัดวากราฟเวลาใดเทียบกับมื้ออาหาร','When should Prograf or Advagraf be taken relative to food?',[['ท้องว่าง: ก่อนอาหาร 1 ชม. หรือหลังอาหาร 1–2 ชม.','Empty stomach: 1 h before or 1–2 h after food'],['พร้อมอาหารทุกครั้ง','Always with food'],['พร้อมนมหรือน้ำผลไม้','With milk or juice']],0,'ยาดูดซึมได้ดีที่สุดตอนท้องว่าง','These medicines are absorbed best on an empty stomach.'],
+ ['หลังปลูกถ่ายแล้วมีไข้หรือหนาวสั่น ควรทำอย่างไร','After a transplant, what should you do if you have fever or chills?',[['แจ้งทีมรักษาโดยเร็ว','Tell the care team quickly'],['กินยาลดไข้แล้วรอดูอาการ','Take fever medicine and wait'],['รอถึงนัดครั้งหน้า','Wait until your next visit']],0,'ภูมิคุ้มกันต่ำ การติดเชื้อรุนแรงได้เร็ว ต้องแจ้งทีมรักษาโดยเร็ว','With low immunity, infections can become serious fast, so tell the team quickly.']]};
+const ptKey=ph=>`${S.user?.id||'guest'}|${ph}`;
+const ptLoad=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
+const ptSave=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let PTR=ptLoad('sj-pt',{}),WATCH=ptLoad('sj-watched',{});
+const ptRec=ph=>PTR[ptKey(ph)]||{};
+const markWatched=id=>{WATCH[`${S.user?.id||'guest'}|${id}`]=1;ptSave('sj-watched',WATCH)};
+const isWatched=id=>!!WATCH[`${S.user?.id||'guest'}|${id}`];
+const serOf=id=>VIDEOS.find(v=>v.id===id)?.ph;
+const serProg=ph=>{const vs=VIDEOS.filter(v=>v.ph===ph);return [vs.filter(v=>isWatched(v.id)).length,vs.length]};
+function ptCard(ph){const r=ptRec(ph),n=PT[ph].length,[w,t]=serProg(ph);
+ const cell=(lab,v,cls='')=>`<div class="ptc-s ${cls}"><span>${lab}</span><b class="num">${v==null?'—':v+'/'+n}</b></div>`;
+ const up=r.pre!=null&&r.post!=null?r.post-r.pre:null;
+ const btn=r.pre==null?`<button class="btn primary sm" data-a="ptstart" data-ph="${ph}" data-m="pre">${icon('clipboard')} ${_('ทำแบบทดสอบก่อนเรียน','Take the pre-test')}</button>`
+  :`<button class="btn ${r.post==null&&w>=t?'primary':''} sm" data-a="ptstart" data-ph="${ph}" data-m="post">${icon('clipboard')} ${r.post==null?_('ทำแบบทดสอบหลังเรียน','Take the post-test'):_('ทำหลังเรียนอีกครั้ง','Retake post-test')}</button>`;
+ return `<div class="ptc">${cell(_('ก่อนเรียน','Pre-test'),r.pre)}${cell(_('หลังเรียน','Post-test'),r.post,up!=null&&up>0?'up':'')}${up!=null?`<div class="ptc-s ptc-d ${up>0?'up':''}"><span>${_('พัฒนาการ','Change')}</span><b class="num">${up>0?'+':''}${up}</b></div>`:`<div class="ptc-s"><span>${_('ดูแล้ว','Watched')}</span><b class="num">${w}/${t}</b></div>`}${btn}</div>`}
+function ptView(m){const Q=PT[m.ph],n=Q.length,pre=m.mode==='pre',TH=['ก','ข','ค','ง'];const ser=SERIES.find(x=>x[0]===m.ph);
+ const title=(pre?_('แบบทดสอบก่อนเรียน','Pre-test'):_('แบบทดสอบหลังเรียน','Post-test'))+' · '+_('ชุดที่','Series')+' '+m.ph;
+ const head=`<div class="qz-h"><span class="qz-k">${icon('clipboard')} ${title}</span><button class="vf-x static" data-a="close" aria-label="${_('ปิด','Close')}">${icon('x')}</button></div>`;
+ const wrap=(body,cls='')=>`<div class="vfull qmode" role="dialog" aria-modal="true" aria-label="${title}"><div class="qz ${cls}">${head}${body}</div></div>`;
+ if(m.intro){const [w,t]=serProg(m.ph);return wrap(`<div class="qz-res pt-intro"><div class="pt-ico">${icon('clipboard')}</div><h2>${pre?_('ก่อนเริ่มดูชุดนี้ ลองทำแบบทดสอบสั้น ๆ','Before you start, try a short quiz'):_('ดูวิดีโอชุดนี้ครบแล้ว มาวัดความรู้กัน','You’ve finished this series — let’s check what you learned')}</h2><p>${esc(L(ser[1]))}</p><p class="pt-meta">${n} ${_('ข้อ · ใช้เวลาประมาณ 2 นาที','questions · about 2 minutes')}${pre?' · '+_('ยังไม่เฉลยจนกว่าจะทำหลังเรียน','answers are shown after the post-test'):''}</p></div>
+  <div class="qz-act"><button class="qz-btn pri" data-a="ptgo">${_('เริ่มทำแบบทดสอบ','Start')} ${icon('chev')}</button>${pre&&m.next?`<button class="qz-btn ghost" data-a="ptskip">${_('ข้ามไปดูวิดีโอ','Skip to the video')}</button>`:`<button class="qz-btn ghost" data-a="close">${_('ไว้ทีหลัง','Later')}</button>`}</div>`,'popin')}
+ if(m.i>=n){const r=ptRec(m.ph),sc=m.score;
+  if(pre)return wrap(`<div class="qz-res"><div class="qz-score"><b class="num">${sc}/${n}</b><small>${_('ก่อนเรียน','pre-test')}</small></div><h2>${_('ขอบคุณค่ะ เริ่มดูวิดีโอกันเลย','Thank you! Let’s start the videos')}</h2><p>${_('คำตอบทั้งหมดอยู่ในวิดีโอชุดนี้ ดูครบแล้วมาทำแบบทดสอบหลังเรียนเพื่อดูพัฒนาการนะคะ','All the answers are in this series. Take the post-test when you finish to see your progress.')}</p></div>
+   <div class="qz-act"><button class="qz-btn pri" data-a="ptvid">${icon('play')} ${_('เริ่มดูวิดีโอ','Start watching')}</button><button class="qz-btn ghost" data-a="close">${_('กลับหน้าความรู้','Back to lessons')}</button></div>`);
+  const pr=r.pre,up=pr!=null?sc-pr:null;const bar=(lab,v,c)=>`<div class="pt-bar"><span>${lab}</span><i><em class="${c}" style="width:${v==null?0:v/n*100}%"></em></i><b class="num">${v==null?'—':v+'/'+n}</b></div>`;
+  const msg=sc===n?_('เยี่ยมมาก! ตอบถูกทุกข้อ','Excellent! All correct'):up>0?_('ความรู้เพิ่มขึ้นแล้ว เก่งมากค่ะ','You’ve learned a lot — well done!'):_('ทบทวนวิดีโออีกนิด แล้วลองใหม่นะคะ','Review the videos a little and try again');
+  return wrap(`<div class="qz-res"><h2>${msg}</h2>${up!=null?`<div class="pt-up ${up>0?'pos':''}">${up>0?'+':''}${up} ${_('คะแนน','points')}</div>`:''}<div class="pt-bars">${bar(_('ก่อนเรียน','Pre-test'),pr,'pre')}${bar(_('หลังเรียน','Post-test'),sc,'post')}</div><p>${esc(L(ser[1]))}</p></div>
+   <div class="qz-act"><button class="qz-btn pri" data-a="close">${_('กลับหน้าความรู้','Back to lessons')}</button><button class="qz-btn ghost" data-a="ptstart" data-ph="${m.ph}" data-m="post">${_('ทำอีกครั้ง','Try again')}</button></div>`)}
+ const [qt,qe,opts,ans,xt,xe]=Q[m.i];const done=m.pick!=null;
+ return wrap(`<div class="qz-dots">${Q.map((_x,i)=>`<i class="${i<m.i?'d':i===m.i?'c':''}"></i>`).join('')}<span>${_('ข้อ','Question')} ${m.i+1}/${n}</span></div>
+  <h2 class="qz-q">${_(qt,qe)}</h2>
+  <div class="qz-opts">${qOrder('pt'+m.ph,m.i,opts.length).map((i,k)=>{const o=opts[i];const st=!done?'':pre?(i===m.pick?'picked':'dim'):i===ans?'right':i===m.pick?'wrong':'dim';return `<button class="qz-o ${st}" data-a="ptpick" data-i="${i}" ${done?'aria-disabled="true"':''}><span class="qz-l">${S.lang==='th'?TH[k]:'ABCD'[k]}</span><span>${_(o[0],o[1])}</span>${st==='right'||st==='picked'?icon('check'):st==='wrong'?icon('x'):''}</button>`}).join('')}</div>
+  ${done?(pre?'':`<div class="qz-x ${m.pick===ans?'ok':'no'}" role="status"><b>${m.pick===ans?_('ถูกต้อง!','Correct!'):_('ยังไม่ถูกค่ะ','Not quite')}</b><span><b class="qz-ans">${_('เฉลย','Answer')}:</b> ${_(opts[ans][0],opts[ans][1])} — ${_(xt,xe)}</span></div>`)+`<button class="qz-btn pri" data-a="ptnext">${m.i+1<n?_('ข้อถัดไป','Next question'):_('ดูผลคะแนน','See my score')} ${icon('chev')}</button>`:''}`)}
 function quizView(v,q){const Q=QZ[v.id],n=Q.length;const TH=['ก','ข','ค','ง'];
  const head=`<div class="qz-h"><span class="qz-k">${icon('book')} ${_('แบบทดสอบท้ายตอน','End-of-episode quiz')} · ${_('ตอนที่','Ep.')} ${v.ep}</span><button class="vf-x static" data-a="close" aria-label="${_('ปิด','Close')}">${icon('x')}</button></div>`;
  if(q.i>=n){const sc=q.score,nv=nextVid(v.id);const msg=sc===n?_('เยี่ยมมาก! ตอบถูกทุกข้อ','Excellent! All correct'):sc>0?_('ดีมากค่ะ ทบทวนอีกนิดนะคะ','Well done. A quick review will help.'):_('ไม่เป็นไรค่ะ ลองดูวิดีโออีกครั้งนะคะ','No worries. Try watching again.');
   return `<div class="vfull qmode" role="dialog" aria-modal="true" aria-label="${_('ผลแบบทดสอบ','Quiz result')}"><div class="qz">${head}<div class="qz-res"><div class="qz-score ${sc===n?'full':''}"><b class="num">${sc}/${n}</b><small>${_('ข้อที่ถูก','correct')}</small></div><h2>${msg}</h2><p>${esc(L(v.title))}</p></div>
-   <div class="qz-act">${nv?`<button class="qz-btn pri" data-a="qnextvid">${_('ดูตอนถัดไป','Next episode')}: ${_('ตอนที่','Ep.')} ${nv.ep} ${icon('chev')}</button>`:''}<button class="qz-btn" data-a="qreplay">${icon('play')} ${_('ดูวิดีโออีกครั้ง','Watch again')}</button><button class="qz-btn ghost" data-a="close">${_('กลับหน้าความรู้','Back to lessons')}</button></div></div></div>`}
+   <div class="qz-act">${(()=>{const ph=v.ph;const last=!nv||nv.ph!==ph;return PT[ph]&&last&&ptRec(ph).post==null?`<button class="qz-btn pri pt-cta" data-a="ptpost" data-ph="${ph}">${icon('clipboard')} ${_('ทำแบบทดสอบหลังเรียน','Take the post-test')} · ${_('ชุดที่','Series')} ${ph}</button>`:''})()}${nv?`<button class="qz-btn ${!nv||nv.ph!==v.ph?'':'pri'}" data-a="qnextvid">${_('ดูตอนถัดไป','Next episode')}: ${_('ตอนที่','Ep.')} ${nv.ep} ${icon('chev')}</button>`:''}<button class="qz-btn" data-a="qreplay">${icon('play')} ${_('ดูวิดีโออีกครั้ง','Watch again')}</button><button class="qz-btn ghost" data-a="close">${_('กลับหน้าความรู้','Back to lessons')}</button></div></div></div>`}
  const [qt,qe,opts,ans,xt,xe]=Q[q.i];const done=q.pick!=null;
  const intro=q.pop&&q.i===0&&!done?`<div class="qz-pop">${icon('check')}<span><b>${_('ดูจบแล้ว เก่งมากค่ะ!','You finished the episode!')}</b><small>${_('ลองตอบคำถามสั้น ๆ','Try a quick quiz')} ${n} ${_('ข้อ','questions')}</small></span></div>`:'';
  return `<div class="vfull qmode" role="dialog" aria-modal="true" aria-label="${_('แบบทดสอบ','Quiz')}"><div class="qz ${q.pop&&q.i===0&&!done?'popin':''}">${head}${intro}
@@ -2740,7 +2820,7 @@ function quizView(v,q){const Q=QZ[v.id],n=Q.length;const TH=['ก','ข','ค','
  </div></div>`}
 const SERIES=[[1,{th:'ชุดที่ 1 · ความรู้ก่อนปลูกถ่ายตับ',en:'Series 1 · Before transplant'}],[2,{th:'ชุดที่ 2 · ช่วงรักษาตัวในโรงพยาบาล',en:'Series 2 · In hospital'}],[3,{th:'ชุดที่ 3 · ดูแลตัวเองที่บ้านหลังปลูกถ่าย',en:'Series 3 · At home after transplant'}]];
 const vtile=v=>`<button class="vtile" data-a="vidopen" data-v="${v.id}" data-t="0" aria-label="${_('เล่นวิดีโอ','Play video')}: ${esc(L(v.title))}"><span class="vt-p"><img src="${v.poster}" alt="" loading="lazy"><span class="play">${icon('play')}</span><span class="dur num">${mmss(v.dur)}</span>${quizDone[qKey(v.id)]!=null?`<span class="qbadge">${icon('check')}${quizDone[qKey(v.id)]}/${(QZ[v.id]||[]).length}</span>`:''}</span><small>${_('ตอนที่','Ep.')} ${v.ep}</small><b>${esc(L(v.name||v.title))}</b></button>`;
-function vidSeries(){return SERIES.map(([ph,t])=>{const vs=VIDEOS.filter(v=>v.ph===ph);if(!vs.length)return'';return `<section class="vser"><div class="vser-h"><h3>${esc(L(t))}</h3><span class="muted">${vs.length} ${_('ตอน','episodes')}</span></div><div class="vrow">${vs.map(vtile).join('')}</div></section>`}).join('')}
+function vidSeries(){return SERIES.map(([ph,t])=>{const vs=VIDEOS.filter(v=>v.ph===ph);if(!vs.length)return'';return `<section class="vser"><div class="vser-h"><h3>${esc(L(t))}</h3><span class="muted">${vs.length} ${_('ตอน','episodes')}</span></div>${PT[ph]?ptCard(ph):''}<div class="vrow">${vs.map(vtile).join('')}</div></section>`}).join('')}
 function videoCard(v){return `<button class="card vcard2" data-a="vidopen" data-v="${v.id}" data-t="0" aria-label="${_('เล่นวิดีโอ','Play video')}: ${esc(L(v.title))}"><span class="vc2-p"><img src="${v.poster}" alt="" loading="lazy"><span class="play">${icon('play')}</span><span class="dur num">${mmss(v.dur)}</span></span><span class="vc2-t"><span class="chip ph${v.ph}">${esc(L(v.label))}</span><b>${esc(L(v.title))}</b><small>${_('แตะเพื่อดูแบบเต็มจอ','Tap to watch full screen')}</small></span></button>`}
 function vLearn(){
  return `<h2 class="sec-h">${_('วิดีโอความรู้กับพยาบาลสุขใจ','Video lessons with Nurse Sukjai')}</h2>${vidSeries()}<p class="hint">${_('ดูจบแต่ละตอน มีแบบทดสอบสั้น ๆ 2 ข้อ พร้อมเฉลย','Each episode ends with a 2-question quiz and answers.')}</p>`;
@@ -2863,6 +2943,7 @@ function modalHTML(){
   ${chs.length?`<div class="stack"><b>${_('ดูวิดีโอประกอบ','Related video')}</b>${chs.map(chBtn).join('')}</div>`:''}
   ${a.src?`<p class="hint">${_('ที่มา','Source')}: ${esc(L(a.src))}</p>`:a.by?`<p class="hint">${_('เพิ่มโดย','Added by')} ${esc(nameOf(a.by))}</p>`:''}
   ${staff&&!a.reviewed?`<div class="row"><button class="btn primary" data-a="artreview" data-id="${a.id}">${icon('check')} ${_('ตรวจทานแล้ว ใช้เป็นฉบับจริง','Reviewed, make it final')}</button></div>`:''}`,'','wide')}
+ if(m.kind==='ptest')return ptView(m);
  if(m.kind==='video'){const v=VIDEOS.find(x=>x.id===m.id);if(m.quiz)return quizView(v,m.quiz);return `<div class="vfull" role="dialog" aria-modal="true" aria-label="${esc(L(v.title))}"><video id="vplayer" controls controlslist="nofullscreen nodownload" disablepictureinpicture playsinline autoplay preload="auto" poster="${v.poster}" src="${v.src}"></video>${SUBS[v.id]?`<div class="vcap empty ${CC?'':'off'}" id="vcap" lang="en" aria-live="off"><span></span></div><button class="vf-cc ${CC?'on':''}" data-a="cc" aria-pressed="${CC}"><b>CC</b><span>${(CC?_('ซับ EN เปิด','Subtitles on'):_('ซับ EN ปิด','Subtitles off'))}</span></button>`:''}<button class="vf-x" data-a="close" aria-label="${_('ปิดวิดีโอ','Close video')}">${icon('x')}</button></div>`}
  if(m.kind==='artadd'){return shell(_('เพิ่มบทเรียน','Add lesson'),`<form class="form" data-form="article"><label class="field">${_('หัวข้อ','Topic')}<select name="topic" id="ar-topic">${TOPICS.map(t=>`<option value="${t.id}" ${t.id===m.topic?'selected':''}>${t.ph}. ${esc(L(t.t))}</option>`).join('')}</select></label><label class="field">${_('ชื่อบทเรียน (ไทย)','Title (Thai)')} *<input name="tth" id="ar-tth"></label><label class="field">${_('ชื่อบทเรียน (อังกฤษ)','Title (English)')}<input name="ten" id="ar-ten"></label><label class="field">${_('เนื้อหา (ไทย)','Content (Thai)')} * <small>${_('ใช้ “## ” ขึ้นหัวข้อ และ “- ” ขึ้นรายการ','Start a line with “## ” for a heading or “- ” for a bullet')}</small><textarea name="bth" id="ar-bth" style="min-height:140px"></textarea></label><label class="field">${_('เนื้อหา (อังกฤษ)','Content (English)')}<textarea name="ben" id="ar-ben"></textarea></label><p class="ferr" role="alert"></p><div class="row"><button class="btn primary" type="submit">${_('เผยแพร่บทเรียน','Publish lesson')}</button></div></form>`)}
  return'';
@@ -2923,7 +3004,7 @@ function render(){
  if(vp&&S.modal?.kind==='video'){const st=S.modal.t||0;const start=()=>{if(st)vp.currentTime=st;vp.play().catch(()=>{});markChap(vp)};
   if(vp.readyState>=1)start();else vp.addEventListener('loadedmetadata',start,{once:true});const pop=()=>{if(S.modal?.kind!=='video'||S.modal.quiz||!QZ[S.modal.id])return;
    try{if(document.fullscreenElement)document.exitFullscreen();else if(document.webkitFullscreenElement)document.webkitExitFullscreen();if(vp.webkitDisplayingFullscreen)vp.webkitExitFullscreen()}catch(e){}
-   try{vp.pause()}catch(e){}S.modal.quiz={i:0,pick:null,score:0,pop:1};render();try{navigator.vibrate&&navigator.vibrate(60)}catch(e){}};
+   try{vp.pause()}catch(e){}markWatched(S.modal.id);S.modal.quiz={i:0,pick:null,score:0,pop:1};render();try{navigator.vibrate&&navigator.vibrate(60)}catch(e){}};
   subsHook(vp);vp.addEventListener('ended',pop);
   vp.addEventListener('timeupdate',()=>{markChap(vp);const d=vp.duration;if(d&&isFinite(d)&&!vp.seeking&&vp.currentTime>=d-0.3)pop()});
   vp.addEventListener('pause',()=>{const d=vp.duration;if(d&&isFinite(d)&&vp.currentTime>=d-0.3)pop()})}
@@ -2949,6 +3030,7 @@ const fail=(f,m)=>{const e=f.querySelector('.ferr');if(e){e.textContent=m;e.scro
 const num=v=>{if(v==null||String(v).trim()==='')return null;const n=Number(String(v).replace(',','.'));return isFinite(n)?n:NaN};
 
 const ACT={
+ ptpost:d=>{S.modal={kind:'ptest',ph:+d.ph,mode:'post',intro:1};render()},
  install:async()=>{if(BIP){BIP.prompt();try{await BIP.userChoice}catch(e){}BIP=null;return}
   const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
   toast(ios?_('กดปุ่มแชร์ของ Safari แล้วเลือก “เพิ่มไปยังหน้าจอโฮม”','In Safari, tap Share, then “Add to Home Screen”'):_('เปิดเมนู ⋮ ของ Chrome แล้วเลือก “ติดตั้งแอป” หรือ “เพิ่มลงในหน้าจอหลัก”','Open Chrome’s ⋮ menu and choose “Install app” or “Add to Home screen”'))},
@@ -3010,7 +3092,13 @@ const ACT={
  qnext:()=>{const q=S.modal?.quiz;if(!q)return;q.i++;q.pick=null;if(q.i>=QZ[S.modal.id].length)quizDone[qKey(S.modal.id)]=q.score;render()},
  qreplay:()=>{S.modal={kind:'video',id:S.modal.id,t:0};render()},
  qnextvid:()=>{const nv=nextVid(S.modal.id);if(nv){S.modal={kind:'video',id:nv.id,t:0};render()}},
- vidopen:d=>{S.modal={kind:'video',id:d.v,t:+d.t||0};S.moreOpen=false;render()},
+ vidopen:d=>{const ph=serOf(d.v),r=ptRec(ph);S.moreOpen=false;if(PT[ph]&&r.pre==null&&!r.skip){S.modal={kind:'ptest',ph,mode:'pre',intro:1,next:d.v};render();return}S.modal={kind:'video',id:d.v,t:+d.t||0};render()},
+ ptstart:d=>{S.moreOpen=false;S.modal={kind:'ptest',ph:+d.ph,mode:d.m,i:0,pick:null,score:0};render()},
+ ptgo:()=>{const m=S.modal;if(m?.kind!=='ptest')return;Object.assign(m,{intro:0,i:0,pick:null,score:0});render()},
+ ptskip:()=>{const m=S.modal;const k=ptKey(m.ph);PTR[k]={...(PTR[k]||{}),skip:1};ptSave('sj-pt',PTR);S.modal={kind:'video',id:m.next,t:0};render()},
+ ptpick:d=>{const m=S.modal;if(m?.kind!=='ptest'||m.pick!=null)return;m.pick=+d.i;if(m.pick===PT[m.ph][m.i][3])m.score++;render();setTimeout(()=>document.querySelector('.qz-x,.qz .qz-btn.pri')?.scrollIntoView({block:'nearest',behavior:'smooth'}),30)},
+ ptnext:()=>{const m=S.modal;if(m?.kind!=='ptest')return;m.i++;m.pick=null;if(m.i>=PT[m.ph].length){const k=ptKey(m.ph);PTR[k]={...(PTR[k]||{}),[m.mode]:m.score,[m.mode+'At']:Date.now()};ptSave('sj-pt',PTR)}render();document.querySelector('.vfull')?.scrollTo(0,0)},
+ ptvid:()=>{const m=S.modal;const id=m.next||VIDEOS.find(v=>v.ph===m.ph)?.id;S.modal={kind:'video',id,t:0};render()},
  vidseek:d=>{const vp=document.getElementById('vplayer');if(!vp)return;vp.currentTime=+d.t;vp.play().catch(()=>{});markChap(vp)},
  critconfirm:()=>{Object.assign(D.settings,{criteriaConfirmed:true,confirmedBy:S.user.id,confirmedAt:nowStamp()});audit('ยืนยันเกณฑ์อาการเตือน','Confirmed warning criteria');render();toast(_('ยืนยันเกณฑ์แล้ว','Criteria confirmed'))},
 };
