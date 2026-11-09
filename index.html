@@ -1468,6 +1468,22 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .pt-bar em.post{background:#F4C76A}
 .pt-bar b{font-family:var(--f-display)}
 .pt-cta{background:#F4C76A!important;color:#1F2E2D!important;border-color:#F4C76A!important}
+
+/* ===== v24b · required pre/post-tests ===== */
+.ptc-lock{display:flex;align-items:center;gap:8px;font-size:.86rem;color:var(--ink-2);grid-template-columns:none}
+.ptc-lock .ic{flex:none;width:20px;height:20px;color:#C08A2B}
+.vser.locked .vtile,.lcard.locked{filter:grayscale(.75);opacity:.55}
+.vser.locked .vser-h h3 .ic{width:18px;height:18px;color:#C08A2B;vertical-align:-3px}
+.lcard.locked .lthumb::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.18)}
+.ptc .btn[disabled]{opacity:.75;cursor:not-allowed}
+.pt-need{display:inline-flex;align-items:center;gap:6px;background:rgba(244,199,106,.18);color:#F6D58E;border-radius:999px;padding:5px 12px;font-size:.88rem}
+.pt-need .ic{width:16px;height:16px}
+.pt-steps{display:flex;flex-direction:column;gap:8px;width:100%;max-width:360px;margin-top:6px;text-align:left}
+.pt-steps>div{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.1);font-size:.95rem}
+.pt-steps>div .ic{flex:none;width:20px;height:20px;opacity:.85}
+.pt-steps>div.ok{background:rgba(169,240,192,.16)}
+.pt-steps>div.ok .ic{color:#A9F0C0;opacity:1}
+.pt-steps b{font-family:var(--f-display);margin-left:4px}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -2430,7 +2446,7 @@ function apptHome(pid,cg){if(cg&&!consentOf(S.user.id,pid).perms.appts)return ''
 const TTH={'t-about':['heart','#5BA8A2','#2E726F'],'t-prep':['clipboard','#7CA9D6','#4A79A8'],'t-hosp':['hospital','#E8B65E','#B07A1E'],'t-meds':['pill','#F0A08F','#C9584B'],'t-infect':['shield','#8CC9A0','#3D8A57'],'t-warn':['alert','#F0A08F','#C9584B'],'t-home':['home','#8CC9A0','#3D8A57'],'t-followup':['calendar','#A9A0DA','#6A5FB0']};
 function libraryRow(pid){const ph=pid?P(pid).phase:1;const tids=TOPICS.filter(t=>t.ph===ph).map(t=>t.id);
  const arts=D.education.slice().sort((a,b)=>(tids.includes(b.topic)?1:0)-(tids.includes(a.topic)?1:0)).slice(0,6);
- const vid=VIDEOS.filter(v=>v.ph===Math.min(ph,3)).concat(VIDEOS.filter(v=>v.ph!==Math.min(ph,3))).slice(0,8).map(v=>`<button class="lcard" data-a="vidopen" data-v="${v.id}" data-t="0"><span class="lthumb"><img src="${v.poster}" alt="" loading="lazy"><span class="pl">${icon('play')}</span><span class="ldur num">${mmss(v.dur)}</span></span><b>${esc(L(v.title))}</b></button>`).join('');
+ const vid=VIDEOS.filter(v=>v.ph===Math.min(ph,3)).concat(VIDEOS.filter(v=>v.ph!==Math.min(ph,3))).slice(0,8).map(v=>`<button class="lcard ${serLock(v.ph)?'locked':''}" data-a="vidopen" data-v="${v.id}" data-t="0"><span class="lthumb"><img src="${v.poster}" alt="" loading="lazy"><span class="pl">${icon('play')}</span><span class="ldur num">${mmss(v.dur)}</span></span><b>${esc(L(v.title))}</b></button>`).join('');
  const art=arts.map(a=>{const t=TTH[a.topic]||['book','#5BA8A2','#2E726F'];return `<button class="lcard" data-a="artopen" data-id="${a.id}"><span class="lthumb" style="background:linear-gradient(140deg,${t[1]},${t[2]})"><span class="lic">${icon(t[0])}</span><span class="ltag">${_('บทความ','Read')}</span></span><b>${esc(L(a.title))}</b></button>`}).join('');
  return `<section class="hlib span"><div class="hl-h"><h3>${_('คลังความรู้','Knowledge library')}</h3><button class="link-btn" data-a="go" data-v="learn">${_('ดูทั้งหมด','See all')} ${icon('chev')}</button></div><div class="lib">${vid}${art}</div></section>`}
 const contactHome=()=>`<button class="card hcontact" data-a="contact"><span class="ci">${icon('phone')}</span><span class="ct"><b>${_('ติดต่อทีมแพทย์','Contact the care team')}</b><small>${_('ทีมปลูกถ่ายตับ · ฉุกเฉิน 1669','Transplant team · emergency 1669')}</small></span>${icon('chev','chev')}</button>`;
@@ -2780,18 +2796,35 @@ const markWatched=id=>{WATCH[`${S.user?.id||'guest'}|${id}`]=1;ptSave('sj-watche
 const isWatched=id=>!!WATCH[`${S.user?.id||'guest'}|${id}`];
 const serOf=id=>VIDEOS.find(v=>v.id===id)?.ph;
 const serProg=ph=>{const vs=VIDEOS.filter(v=>v.ph===ph);return [vs.filter(v=>isWatched(v.id)).length,vs.length]};
-function ptCard(ph){const r=ptRec(ph),n=PT[ph].length,[w,t]=serProg(ph);
+const ptForced=()=>!!S.user&&S.user.role!=='staff';
+const serLock=ph=>{if(!ptForced())return null;for(const p of Object.keys(PT).map(Number).sort())if(p<ph&&ptRec(p).post==null)return p;return null};
+const postReady=ph=>{const [w,t]=serProg(ph);return w>=t};
+const firstUnwatched=ph=>VIDEOS.find(v=>v.ph===ph&&!isWatched(v.id))||VIDEOS.find(v=>v.ph===ph);
+function gateVid(id){const ph=serOf(id),lk=serLock(ph);
+ if(lk){S.modal={kind:'ptest',ph:lk,mode:'post',lock:1,target:ph};return}
+ if(PT[ph]&&ptForced()&&ptRec(ph).pre==null){S.modal={kind:'ptest',ph,mode:'pre',intro:1,next:id};return}
+ S.modal={kind:'video',id,t:0}}
+function gatePost(ph){if(ptRec(ph).pre==null&&ptForced()){S.modal={kind:'ptest',ph,mode:'pre',intro:1,next:firstUnwatched(ph)?.id};return}
+ if(ptForced()&&!postReady(ph)){S.modal={kind:'ptest',ph,mode:'post',lock:1,target:ph};return}
+ S.modal={kind:'ptest',ph,mode:'post',intro:1}}
+function ptCard(ph){const lk=serLock(ph);if(lk)return `<div class="ptc ptc-lock">${icon('lock')}<span>${_('ชุดนี้จะเปิดเมื่อทำแบบทดสอบหลังเรียน ชุดที่','Opens after you finish the post-test for Series')} ${lk}${S.lang==='th'?' แล้ว':''}</span></div>`;const r=ptRec(ph),n=PT[ph].length,[w,t]=serProg(ph);
  const cell=(lab,v,cls='')=>`<div class="ptc-s ${cls}"><span>${lab}</span><b class="num">${v==null?'—':v+'/'+n}</b></div>`;
  const up=r.pre!=null&&r.post!=null?r.post-r.pre:null;
  const btn=r.pre==null?`<button class="btn primary sm" data-a="ptstart" data-ph="${ph}" data-m="pre">${icon('clipboard')} ${_('ทำแบบทดสอบก่อนเรียน','Take the pre-test')}</button>`
-  :`<button class="btn ${r.post==null&&w>=t?'primary':''} sm" data-a="ptstart" data-ph="${ph}" data-m="post">${icon('clipboard')} ${r.post==null?_('ทำแบบทดสอบหลังเรียน','Take the post-test'):_('ทำหลังเรียนอีกครั้ง','Retake post-test')}</button>`;
+  :ptForced()&&w<t&&r.post==null?`<button class="btn sm" disabled aria-disabled="true">${icon('lock')} ${_('หลังเรียน: ดูให้ครบก่อน','Post-test: watch all first')}</button>`:`<button class="btn ${r.post==null&&w>=t?'primary':''} sm" data-a="ptstart" data-ph="${ph}" data-m="post">${icon('clipboard')} ${r.post==null?_('ทำแบบทดสอบหลังเรียน','Take the post-test'):_('ทำหลังเรียนอีกครั้ง','Retake post-test')}</button>`;
  return `<div class="ptc">${cell(_('ก่อนเรียน','Pre-test'),r.pre)}${cell(_('หลังเรียน','Post-test'),r.post,up!=null&&up>0?'up':'')}${up!=null?`<div class="ptc-s ptc-d ${up>0?'up':''}"><span>${_('พัฒนาการ','Change')}</span><b class="num">${up>0?'+':''}${up}</b></div>`:`<div class="ptc-s"><span>${_('ดูแล้ว','Watched')}</span><b class="num">${w}/${t}</b></div>`}${btn}</div>`}
 function ptView(m){const Q=PT[m.ph],n=Q.length,pre=m.mode==='pre',TH=['ก','ข','ค','ง'];const ser=SERIES.find(x=>x[0]===m.ph);
  const title=(pre?_('แบบทดสอบก่อนเรียน','Pre-test'):_('แบบทดสอบหลังเรียน','Post-test'))+' · '+_('ชุดที่','Series')+' '+m.ph;
  const head=`<div class="qz-h"><span class="qz-k">${icon('clipboard')} ${title}</span><button class="vf-x static" data-a="close" aria-label="${_('ปิด','Close')}">${icon('x')}</button></div>`;
  const wrap=(body,cls='')=>`<div class="vfull qmode" role="dialog" aria-modal="true" aria-label="${title}"><div class="qz ${cls}">${head}${body}</div></div>`;
- if(m.intro){const [w,t]=serProg(m.ph);return wrap(`<div class="qz-res pt-intro"><div class="pt-ico">${icon('clipboard')}</div><h2>${pre?_('ก่อนเริ่มดูชุดนี้ ลองทำแบบทดสอบสั้น ๆ','Before you start, try a short quiz'):_('ดูวิดีโอชุดนี้ครบแล้ว มาวัดความรู้กัน','You’ve finished this series — let’s check what you learned')}</h2><p>${esc(L(ser[1]))}</p><p class="pt-meta">${n} ${_('ข้อ · ใช้เวลาประมาณ 2 นาที','questions · about 2 minutes')}${pre?' · '+_('ยังไม่เฉลยจนกว่าจะทำหลังเรียน','answers are shown after the post-test'):''}</p></div>
-  <div class="qz-act"><button class="qz-btn pri" data-a="ptgo">${_('เริ่มทำแบบทดสอบ','Start')} ${icon('chev')}</button>${pre&&m.next?`<button class="qz-btn ghost" data-a="ptskip">${_('ข้ามไปดูวิดีโอ','Skip to the video')}</button>`:`<button class="qz-btn ghost" data-a="close">${_('ไว้ทีหลัง','Later')}</button>`}</div>`,'popin')}
+ if(m.lock){const [w,t]=serProg(m.ph),ready=w>=t,tser=SERIES.find(x=>x[0]===m.target),fu=firstUnwatched(m.ph);
+  const same=m.target===m.ph;
+  return wrap(`<div class="qz-res pt-intro"><div class="pt-ico">${icon('lock')}</div><h2>${same?_('ดูวิดีโอชุดนี้ให้ครบก่อน แล้วจึงทำแบบทดสอบหลังเรียน','Watch every episode in this series before the post-test'):_('ต้องทำแบบทดสอบหลังเรียนของชุดก่อนหน้าก่อน','Finish the previous series’ post-test first')}</h2>
+   ${same?'':`<p>${_('เพื่อเปิด','To unlock')} <b>${esc(L(tser[1]))}</b></p>`}
+   <div class="pt-steps"><div class="${ptRec(m.ph).pre!=null?'ok':''}">${icon(ptRec(m.ph).pre!=null?'check':'clipboard')}<span>${_('แบบทดสอบก่อนเรียน','Pre-test')} · ${_('ชุดที่','Series')} ${m.ph}</span></div><div class="${ready?'ok':''}">${icon(ready?'check':'play')}<span>${_('ดูวิดีโอครบ','Watch all episodes')} <b class="num">${w}/${t}</b></span></div><div>${icon('clipboard')}<span>${_('แบบทดสอบหลังเรียน','Post-test')} · ${_('ชุดที่','Series')} ${m.ph}</span></div></div></div>
+   <div class="qz-act">${ptRec(m.ph).pre==null?`<button class="qz-btn pri" data-a="ptstart" data-ph="${m.ph}" data-m="pre">${_('ทำแบบทดสอบก่อนเรียน','Take the pre-test')} ${icon('chev')}</button>`:ready?`<button class="qz-btn pri" data-a="ptgo2">${_('ทำแบบทดสอบหลังเรียน','Take the post-test')} ${icon('chev')}</button>`:`<button class="qz-btn pri" data-a="vidplay" data-v="${fu.id}">${icon('play')} ${_('ดูตอนที่ยังไม่ได้ดู','Watch the next episode')}: ${_('ตอนที่','Ep.')} ${fu.ep}</button>`}<button class="qz-btn ghost" data-a="close">${_('กลับหน้าความรู้','Back to lessons')}</button></div>`,'popin')}
+ if(m.intro){const [w,t]=serProg(m.ph);return wrap(`<div class="qz-res pt-intro"><div class="pt-ico">${icon('clipboard')}</div><h2>${pre?_('ก่อนเริ่มดูชุดนี้ ลองทำแบบทดสอบสั้น ๆ','Before you start, try a short quiz'):_('ดูวิดีโอชุดนี้ครบแล้ว มาวัดความรู้กัน','You’ve finished this series — let’s check what you learned')}</h2><p>${esc(L(ser[1]))}</p><p class="pt-meta">${n} ${_('ข้อ · ใช้เวลาประมาณ 2 นาที','questions · about 2 minutes')}${pre?' · '+_('ยังไม่เฉลยจนกว่าจะทำหลังเรียน','answers are shown after the post-test'):''}</p>${pre&&ptForced()?`<p class="pt-need">${icon('lock')} ${_('ต้องทำก่อนจึงจะดูวิดีโอชุดนี้ได้','Required before you can watch this series')}</p>`:''}${!pre&&ptForced()&&SERIES.some(x=>x[0]===m.ph+1)?`<p class="pt-need">${icon('lock')} ${_('ทำเสร็จแล้วจะเปิดชุดที่','Finishing it unlocks Series')} ${m.ph+1}</p>`:''}</div>
+  <div class="qz-act"><button class="qz-btn pri" data-a="ptgo">${_('เริ่มทำแบบทดสอบ','Start')} ${icon('chev')}</button>${pre&&m.next&&!ptForced()?`<button class="qz-btn ghost" data-a="ptskip">${_('ข้ามไปดูวิดีโอ','Skip to the video')}</button>`:`<button class="qz-btn ghost" data-a="close">${_('ไว้ทีหลัง','Later')}</button>`}</div>`,'popin')}
  if(m.i>=n){const r=ptRec(m.ph),sc=m.score;
   if(pre)return wrap(`<div class="qz-res"><div class="qz-score"><b class="num">${sc}/${n}</b><small>${_('ก่อนเรียน','pre-test')}</small></div><h2>${_('ขอบคุณค่ะ เริ่มดูวิดีโอกันเลย','Thank you! Let’s start the videos')}</h2><p>${_('คำตอบทั้งหมดอยู่ในวิดีโอชุดนี้ ดูครบแล้วมาทำแบบทดสอบหลังเรียนเพื่อดูพัฒนาการนะคะ','All the answers are in this series. Take the post-test when you finish to see your progress.')}</p></div>
    <div class="qz-act"><button class="qz-btn pri" data-a="ptvid">${icon('play')} ${_('เริ่มดูวิดีโอ','Start watching')}</button><button class="qz-btn ghost" data-a="close">${_('กลับหน้าความรู้','Back to lessons')}</button></div>`);
@@ -2820,7 +2853,7 @@ function quizView(v,q){const Q=QZ[v.id],n=Q.length;const TH=['ก','ข','ค','
  </div></div>`}
 const SERIES=[[1,{th:'ชุดที่ 1 · ความรู้ก่อนปลูกถ่ายตับ',en:'Series 1 · Before transplant'}],[2,{th:'ชุดที่ 2 · ช่วงรักษาตัวในโรงพยาบาล',en:'Series 2 · In hospital'}],[3,{th:'ชุดที่ 3 · ดูแลตัวเองที่บ้านหลังปลูกถ่าย',en:'Series 3 · At home after transplant'}]];
 const vtile=v=>`<button class="vtile" data-a="vidopen" data-v="${v.id}" data-t="0" aria-label="${_('เล่นวิดีโอ','Play video')}: ${esc(L(v.title))}"><span class="vt-p"><img src="${v.poster}" alt="" loading="lazy"><span class="play">${icon('play')}</span><span class="dur num">${mmss(v.dur)}</span>${quizDone[qKey(v.id)]!=null?`<span class="qbadge">${icon('check')}${quizDone[qKey(v.id)]}/${(QZ[v.id]||[]).length}</span>`:''}</span><small>${_('ตอนที่','Ep.')} ${v.ep}</small><b>${esc(L(v.name||v.title))}</b></button>`;
-function vidSeries(){return SERIES.map(([ph,t])=>{const vs=VIDEOS.filter(v=>v.ph===ph);if(!vs.length)return'';return `<section class="vser"><div class="vser-h"><h3>${esc(L(t))}</h3><span class="muted">${vs.length} ${_('ตอน','episodes')}</span></div>${PT[ph]?ptCard(ph):''}<div class="vrow">${vs.map(vtile).join('')}</div></section>`}).join('')}
+function vidSeries(){return SERIES.map(([ph,t])=>{const vs=VIDEOS.filter(v=>v.ph===ph);if(!vs.length)return'';return `<section class="vser ${serLock(ph)?'locked':''}"><div class="vser-h"><h3>${serLock(ph)?icon('lock')+' ':''}${esc(L(t))}</h3><span class="muted">${vs.length} ${_('ตอน','episodes')}</span></div>${PT[ph]?ptCard(ph):''}<div class="vrow">${vs.map(vtile).join('')}</div></section>`}).join('')}
 function videoCard(v){return `<button class="card vcard2" data-a="vidopen" data-v="${v.id}" data-t="0" aria-label="${_('เล่นวิดีโอ','Play video')}: ${esc(L(v.title))}"><span class="vc2-p"><img src="${v.poster}" alt="" loading="lazy"><span class="play">${icon('play')}</span><span class="dur num">${mmss(v.dur)}</span></span><span class="vc2-t"><span class="chip ph${v.ph}">${esc(L(v.label))}</span><b>${esc(L(v.title))}</b><small>${_('แตะเพื่อดูแบบเต็มจอ','Tap to watch full screen')}</small></span></button>`}
 function vLearn(){
  return `<h2 class="sec-h">${_('วิดีโอความรู้กับพยาบาลสุขใจ','Video lessons with Nurse Sukjai')}</h2>${vidSeries()}<p class="hint">${_('ดูจบแต่ละตอน มีแบบทดสอบสั้น ๆ 2 ข้อ พร้อมเฉลย','Each episode ends with a 2-question quiz and answers.')}</p>`;
@@ -3030,7 +3063,7 @@ const fail=(f,m)=>{const e=f.querySelector('.ferr');if(e){e.textContent=m;e.scro
 const num=v=>{if(v==null||String(v).trim()==='')return null;const n=Number(String(v).replace(',','.'));return isFinite(n)?n:NaN};
 
 const ACT={
- ptpost:d=>{S.modal={kind:'ptest',ph:+d.ph,mode:'post',intro:1};render()},
+ ptpost:d=>{gatePost(+d.ph);render()},
  install:async()=>{if(BIP){BIP.prompt();try{await BIP.userChoice}catch(e){}BIP=null;return}
   const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
   toast(ios?_('กดปุ่มแชร์ของ Safari แล้วเลือก “เพิ่มไปยังหน้าจอโฮม”','In Safari, tap Share, then “Add to Home Screen”'):_('เปิดเมนู ⋮ ของ Chrome แล้วเลือก “ติดตั้งแอป” หรือ “เพิ่มลงในหน้าจอหลัก”','Open Chrome’s ⋮ menu and choose “Install app” or “Add to Home screen”'))},
@@ -3091,14 +3124,16 @@ const ACT={
  qpick:d=>{const q=S.modal?.quiz;if(!q||q.pick!=null)return;q.pick=+d.i;if(q.pick===QZ[S.modal.id][q.i][3])q.score++;render();setTimeout(()=>document.querySelector('.qz-x')?.scrollIntoView({block:'nearest',behavior:'smooth'}),30)},
  qnext:()=>{const q=S.modal?.quiz;if(!q)return;q.i++;q.pick=null;if(q.i>=QZ[S.modal.id].length)quizDone[qKey(S.modal.id)]=q.score;render()},
  qreplay:()=>{S.modal={kind:'video',id:S.modal.id,t:0};render()},
- qnextvid:()=>{const nv=nextVid(S.modal.id);if(nv){S.modal={kind:'video',id:nv.id,t:0};render()}},
- vidopen:d=>{const ph=serOf(d.v),r=ptRec(ph);S.moreOpen=false;if(PT[ph]&&r.pre==null&&!r.skip){S.modal={kind:'ptest',ph,mode:'pre',intro:1,next:d.v};render();return}S.modal={kind:'video',id:d.v,t:+d.t||0};render()},
- ptstart:d=>{S.moreOpen=false;S.modal={kind:'ptest',ph:+d.ph,mode:d.m,i:0,pick:null,score:0};render()},
+ qnextvid:()=>{const nv=nextVid(S.modal.id);if(nv){gateVid(nv.id);render()}},
+ vidopen:d=>{S.moreOpen=false;const ph=serOf(d.v),r=ptRec(ph);if(!ptForced()&&PT[ph]&&r.pre==null&&!r.skip){S.modal={kind:'ptest',ph,mode:'pre',intro:1,next:d.v};render();return}gateVid(d.v);if(S.modal.kind==='video')S.modal.t=+d.t||0;render()},
+ vidplay:d=>{gateVid(d.v);render()},
+ ptgo2:()=>{const m=S.modal;S.modal={kind:'ptest',ph:m.ph,mode:'post',i:0,pick:null,score:0};render()},
+ ptstart:d=>{S.moreOpen=false;const ph=+d.ph;if(d.m==='post'&&ptForced()&&(ptRec(ph).pre==null||!postReady(ph))){gatePost(ph);render();return}if(d.m==='pre'&&serLock(ph)){gateVid(VIDEOS.find(v=>v.ph===ph).id);render();return}S.modal={kind:'ptest',ph,mode:d.m,i:0,pick:null,score:0};render()},
  ptgo:()=>{const m=S.modal;if(m?.kind!=='ptest')return;Object.assign(m,{intro:0,i:0,pick:null,score:0});render()},
  ptskip:()=>{const m=S.modal;const k=ptKey(m.ph);PTR[k]={...(PTR[k]||{}),skip:1};ptSave('sj-pt',PTR);S.modal={kind:'video',id:m.next,t:0};render()},
  ptpick:d=>{const m=S.modal;if(m?.kind!=='ptest'||m.pick!=null)return;m.pick=+d.i;if(m.pick===PT[m.ph][m.i][3])m.score++;render();setTimeout(()=>document.querySelector('.qz-x,.qz .qz-btn.pri')?.scrollIntoView({block:'nearest',behavior:'smooth'}),30)},
  ptnext:()=>{const m=S.modal;if(m?.kind!=='ptest')return;m.i++;m.pick=null;if(m.i>=PT[m.ph].length){const k=ptKey(m.ph);PTR[k]={...(PTR[k]||{}),[m.mode]:m.score,[m.mode+'At']:Date.now()};ptSave('sj-pt',PTR)}render();document.querySelector('.vfull')?.scrollTo(0,0)},
- ptvid:()=>{const m=S.modal;const id=m.next||VIDEOS.find(v=>v.ph===m.ph)?.id;S.modal={kind:'video',id,t:0};render()},
+ ptvid:()=>{const m=S.modal;const id=m.next||firstUnwatched(m.ph)?.id;gateVid(id);render()},
  vidseek:d=>{const vp=document.getElementById('vplayer');if(!vp)return;vp.currentTime=+d.t;vp.play().catch(()=>{});markChap(vp)},
  critconfirm:()=>{Object.assign(D.settings,{criteriaConfirmed:true,confirmedBy:S.user.id,confirmedAt:nowStamp()});audit('ยืนยันเกณฑ์อาการเตือน','Confirmed warning criteria');render();toast(_('ยืนยันเกณฑ์แล้ว','Criteria confirmed'))},
 };
