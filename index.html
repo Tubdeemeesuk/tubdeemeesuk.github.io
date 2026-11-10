@@ -2361,6 +2361,8 @@ div.rbar{cursor:default}
 .pin-row{align-items:center}
 .pin-welcome{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 14px;padding:14px 16px;border:0;border-radius:18px;background:linear-gradient(135deg,var(--brand),var(--leaf));color:#fff;font:inherit;text-align:left;cursor:pointer;box-shadow:0 10px 24px -12px rgba(30,90,85,.6)}
 .pin-welcome span{flex:1;display:flex;flex-direction:column}.pin-welcome small{opacity:.9}
+.rpick.r4{grid-template-columns:repeat(2,minmax(0,1fr));max-width:420px;margin-inline:auto;gap:14px 18px}.rpick.r4 .rimg{width:min(100%,128px);margin-inline:auto}.rpick.r4 .rtile b{font-size:.95rem}
+@media (max-width:640px){.rpick.r4{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px}.rpick.r4 .rimg{width:min(100%,128px)}.rpick.r4 .rtile b{font-size:.9rem}}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3325,7 +3327,6 @@ function vLogin(){
  <section class="lg-heroG"><div class="hg-copy"><p class="hg-k">${_('ทีมสหสาขาวิชาชีพ · ผู้ป่วย · ครอบครัว','Care team · patients · families')}</p>
   <h1 class="lg-h">${_('ดูแลด้วยหัวใจ <em class="nw">ใส่ใจทุกก้าวของชีวิต</em>','Caring with heart, <em>at every step of life</em>')}</h1></div>
   <div class="hg-art">${careNet()}</div></section>
- <div class="lg-notice">${icon('alert')}<div><span class="nt-l"><b>${_('โปรดทราบ','Please note')}:</b> ${_('นี่คือรูปแบบจำลองสำหรับการทดลอง ข้อมูลทั้งหมดเป็นข้อมูลสมมติ ห้ามกรอกข้อมูลผู้ป่วยจริง','This is a prototype for testing. All data is fictional; don’t enter real patient data.')}</span><span class="nt-s"><b>${_('ต้นแบบทดลอง','Prototype')}</b> · ${_('ข้อมูลสมมติ ห้ามกรอกข้อมูลผู้ป่วยจริง','fictional data only')}</span></div></div>
  <section class="lg-roles" aria-labelledby="lg-rh"><h2 id="lg-rh">${_('เลือกผู้ใช้งาน','Who is using Tub Dee Mee Suk?')}</h2>
  ${pinWelcome()}<div class="rpick r4">
   <button class="rtile" data-a="ptstatus"><span class="rimg"><img src="media/ico-patient.webp" alt="" width="320" height="320"></span><b>${_('ผู้ป่วย','Patient')}</b><small>${_('เข้าสู่ระบบด้วยชื่อและ HN','Sign in with name and HN')}</small></button>
@@ -3334,7 +3335,7 @@ function vLogin(){
   ${rtile('<img src="media/ico-pharm.webp" alt="" width="320" height="320">','เภสัชกร','Pharmacist','s2')}
 </div>
 </section>
- <footer class="lg-foot2"><span>© 2569 <b>ตับดีมีสุข</b> by LT CMU</span>${installBtn('btn sm')}<button class="btn sm" data-a="lginfo" data-t="contact">${icon('phone')} ${_('ติดต่อฝ่ายสนับสนุน','Contact support')}</button></footer>
+ <footer class="lg-foot2"><span>© 2569 <b>ตับดีมีสุข</b> by LT CMU</span>${installBtn('btn sm')}</footer>
  </div></div>`;
 }
 /* ---------- patient & caregiver home ---------- */
