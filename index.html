@@ -2304,6 +2304,23 @@ div.rbar{cursor:default}
 .gs-st .gs-row{display:flex;gap:12px;align-items:center}
 .gs-row>div{display:flex;flex-direction:column;gap:2px}.gs-row small{color:var(--ink-2);font-size:.8rem}
 .gs-dot{width:12px;height:12px;border-radius:50%;background:var(--line);flex:none}.gs-dot.ok{background:var(--ok);box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 20%,transparent)}.gs-dot.err{background:var(--danger)}
+.jm-ck{width:min(100%,440px);margin-top:4px;background:var(--surface);border:1px solid color-mix(in srgb,var(--c) 35%,var(--line));border-radius:16px;text-align:left;box-shadow:0 4px 14px rgba(25,55,55,.06)}
+.jm-ck>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;font-size:.82rem;color:var(--ink-2)}
+.jm-ck>summary::-webkit-details-marker{display:none}
+.jm-ck>summary::after{content:"";width:7px;height:7px;border-right:2px solid var(--ink-2);border-bottom:2px solid var(--ink-2);transform:rotate(45deg);margin:0 2px 3px;flex:none}
+.jm-ck[open]>summary::after{transform:rotate(-135deg);margin:3px 2px 0}
+.jm-prog{flex:1;height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}.jm-prog i{display:block;height:100%;border-radius:3px}
+.jm-ck>summary b{color:var(--ink);font-size:.82rem}
+.jm-ck ul{list-style:none;margin:0;padding:2px 14px 12px;display:flex;flex-direction:column;gap:7px;font-size:.84rem;line-height:1.4}
+.jm-ck li{display:flex;gap:9px;align-items:flex-start}
+.jm-ck li .tick{flex:none;width:20px;height:20px;margin-top:1px}
+.jm-ck li.lock{color:var(--ink-2)}.jm-ck li.lock .tick{opacity:.7}
+.jm-ck li.self label{display:flex;gap:9px;align-items:flex-start;cursor:pointer}
+.jm-ck li.self input{width:20px;height:20px;margin:1px 0 0;accent-color:#C08A2B;flex:none}
+.jm-leg{justify-content:center;margin:-4px 0 0}
+.jm-card.ms.hosp{background:linear-gradient(135deg,color-mix(in srgb,#B9A6E3 24%,var(--surface)),color-mix(in srgb,#8FB8E8 16%,var(--surface)))}
+.jm-fu{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:.76rem;padding:4px 10px;border-radius:999px;background:color-mix(in srgb,#7CC5A8 22%,var(--surface));color:var(--ink)}
+.jm-fu .ic{width:14px;height:14px}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -5169,22 +5186,28 @@ const momPid=()=>S.user.role==='patient'?S.user.id:currentPid();
 /* ---- journey map view ---- */
 function vMoments(){const pid=momPid();if(!pid)return emptyCard('users',_('ยังไม่มีผู้ป่วยที่เชื่อมโยง','No linked patient yet'),'');const p=P(pid);const own=S.user.role==='patient';
  const ms=momsOf(pid,!own);const days=p.txDate?daysBetween(p.txDate,todayISO):null;
- const auto=[];if(p.txDate)auto.push({id:'tx',auto:1,date:p.txDate,ph:2,title:_('วันเกิดใหม่ของตับ','My new liver’s birthday'),sub:fmtDate(p.txDate)});if(p.discharge&&p.discharge<=todayISO)auto.push({id:'dc',auto:1,date:p.discharge,ph:2,title:_('ได้กลับบ้าน','Home at last'),sub:fmtDate(p.discharge)});
+ const auto=[];const j=p.journey||{};const fd=x=>fmtDate(x,{day:'numeric',month:'short',year:'2-digit'});
+ if(p.txDate)auto.push({id:'tx',auto:1,o:1,date:p.txDate,ph:2,ic:'star',c:'#F2B66B',title:_('ผ่าตัดปลูกถ่ายตับ · วันเกิดใหม่ของตับ','Transplant day · my new liver’s birthday'),sub:fmtDate(p.txDate)});
+ if(j.icu&&j.icu[0]<=todayISO)auto.push({id:'icu',auto:1,o:2,date:j.icu[0],ph:2,ic:'monitor',c:'#B9A6E3',title:_('หอผู้ป่วยวิกฤต (ICU)','Intensive care (ICU)'),sub:`${fd(j.icu[0])} – ${fd(j.icu[1])} · ${daysBetween(j.icu[0],j.icu[1])} ${_('วัน','days')}`});
+ if(j.ward&&j.ward[0]<=todayISO)auto.push({id:'ward',auto:1,o:3,date:j.ward[0],ph:2,ic:'hospital',c:'#B9A6E3',title:_('หอผู้ป่วย','Ward'),sub:`${fd(j.ward[0])} – ${fd(j.ward[1])} · ${daysBetween(j.ward[0],j.ward[1])} ${_('วัน','days')}`});
+ if(p.discharge&&p.discharge<=todayISO)auto.push({id:'dc',auto:1,o:9,date:p.discharge,ph:2,ic:'home',c:'#F2B66B',title:_('ได้กลับบ้าน','Home at last'),sub:fmtDate(p.discharge)});
  const ST={done:['ผ่านมาแล้ว','Behind you'],cur:['ตอนนี้','Now'],next:['รออยู่ข้างหน้า','Up ahead']};
  let side=0;const rows=[];
  PHASES.forEach(ph=>{const n=ph.n;const st=n<p.phase?'done':n===p.phase?'cur':'next';
-  rows.push(`<div class="jm-row jm-stn s-${st}" style="--c:${PHC[n]}"><span class="jm-node big" data-node>${phIco(n)}</span><div class="jm-stl"><small>${ph.code}</small><b>${esc(L(ph.title))}</b><em>${_(...ST[st])}</em></div></div>`);
-  const items=[...auto.filter(a=>a.ph===n),...ms.filter(m=>(m.ph||momPhase(p,m.date))===n)].sort((a,b)=>a.date.localeCompare(b.date));
+  rows.push(`<div class="jm-row jm-stn s-${st}" style="--c:${PHC[n]}"><span class="jm-node big" data-node>${phIco(n)}</span><div class="jm-stl"><small>${ph.code}</small><b>${esc(L(ph.title))}</b><em>${_(...ST[st])}</em></div>${jmChecklist(p,ph,st,own)}</div>`);
+  const items=[...auto.filter(a=>a.ph===n),...ms.filter(m=>(m.ph||momPhase(p,m.date))===n)].sort((a,b)=>a.date.localeCompare(b.date)||(a.o||5)-(b.o||5));
   items.forEach(m=>{const s=side++%2?'r':'l';
-   if(m.auto){rows.push(`<div class="jm-row jm-m ${s}"><div class="jm-card ms"><span class="jm-ct"><i class="jm-badge" style="--c:#F2B66B">${icon('star')}</i><small>${m.sub}</small></span><b>${m.title}</b></div><span class="jm-node mile" data-node style="--c:#F2C36B">${icon('star')}</span><span></span></div>`);return}
+   if(m.auto){rows.push(`<div class="jm-row jm-m ${s}"><div class="jm-card ms ${m.c==='#B9A6E3'?'hosp':''}"><span class="jm-ct"><i class="jm-badge" style="--c:${m.c}">${icon(m.ic)}</i><small>${m.sub}</small></span><b>${m.title}</b></div><span class="jm-node mile" data-node style="--c:${m.c}">${icon(m.ic)}</span><span></span></div>`);return}
    const t=MTYPE[m.type];rows.push(`<div class="jm-row jm-m ${s}"><button class="jm-card" data-a="momopen" data-id="${m.id}"><span class="jm-ct"><i class="jm-badge" style="--c:${t[3]}">${icon(t[2])}</i><small>${fmtDate(m.date,{day:'numeric',month:'short',year:'2-digit'})}</small>${m.share?`<i class="jm-sh" title="${_('แบ่งปันแล้ว','Shared')}">${icon('users')}</i>`:''}</span>${m.photo?`<img src="${m.photo}" alt="" loading="lazy">`:''}${m.text?`<p>${esc(m.text)}</p>`:''}</button><span class="jm-node" data-node style="--c:${t[3]}">${m.photo?`<img src="${m.photo}" alt="">`:icon(t[2])}</span><span></span></div>`)});
-  if(st==='cur')rows.push(`<div class="jm-row jm-here"><span class="jm-node here" data-node data-here>${p.photo?`<img src="${p.photo}" alt="">`:esc(initial(p))}</span><b>${own?_('คุณอยู่ตรงนี้','You are here'):_(`คุณ${esc(firstName(p))} อยู่ตรงนี้`,`${esc(firstName(p))} is here`)}</b><small>${days!=null?_(`วันที่ ${days} หลังปลูกถ่าย`,`Day ${days} after transplant`):_('กำลังเตรียมตัวปลูกถ่าย','Getting ready for transplant')}</small>${own?`<button class="btn sm primary" data-a="addmom">${icon('plus')} Add My Moment</button>`:''}</div>`);
+  if(st==='cur')rows.push(`<div class="jm-row jm-here"><span class="jm-node here" data-node data-here>${p.photo?`<img src="${p.photo}" alt="">`:esc(initial(p))}</span><b>${own?_('คุณอยู่ตรงนี้','You are here'):_(`คุณ${esc(firstName(p))} อยู่ตรงนี้`,`${esc(firstName(p))} is here`)}</b><small>${days!=null?_(`วันที่ ${days} หลังปลูกถ่าย`,`Day ${days} after transplant`):_('กำลังเตรียมตัวปลูกถ่าย','Getting ready for transplant')}</small>${days!=null&&p.discharge&&p.discharge<=todayISO?(()=>{const fk=Math.max(0,FOLLOW.findIndex(f=>days>=f[0]&&days<f[1]));const F=FOLLOW[fk]||FOLLOW[FOLLOW.length-1];return `<span class="jm-fu">${icon('calendar')} ${_('ติดตามผล','Follow-up')} ${_(F[2],F[3])} · ${_(F[6],F[7])}</span>`})():''}${own?`<button class="btn sm primary" data-a="addmom">${icon('plus')} Add My Moment</button>`:''}</div>`);
   else if(st==='done'&&!items.length&&own)rows.push(`<div class="jm-row jm-empty"><button class="lnk" data-a="addmom" data-ph="${n}">${icon('plus')} ${_('เพิ่มความทรงจำในช่วงนี้','Add a memory from this stage')}</button></div>`);
   else if(st==='next')rows.push(`<div class="jm-row jm-empty next"><span>${_('ช่วงเวลาดี ๆ ที่รออยู่','Good moments ahead')}</span></div>`)});
  rows.push(`<div class="jm-row jm-goal"><span class="jm-node goal" data-node>${icon('heart')}</span><b>${_('ชีวิตใหม่ที่แข็งแรง','A strong new life')}</b></div>`);
  const cnt=k=>ms.filter(m=>m.type===k).length;
  return `<div class="jm"><section class="jm-hero"><div><small>MY JOURNEY</small><h2>${own?_('เส้นทางชีวิตใหม่ของฉัน','My new-life journey'):_(`เส้นทางของคุณ${esc(firstName(p))}`,`${esc(firstName(p))}’s journey`)}</h2><p>${_(`${ms.length} ช่วงเวลา · ภาพ ${cnt('photo')} · ความสำเร็จ ${cnt('win')} · ข้อความ ${cnt('note')}`,`${ms.length} moments · ${cnt('photo')} memories · ${cnt('win')} wins · ${cnt('note')} notes`)}</p></div>${own?`<button class="btn primary jm-add" data-a="addmom">${icon('plus')} Add My Moment</button>`:''}</section>
+ <p class="ck-legend jm-leg"><span><i class="tick self">${icon('check')}</i>${own?_('ติ๊กเองได้','You can tick'):_('ผู้ป่วยติ๊กเอง','Patient ticked')}</span><span><i class="tick on">${icon('check')}</i>${_('ทีมยืนยัน','Team confirmed')}</span><span><i class="tick">${icon('lock')}</i>${_('ทีมรักษาเป็นผู้บันทึก','Recorded by the team')}</span></p>
  <div class="jm-map" data-jm><svg class="jm-road" aria-hidden="true"></svg>${rows.join('')}</div>
+ <p class="hint tiny jm-priv">${icon('lock')} ${_('การเปลี่ยนช่วงการรักษาทำโดยบุคลากรที่ได้รับสิทธิ์ ระบบไม่เปลี่ยนสถานะจากข้อมูลอัตโนมัติ','Only authorised staff move you to the next stage — the app never changes it automatically')}</p>
  <p class="hint tiny jm-priv">${icon('lock')} ${own?_('Moment เป็นของคุณ เห็นได้เฉพาะคุณ ยกเว้นรายการที่เลือก "แบ่งปัน" ญาติที่ได้รับสิทธิ์และทีมดูแลจึงจะเห็น','Moments are yours. Only ones you choose to share are seen by permitted family and your care team.'):_('แสดงเฉพาะ Moment ที่ผู้ป่วยเลือกแบ่งปัน','Showing only moments the patient chose to share')}</p></div>`}
 function drawRoad(){const map=document.querySelector('[data-jm]');if(!map)return;const svg=map.querySelector('.jm-road');const mr=map.getBoundingClientRect();
  const pts=[...map.querySelectorAll('[data-node]')].map(el=>{const r=el.getBoundingClientRect();return {x:r.left+r.width/2-mr.left,y:r.top+r.height/2-mr.top,here:el.hasAttribute('data-here')}});if(pts.length<2){svg.innerHTML='';return}
@@ -5196,7 +5219,7 @@ function drawRoad(){const map=document.querySelector('[data-jm]');if(!map)return
 {let ro;const _r=render;render=function(){_r();try{const m=document.querySelector('[data-jm]');if(m){drawRoad();m.querySelectorAll('img').forEach(i=>i.complete||i.addEventListener('load',drawRoad,{once:true}));if(window.ResizeObserver){ro?.disconnect();ro=new ResizeObserver(()=>drawRoad());ro.observe(m)}}}catch(e){}}}
 /* ---- home row ---- */
 function momentRow(pid){const ms=momsOf(pid,S.user.role!=='patient');const last=ms.slice(-1)[0];const th=ms.filter(m=>m.photo).slice(-3).reverse();
- return `<div class="mrow span"><button class="mrow-main" data-a="go" data-v="moments"><span class="mrow-th">${th.length?th.map(m=>`<img src="${m.photo}" alt="">`).join(''):`<i>${icon('sparkle')}</i>`}</span><span class="mrow-t"><b>My Moments</b><small>${ms.length?_(`${ms.length} ช่วงเวลา · ล่าสุด ${fmtDate(last.date,{day:'numeric',month:'short'})}`,`${ms.length} moments · latest ${fmtDate(last.date,{day:'numeric',month:'short'})}`):_('เก็บภาพ ความสำเร็จเล็ก ๆ และกำลังใจของคุณ','Keep photos, small wins and kind words')}</small></span>${icon('chev','chev')}</button>${S.user.role==='patient'?`<button class="mrow-add" data-a="addmom" aria-label="Add My Moment">${icon('plus')}</button>`:''}</div>`}
+ return `<div class="mrow span"><button class="mrow-main" data-a="jgo"><span class="mrow-th">${th.length?th.map(m=>`<img src="${m.photo}" alt="">`).join(''):`<i>${icon('sparkle')}</i>`}</span><span class="mrow-t"><b>My Moments</b><small>${ms.length?_(`${ms.length} ช่วงเวลา · ล่าสุด ${fmtDate(last.date,{day:'numeric',month:'short'})}`,`${ms.length} moments · latest ${fmtDate(last.date,{day:'numeric',month:'short'})}`):_('เก็บภาพ ความสำเร็จเล็ก ๆ และกำลังใจของคุณ','Keep photos, small wins and kind words')}</small></span>${icon('chev','chev')}</button>${S.user.role==='patient'?`<button class="mrow-add" data-a="addmom" aria-label="Add My Moment">${icon('plus')}</button>`:''}</div>`}
 patientHome=function(){const pid=S.user.id;return `<div class="home2">${recoveryBar(pid,false)}${todayCard(pid,false)}${apptHome(pid,false)}${momentRow(pid)}${contactRow()}${libraryRow(pid)}</div>`};
 /* ---- modals ---- */
 function momAddModal(){const d=S.momDraft||{};const ty=d.type||'photo';const p=P(S.user.id);
@@ -5225,7 +5248,7 @@ FORMS.moment=(o,fd,f)=>{const p=P(S.user.id);const photo=S.momDraft?.photo||null
  if(!photo&&!text)return fail(f,_('เพิ่มรูปหรือเขียนข้อความอย่างน้อย 1 อย่าง','Add a photo or a few words'));
  const date=o.date&&o.date<=todayISO?o.date:todayISO;const ph=o.ph==='auto'?momPhase(p,date):+o.ph;
  const m={id:uid('mo'),pid:p.id,type:o.type||'photo',photo,text,date,ph,share:!!o.share,at:nowStamp()};D.moments.push(m);const ok=saveMoments(p.id);
- S.momDraft=null;S.modal=null;go('moments');toast(ok?_('บันทึก Moment แล้ว','Moment saved'):_('บันทึกแล้ว แต่พื้นที่ในเครื่องเต็ม รูปนี้จะหายเมื่อรีเฟรช','Saved, but device storage is full — it’ll be lost on reload'))};
+ S.momDraft=null;S.modal=null;go(S.user.role==='patient'?'journey':'moments');toast(ok?_('บันทึก Moment แล้ว','Moment saved'):_('บันทึกแล้ว แต่พื้นที่ในเครื่องเต็ม รูปนี้จะหายเมื่อรีเฟรช','Saved, but device storage is full — it’ll be lost on reload'))};
 {const _cl=ACT.close;ACT.close=d=>{if(S.modal?.kind==='moment')S.momDraft=null;_cl?_cl(d):(S.modal=null,render())}}
 Object.assign(TITLES,{moments:['My Moments','My Moments']});VIEWS.moments=vMoments;
 {const _nf3=navFor;navFor=function(r){const l=_nf3(r);if(r==='patient'&&!l.some(x=>x[0]==='moments'))return [...l.slice(0,2),['moments','sparkle'],...l.slice(2)];if(r==='caregiver'&&!l.some(x=>x[0]==='moments'))return [...l,['moments','sparkle']];return l}}
@@ -5321,5 +5344,17 @@ Object.assign(ACT,{
   try{for(let i=0;i<all.length;i+=200)await gsPost({records:all.slice(i,i+200)});gsBaseline();GS.queue=[];GS.last=nowStamp();GS.err=null;GS.sent=(GS.sent||0)+all.length;gsSave();render();toast(_(`ส่งแล้ว ${all.length} รายการ`,`Sent ${all.length} records`))}
   catch(e){GS.err=String(e.message||e);gsSave();render();toast(_('ส่งไม่สำเร็จ: ','Failed: ')+GS.err)}}});
 
+/* v35 · My Journey = one map with treatment path + checklist inside */
+function jmChecklist(p,ph,st,own){p.ptTick=p.ptTick||{};const ck=ph.items.map(([k,l])=>{const key=ph.key+'.'+k;return {key,l,team:!!p.checklist[key],pt:!!p.ptTick[key],can:PT_TICK.includes(key)}});const dn=ck.filter(c=>c.team||c.pt).length;
+ const open=S.jmOpen&&(ph.n in S.jmOpen)?S.jmOpen[ph.n]:st==='cur';
+ const li=c=>c.team?`<li class="on"><span class="tick on">${icon('check')}</span><span>${esc(L(c.l))}</span></li>`:c.can&&own?`<li class="self"><label><input type="checkbox" data-c="pttick" data-k="${c.key}" ${c.pt?'checked':''}><span>${esc(L(c.l))}</span></label></li>`:c.pt?`<li class="self"><span class="tick self">${icon('check')}</span><span>${esc(L(c.l))}</span></li>`:`<li class="lock"><span class="tick">${c.can?'':icon('lock')}</span><span>${esc(L(c.l))}</span></li>`;
+ return `<details class="jm-ck" data-jmck="${ph.n}" ${open?'open':''}><summary><span>${_('รายการตรวจ','Checklist')}</span><span class="jm-prog"><i style="width:${Math.round(dn/ck.length*100)}%;background:var(--c)"></i></span><b class="num">${dn}/${ck.length}</b></summary><ul>${ck.map(li).join('')}</ul></details>`}
+document.addEventListener('toggle',e=>{const d=e.target;if(d&&d.matches&&d.matches('[data-jmck]')){S.jmOpen=S.jmOpen||{};S.jmOpen[d.dataset.jmck]=d.open;try{drawRoad()}catch(x){}}},true);
+function vMyJourney(){return vMoments()}
+ACT.jtab=d=>{S.jtab=d.t;render();window.scrollTo({top:0})};
+VIEWS.journey=vMyJourney;VIEWS.moments=vMyJourney;
+Object.assign(TITLES,{journey:['เส้นทางของฉัน','My Journey'],moments:['เส้นทางของฉัน','My Journey']});
+{const _nf5=navFor;navFor=function(r){const l=_nf5(r);return r==='patient'?l.filter(x=>x[0]!=='moments').map(x=>x[0]==='journey'?['journey','sparkle']:x):l}}
+ACT.jgo=()=>{go(S.user.role==='patient'?'journey':'moments')};
 seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);loadPhotos();seedMoments();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();
 </script>
