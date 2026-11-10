@@ -2382,6 +2382,7 @@ div.rbar{cursor:default}
 .sa-note{display:flex;gap:6px;align-items:center;margin:6px 4px}
 .no-x [data-a=close]:not(.btn.primary){display:none}
 .pt-addrow{margin:0 0 8px;justify-content:flex-end}
+.pe-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 0 10px}.pe-src{display:flex;gap:6px;align-items:center;font-size:.86rem;color:var(--ink-2);margin:0 0 10px}.pe-form textarea{resize:vertical}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3208,8 +3209,8 @@ const sexLabel=s=>s==='F'?_('หญิง','Female'):_('ชาย','Male');
 const chip=(c,h)=>`<span class="chip ${c}">${h}</span>`;
 const phaseChip=n=>`<span class="chip ph${n}">${n}. ${esc(L(PHASES[n-1].title))}</span>`;
 const consentOf=(cid,pid)=>D.consents.find(c=>c.caregiverId===cid&&c.patientId===pid&&c.active);
-function canView(cat,pid){const u=S.user;if(!u||!pid)return false;if(u.role==='patient')return u.id===pid;if(u.role==='staff')return !!P(pid)?.staff.includes(u.id);const c=consentOf(u.id,pid);return !!(c&&c.perms[cat])}
-function canRecord(pid){const u=S.user;if(!u||!pid)return false;if(u.role==='patient')return u.id===pid;if(u.role==='staff')return !!P(pid)?.staff.includes(u.id);const c=consentOf(u.id,pid);return !!(c&&c.perms.record)}
+function canView(cat,pid){const u=S.user;if(!u||!pid)return false;if(u.role==='patient')return u.id===pid;if(u.role==='staff')return !!P(pid)&&(LIVE||P(pid).staff.includes(u.id));const c=consentOf(u.id,pid);return !!(c&&c.perms[cat])}
+function canRecord(pid){const u=S.user;if(!u||!pid)return false;if(u.role==='patient')return u.id===pid;if(u.role==='staff')return !!P(pid)&&(LIVE||P(pid).staff.includes(u.id));const c=consentOf(u.id,pid);return !!(c&&c.perms.record)}
 function currentPid(){const u=S.user;if(u.role==='patient')return u.id;if(u.role==='caregiver'){if(S.pid&&consentOf(u.id,S.pid))return S.pid;return D.consents.find(c=>c.caregiverId===u.id&&c.active)?.patientId||null}return S.pid}
 function audit(th,en,pid){D.audit.unshift({id:uid('a'),at:nowStamp(),by:S.user.id,pid,text:{th,en}})}
 function notify(pid,th,en){D.notifs.push({id:uid('n'),patientId:pid,at:nowStamp(),text:{th,en},read:false})}
@@ -4239,7 +4240,7 @@ function staffOverview(p){
  </div>`;
 }
 function vPatientDetail(){
- const p=P(S.pid);if(!p||!p.staff.includes(S.user.id)){S.view='patients';return vPatients()}
+ const p=P(S.pid);if(!p||(!LIVE&&!p.staff.includes(S.user.id))){S.view='patients';return vPatients()}
  const tabs=[['overview',_('ภาพรวม','Overview')],['journey',_('เส้นทางการรักษา','Journey')],['meds',_('ยา','Medicines')],['log',_('บันทึกสุขภาพ','Health log')],['labs',_('ผล Lab','Labs')],['appts',_('นัดหมาย','Appointments')],['fu',_('ติดตาม','Follow-up')],['family',_('ญาติ','Family')]];
  const pp=pendingFor([p.id]),pc=pp.syms.length+pp.vit.length+pp.rx.length;
  const body={journey:()=>journeyPanel(p,true),meds:()=>medsPanel(p.id),log:()=>logPanel(p.id),labs:()=>labsPanel(p.id),appts:()=>apptsPanel(p.id),fu:()=>followupPanel(p.id),family:()=>familyReadonly(p.id)}[S.tab]||(()=>profileCards(p)+staffOverview(p));
@@ -4922,7 +4923,7 @@ function vPmon(){const pid=phPick(id=>tacPending(id));const p=P(pid);const ms=ph
    ${step===5?`<p>${_('คำสั่งแพทย์','Order')}: <b>${esc(L(t.order))}</b></p><button class="btn sm primary" data-a="tdmnurse" data-id="${sel.id}">${icon('users')} ${_('ส่งต่อพยาบาลแจ้งผู้ป่วยและนัดเจาะซ้ำ','Hand over to nurse to inform the patient')}</button>`:''}
    ${step===6?`${t.order?`<p class="muted">${esc(L(t.doc)||'')} · ${_('คำสั่งแพทย์','Order')}: <b>${esc(L(t.order))}</b></p>`:''}<p class="ok-line">${icon('check')} ${_('ส่งต่อพยาบาลผู้ประสานงานแล้ว · ปรากฏในงานติดตามของพยาบาล','Handed over — now in the nurse’s follow-up list')}</p>`:''}</div>`:''}
   <p class="hint tiny">${_('ระบบไม่ใช้ค่าเป้าหมาย Tacrolimus ค่าเดียวกับทุกคน เป้าหมายกำหนดโดยแพทย์ตามระยะหลังปลูกถ่าย สภาวะผู้ป่วย และแผนการรักษา · เภสัชกรเสนอแนะ แพทย์เป็นผู้ตัดสินใจปรับยา','No single tacrolimus target: the doctor sets it by time since transplant, condition and plan · pharmacists advise, doctors decide')}</p></section>`:''}
- ${fold('tgt-'+pid,`<h3>${icon('target')} ${_('บันทึกเป้าหมายระดับยาตามคำสั่งแพทย์','Record the doctor’s target')}</h3>`,`<form class="form" data-form="tactgt" data-pid="${pid}"><div class="fgrid2"><label class="field">${_('ต่ำสุด (ng/mL)','Min (ng/mL)')}<input name="lo" inputmode="decimal" value="${tg?tg[0]:''}"></label><label class="field">${_('สูงสุด (ng/mL)','Max (ng/mL)')}<input name="hi" inputmode="decimal" value="${tg?tg[1]:''}"></label></div><label class="field">${_('แพทย์ผู้กำหนด / เหตุผล','Set by / reason')}<input name="by" value="${esc(L(p.tacTargetBy)||'')}" placeholder="${_('เช่น นพ.วิชัย · 1–3 เดือนหลังปลูกถ่าย','e.g. Dr Wichai · months 1–3')}"></label><p class="ferr" role="alert"></p><button class="btn primary" type="submit">${_('บันทึก','Save')}</button></form>`,false)}`}
+ ${fold('tgt-'+pid,`<h3>${icon('target')} ${_('บันทึกเป้าหมายระดับยาตามคำสั่งแพทย์','Record the doctor’s target')}</h3>`,`<form class="form" data-form="tactgt" data-pid="${pid}"><div class="fgrid2"><label class="field">${_('ต่ำสุด (ng/mL)','Min (ng/mL)')}<input name="lo" inputmode="decimal" value="${tg?tg[0]:''}"></label><label class="field">${_('เป้าสูงสุด (ng/mL)','Target max (ng/mL)')}<input name="hi" inputmode="decimal" value="${tg?tg[1]:''}"></label></div><label class="field">${_('แพทย์ผู้กำหนด / เหตุผล','Set by / reason')}<input name="by" value="${esc(L(p.tacTargetBy)||'')}" placeholder="${_('เช่น นพ.วิชัย · 1–3 เดือนหลังปลูกถ่าย','e.g. Dr Wichai · months 1–3')}"></label><p class="ferr" role="alert"></p><button class="btn primary" type="submit">${_('บันทึก','Save')}</button></form>`,false)}`}
 function vPddi(){const pid=phPick(id=>ddiOpen(id).length);const dd=phDDI(pid);const ms=phMeds(pid).filter(m=>m.st!=='stop');
  const tr=S.ddiTry||'';const trk=tr?dkey(tr):'';const trHits=tr?ms.map(m=>({m,r:ddiFind(trk,m.dk)})).filter(x=>x.r):[];
  const card=d=>`<article class="ph-ddi s-${d.r[2]}"><h4>${chip(DSEV[d.r[2]][2],_(DSEV[d.r[2]][0],DSEV[d.r[2]][1]))}<span>${esc(d.a.name)} <i>+</i> ${esc(d.b.name)}</span>${d.a.st==='pending'||d.b.st==='pending'?chip('warn',_('ในใบสั่งใหม่','In new order')):''}${d.a.st==='other'||d.b.st==='other'?chip('gold',_('ยาจากแหล่งอื่น','From elsewhere')):''}</h4>
@@ -5882,6 +5883,64 @@ if(APIMODE){GS.on=false}
  D.consents.forEach(c=>{const g=C(c.caregiverId);add('ญาติและผู้ดูแล','รหัสความยินยอม',c.id,{'รหัสความยินยอม':c.id,'รหัสผู้ป่วย':c.patientId,'HN':ptHN(c.patientId),'ชื่อผู้ป่วย':ptNm(c.patientId),'ชื่อผู้ดูแล':g?thv(g.name):'','เบอร์โทรผู้ดูแล':g?.phone||'','ความเกี่ยวข้อง':thv(c.relation),
   'สถานะ':c.active?'ใช้งาน':'ยกเลิกแล้ว','ตั้งแต่':c.since||'','ดูข้อมูลสุขภาพ':c.perms?.health?'ได้':'ไม่ได้','ดูตารางยา':c.perms?.meds?'ได้':'ไม่ได้','ดูผลแล็บ':c.perms?.labs?'ได้':'ไม่ได้','ดูนัดหมาย':c.perms?.appts?'ได้':'ไม่ได้','บันทึกแทนผู้ป่วย':c.perms?.record?'ได้':'ไม่ได้','ลงทะเบียนเอง':c.selfReg?'ใช่':''})});
  return R}}
+
+/* ================= v41 · nurse edits the patient profile from the medical record ================= */
+const ISDRUGS=['Tacrolimus','Tacrolimus ER (Advagraf)','Cyclosporine','Everolimus','Sirolimus'];
+const linesOf=s=>String(s||'').split(/\n|,|;/).map(x=>x.trim()).filter(Boolean);
+const thx=x=>x==null?'':typeof x==='object'?(x.th||x.en||''):String(x);
+function ptEditModal(){const p=P(S.modal.pid);if(!p)return '';const v=x=>esc(x??'');const post=!!p.txDate||p.phase>=2;const tg=p.tacTarget||[];
+ const em=thx(p.emerg?.name);const emName=em.replace(/\s*\(([^)]*)\)\s*$/,''),emRel=(em.match(/\(([^)]*)\)\s*$/)||[])[1]||'';const nm=thx(p.name).split(' ');
+ const body=`<form class="form pe-form" data-form="ptedit" data-pid="${p.id}" novalidate>
+ <p class="pe-src">${icon('clipboard')} ${_('กรอกตามเวชระเบียนของโรงพยาบาล','Enter from the hospital medical record')}${p.profBy?` · ${_('แก้ไขล่าสุดโดย','last edited by')} ${esc(nameOf(p.profBy))} ${fmtDate(p.profAt.slice(0,10),{day:'numeric',month:'short'})} ${p.profAt.slice(11,16)}`:''}</p>
+ <fieldset class="cg-fs"><legend>${icon('users')} ${_('ข้อมูลทั่วไป','General')}</legend>
+  <div class="fgrid2"><label class="field">${_('ชื่อ','First name')} *<input name="first" value="${v(nm[0])}" required></label><label class="field">${_('นามสกุล','Surname')} *<input name="last" value="${v(nm.slice(1).join(' '))}" required></label></div>
+  <div class="fgrid2"><label class="field">HN *<input name="hn" value="${v(p.hn)}" required></label><label class="field">${_('เบอร์ติดต่อ','Phone')}<input name="phone" type="tel" value="${v(p.phone)}"></label></div>
+  <div class="fgrid2"><label class="field">${_('อายุ (ปี)','Age (years)')}<input name="age" inputmode="numeric" value="${v(p.age)}"></label><label class="field">${_('เพศ','Sex')}<select name="sex"><option value="">—</option><option value="M" ${p.sex==='M'?'selected':''}>${_('ชาย','Male')}</option><option value="F" ${p.sex==='F'?'selected':''}>${_('หญิง','Female')}</option></select></label></div>
+  <div class="fgrid2"><label class="field">${_('ผู้ติดต่อฉุกเฉิน','Emergency contact')}<input name="emName" value="${v(emName)}"></label><label class="field">${_('ความเกี่ยวข้อง','Relationship')}<input name="emRel" value="${v(emRel)}" placeholder="${_('เช่น ภรรยา','e.g. spouse')}"></label></div>
+  <label class="field">${_('เบอร์ฉุกเฉิน','Emergency phone')}<input name="emPhone" type="tel" value="${v(p.emerg?.phone)}"></label></fieldset>
+ <fieldset class="cg-fs"><legend>${icon('heart')} ${_('การวินิจฉัยและการปลูกถ่าย','Diagnosis and transplant')}</legend>
+  <label class="field">${_('การวินิจฉัย / ข้อบ่งชี้การปลูกถ่าย','Diagnosis / indication for transplant')}<input name="dx" value="${v(thx(p.dx))}" placeholder="${_('เช่น HBV-related cirrhosis with HCC','e.g. HBV-related cirrhosis with HCC')}"></label>
+  <div class="fgrid2"><label class="field">${_('สถานะ','Status')}<select name="st"><option value="pre" ${post?'':'selected'}>${_('รอปลูกถ่าย','Waiting for transplant')}</option><option value="post" ${post?'selected':''}>${_('ปลูกถ่ายแล้ว','Transplanted')}</option></select></label><label class="field">${_('วันที่ปลูกถ่าย','Transplant date')}<input type="date" name="tx" value="${v(p.txDate)}" max="${todayISO}"></label></div>
+  <label class="field">${_('วันจำหน่ายจาก รพ.','Discharge date')}<input type="date" name="dc" value="${v(p.discharge)}" max="${todayISO}"></label>
+  <label class="field">${_('โรคร่วม','Comorbidities')} <small>${_('บรรทัดละ 1 โรค','one per line')}</small><textarea name="comorb" rows="3" placeholder="${_('เช่น Type 2 DM\nHypertension','e.g. Type 2 DM\nHypertension')}">${v((p.comorb||[]).join('\n'))}</textarea></label>
+  <label class="field">${_('ภาวะแทรกซ้อน','Complications')} <small>${_('บรรทัดละ 1 รายการ เว้นว่างถ้าไม่มี','one per line; blank if none')}</small><textarea name="complic" rows="3">${v((p.complic||[]).join('\n'))}</textarea></label>
+  <label class="field">${_('แพทย์ผู้ดูแล','Attending doctor')}<input name="doctor" list="pe-docs" value="${v(thx(p.doctor))}"><datalist id="pe-docs">${DOCS.map(d=>`<option value="${esc(L(d))}">`).join('')}</datalist></label></fieldset>
+ <fieldset class="cg-fs"><legend>${icon('pill')} ${_('ยากดภูมิคุ้มกัน','Immunosuppression')}</legend>
+  <label class="field">${_('ยากดภูมิคุ้มกันหลัก','Main immunosuppressant')}<select name="isDrug">${ISDRUGS.map(d=>`<option ${((p.isDrug||'Tacrolimus')===d)?'selected':''}>${d}</option>`).join('')}</select></label>
+  <div class="fgrid2"><label class="field">${_('เป้าต่ำสุด (ng/mL)','Target min (ng/mL)')}<input name="lo" inputmode="decimal" value="${v(tg[0])}"></label><label class="field">${_('เป้าสูงสุด (ng/mL)','Target max (ng/mL)')}<input name="hi" inputmode="decimal" value="${v(tg[1])}"></label></div>
+  <label class="field">${_('แพทย์ผู้กำหนดเป้า / ช่วงเวลา','Set by / period')}<input name="tby" value="${v(thx(p.tacTargetBy))}" placeholder="${_('เช่น นพ.… · 1–3 เดือนหลังปลูกถ่าย','e.g. Dr … · months 1–3')}"></label></fieldset>
+ <p class="ferr" role="alert"></p><div class="row"><button class="btn primary" type="submit">${icon('check')} ${_('บันทึกข้อมูลผู้ป่วย','Save patient details')}</button><button type="button" class="btn ghost" data-a="close">${_('ยกเลิก','Cancel')}</button></div></form>`;
+ return mShell(_('แก้ไขข้อมูลผู้ป่วย','Edit patient details')+' · '+esc(L(p.name)),body,_('แก้ไขข้อมูลผู้ป่วย','Edit patient details'),'pa-modal wide')}
+ACT.ptedit=d=>{if(S.user?.role!=='staff')return;S.modal={kind:'ptedit',pid:d.pid};render()};
+{const _mh6=modalHTML;modalHTML=function(){if(S.modal?.kind==='ptedit')return ptEditModal();return _mh6()}}
+FORMS.ptedit=(o,fd,f)=>{const p=P(f.dataset.pid);if(!p||S.user?.role!=='staff')return;const t=k=>String(o[k]||'').trim();
+ if(!t('first')||!t('last'))return fail(f,_('กรอกชื่อและนามสกุล','Enter first name and surname'));
+ if(hnDigits(t('hn')).length<6)return fail(f,_('HN ดูไม่ถูกต้อง','That HN looks wrong'));
+ if(D.patients.some(x=>x.id!==p.id&&hnDigits(x.hn)===hnDigits(t('hn'))))return fail(f,_('HN นี้เป็นของผู้ป่วยรายอื่นแล้ว','Another patient already has this HN'));
+ if(t('age')&&!(+t('age')>0&&+t('age')<120))return fail(f,_('อายุไม่ถูกต้อง','Age looks wrong'));
+ const lo=t('lo'),hi=t('hi');if((lo||hi)&&(!(+lo>0)||!(+hi>0)||+lo>=+hi))return fail(f,_('ระดับยาเป้าหมาย: ใส่ทั้งต่ำสุดและสูงสุด และต่ำสุดต้องน้อยกว่าสูงสุด','Target level: enter min and max, min below max'));
+ const post=o.st==='post';if(post&&!t('tx'))return fail(f,_('ระบุวันที่ปลูกถ่าย','Enter the transplant date'));
+ const was=JSON.stringify(p);const nm=`${t('first')} ${t('last')}`;const em=t('emName')?(t('emRel')?`${t('emName')} (${t('emRel')})`:t('emName')):'';
+ const wasPost=!!p.txDate;
+ Object.assign(p,{name:{th:nm,en:nm},hn:t('hn'),phone:t('phone'),age:t('age')?+t('age'):null,sex:o.sex||null,emerg:em||t('emPhone')?{name:{th:em,en:em},phone:t('emPhone')}:null,
+  dx:t('dx'),comorb:linesOf(o.comorb),complic:linesOf(o.complic),doctor:t('doctor')?{th:t('doctor'),en:t('doctor')}:null,isDrug:o.isDrug||'Tacrolimus',
+  txDate:post?t('tx'):null,discharge:t('dc')||null,txUnknown:false});
+ if(post&&!wasPost){const days=daysBetween(p.txDate,todayISO);p.phase=days>180?4:3}else if(!post&&wasPost)p.phase=1;
+ if(lo&&hi){const nt=[+lo,+hi];if(JSON.stringify(nt)!==JSON.stringify(p.tacTarget)||t('tby')!==thx(p.tacTargetBy)){p.tacTarget=nt;p.tacTargetBy=t('tby')?{th:t('tby'),en:t('tby')}:null}}else{p.tacTarget=null;p.tacTargetBy=null}
+ if(JSON.stringify(p)!==was){p.profBy=S.user.id;p.profAt=nowStamp();audit('แก้ไขข้อมูลผู้ป่วยจากเวชระเบียน','Updated patient details from the medical record',p.id)}
+ S.modal=null;render();toast(_('บันทึกข้อมูลผู้ป่วยแล้ว','Patient details saved'))};
+/* profile cards: edit button, diagnosis, immunosuppression target, source line */
+{const _pc=profileCards;profileCards=function(p){let h=_pc(p);const kv=(k,v)=>`<div><dt>${k}</dt><dd>${v||'—'}</dd></div>`;
+ h=h.replace(/\$\{?null\}? ปี · |null ปี · |null yrs · /,'');
+ h=h.replace(`<dt>${_('โรคร่วมและประวัติสำคัญ','Conditions')}</dt>`,`<dt>${_('การวินิจฉัย / ข้อบ่งชี้','Diagnosis / indication')}</dt><dd>${esc(thx(p.dx))||'—'}</dd></div><div><dt>${_('โรคร่วม','Comorbidities')}</dt>`);
+ const tg=p.tacTarget?`${esc(p.isDrug||'Tacrolimus')} ${p.tacTarget[0]}–${p.tacTarget[1]} ng/mL${p.tacTargetBy?` <small class="muted">· ${esc(thx(p.tacTargetBy))}</small>`:''}`:'';
+ h=h.replace(`<dt>${_('แพทย์ผู้ดูแล','Doctor')}</dt>`,`<dt>${_('ระดับยากดภูมิคุ้มกันเป้าหมาย','Immunosuppressant target')}</dt><dd>${tg||'—'}</dd></div><div><dt>${_('แพทย์ผู้ดูแล','Doctor')}</dt>`);
+ if(S.user?.role==='staff'){const empty=!p.dx&&!(p.comorb||[]).length&&!p.doctor&&!p.tacTarget;
+  h=`<div class="pe-bar"><span class="muted tiny">${p.profBy?`${icon('clipboard')} ${_('ข้อมูลจากเวชระเบียน บันทึกโดย','From the medical record, entered by')} ${esc(nameOf(p.profBy))} · ${fmtDate(p.profAt.slice(0,10),{day:'numeric',month:'short',year:'numeric'})}`:_('ยังไม่ได้กรอกข้อมูลจากเวชระเบียน','Medical-record details not entered yet')}</span><button class="btn sm ${empty?'primary':''}" data-a="ptedit" data-pid="${p.id}">${icon(empty?'plus':'edit')} ${empty?_('เพิ่มข้อมูลผู้ป่วย','Add patient details'):_('แก้ไขข้อมูลผู้ป่วย','Edit patient details')}</button></div>`+h}
+ return h}}
+/* report tab: diagnosis + who entered it */
+{const _gr2=gsRecords;gsRecords=function(){const R=_gr2();R.forEach(r=>{if(r.tab!=='ผู้ป่วย')return;const p=P(r.key);if(!p)return;
+ Object.assign(r.data,{'การวินิจฉัย / ข้อบ่งชี้การปลูกถ่าย':thx(p.dx),'ยากดภูมิคุ้มกันหลัก':p.isDrug||(p.tacTarget?'Tacrolimus':''),'ข้อมูลเวชระเบียนบันทึกโดย':p.profBy?nameOf(p.profBy):'','วันที่บันทึกข้อมูลเวชระเบียน':dtv(p.profAt)})});return R}}
 
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
