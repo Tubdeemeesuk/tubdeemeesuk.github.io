@@ -2063,6 +2063,18 @@ div.rbar{cursor:default}
  .ph-topics label{font-size:.8rem;padding:7px 8px}
  .ph-ddi dl{grid-template-columns:1fr}.ph-ddi dt{margin-top:4px;font-size:.74rem}
 }
+.avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.av-edit{position:relative;cursor:pointer}
+.av-cam{position:absolute;right:-4px;bottom:-4px;width:22px;height:22px;border-radius:50%;background:var(--surface);color:var(--brand-2);display:grid;place-items:center;box-shadow:var(--sh1)}
+.av-cam .ic{width:13px;height:13px}
+.av-edit:has(input:focus-visible){outline:3px solid var(--brand);outline-offset:3px}
+.av-links{display:flex!important;gap:10px;margin-top:2px}
+.av-links .lnk{font-size:.76rem;cursor:pointer;background:none;border:0;padding:0;color:var(--brand-2);text-decoration:underline;font:inherit;font-size:.76rem}
+.rb-av{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;overflow:hidden;background:var(--grad-brand);color:#fff;font-weight:700;font-size:.85rem;vertical-align:middle;margin-right:8px;box-shadow:0 0 0 2px #fff;flex:none}
+.rb-av img{width:100%;height:100%;object-fit:cover}
+.tab-av{width:26px;height:26px;border-radius:50%;overflow:hidden;display:block;box-shadow:0 0 0 2px var(--brand-soft)}.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar:has(img){display:grid!important;overflow:hidden;padding:0}.pt-head>.avatar{flex:none}
+.avatar.lg{min-height:0;height:60px;background:var(--grad-brand)}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -2883,7 +2895,7 @@ const roleOf=id=>!id?null:id[0]==='p'?'patient':id[0]==='c'?'caregiver':'staff';
 const person=id=>P(id)||C(id)||ST(id);
 const nameOf=id=>L(person(id)?.name)||'—';
 const firstName=p=>L(p.name).split(' ')[0];
-const initial=x=>esc((L(x.name).replace(/^(นพ\.|พญ\.|ภก\.)/,'').trim()[0])||'?');
+const initial=x=>x&&x.photo?`<img src="${x.photo}" alt="">`:esc((L(x.name).replace(/^(นพ\.|พญ\.|ภก\.)/,'').trim()[0])||'?');
 const roleLabel=r=>({patient:_('ผู้ป่วย','Patient'),caregiver:_('ญาติ','Caregiver'),staff:_('บุคลากร','Staff')})[r]||'';
 const sexLabel=s=>s==='F'?_('หญิง','Female'):_('ชาย','Male');
 const chip=(c,h)=>`<span class="chip ${c}">${h}</span>`;
@@ -2942,7 +2954,8 @@ const homeView=()=>S.user.role==='staff'?(isPh()?'pharm':'coord'):'home';
 const isActive=k=>S.view===k||(k==='patients'&&['patient','rxnew'].includes(S.view));
 function reviewCount(){if(S.user.role!=='staff')return 0;const p=pendingFor(myPatients().map(x=>x.id));return p.syms.length+p.vit.length+p.rx.length}
 function navBtn([k,ic],cls='nav-i'){const b=k==='review'?reviewCount():k==='alerts'&&S.user.role==='staff'?openAlerts(myPatients().map(p=>p.id)).filter(a=>!a.st.owner).length:0;return `<button class="${cls} ${isActive(k)?'on':''}" data-a="go" data-v="${k}" ${isActive(k)?'aria-current="page"':''}>${icon(ic)}<span>${viewTitle(k)}</span>${b?`<span class="badge">${b}</span>`:''}</button>`}
-function userCard(){const u=S.user,per=person(u.id);const sub=u.role==='staff'?L(per.title):roleLabel(u.role);return `<div class="ucard"><div class="avatar">${initial(per)}</div><div><b>${esc(L(per.name))}</b><span>${esc(sub)}</span></div></div>`}
+function userCard(){const u=S.user,per=person(u.id);const sub=u.role==='staff'?L(per.title):roleLabel(u.role);const ed=u.role==='patient';
+ return `<div class="ucard">${ed?`<label class="avatar av-edit" title="${_('เปลี่ยนรูปโปรไฟล์','Change profile photo')}">${initial(per)}<i class="av-cam">${icon('camera')}</i><input type="file" accept="image/*" data-c="avatar" class="sr" aria-label="${_('เลือกรูปโปรไฟล์','Choose a profile photo')}"></label>`:`<div class="avatar">${initial(per)}</div>`}<div><b>${esc(L(per.name))}</b><span>${esc(sub)}</span>${ed?`<span class="av-links"><label class="lnk">${per.photo?_('เปลี่ยนรูป','Change photo'):_('เพิ่มรูปโปรไฟล์','Add a profile photo')}<input type="file" accept="image/*" data-c="avatar" class="sr"></label>${per.photo?`<button class="lnk" data-a="avrm">${_('ลบรูป','Remove')}</button>`:''}</span>`:''}</div></div>`}
 let BIP=null;const inFrame=(()=>{try{return window.top!==window}catch(e){return true}})();
 const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 const installBtn=cls=>(inFrame||isStandalone())?'':`<button class="${cls} inst-btn" data-a="install">${icon('download')}<span>${_('ติดตั้งแอปบนมือถือ','Install the app')}</span></button>`;
@@ -2957,7 +2970,7 @@ function bell(){const u=S.user;if(u.role==='caregiver')return'';const n=bellCoun
 function topbar(){const home=S.view===homeView();return `<header class="topbar ${home?'is-home':''}"><div class="tb-in"><div class="tb-title"><span class="tb-logo">${logo()}</span>${logoMark('tb-mark')}<h1>${esc(viewTitle(S.view))}</h1></div><div class="tb-act">${bell()}${langToggle()}${sizeToggle('hide-sm')}<button class="btn sm ghost hide-sm" data-a="logout" title="${_('เปลี่ยนบัญชีทดลอง','Switch demo account')}">${icon('logout')}<span>${_('เปลี่ยนบัญชี','Switch account')}</span></button></div></div></header>`}
 const TABL={home:['หน้าหลัก','Home'],learn:['ความรู้','Learn'],log:['บันทึก','Log'],family:['ครอบครัว','Family'],meds:['ยา','Medicines'],appts:['นัดหมาย','Appts']};
 function tabBtn(k){const n=navFor(S.user.role).find(x=>x[0]===k);if(!n)return'';const b=k==='review'?reviewCount():0;const t=TABL[k]?_(...TABL[k]):viewTitle(k);return `<button class="tab ${isActive(k)?'on':''}" data-a="go" data-v="${k}" ${isActive(k)?'aria-current="page"':''}>${icon(n[1])}<span>${t}</span>${b?`<span class="badge">${b}</span>`:''}</button>`}
-function tabbar2(){const r=S.user.role;const n=bellCount();const me=`<button class="tab ${S.moreOpen?'on':''}" data-a="more">${icon('user')}<span>${_('โปรไฟล์','Profile')}</span></button>`;
+function tabbar2(){const r=S.user.role;const n=bellCount();const me=`<button class="tab ${S.moreOpen?'on':''}" data-a="more">${r==='patient'&&P(S.user.id)?.photo?`<span class="tab-av"><img src="${P(S.user.id).photo}" alt=""></span>`:icon('user')}<span>${_('โปรไฟล์','Profile')}</span></button>`;
  const bellT=`<button class="tab" data-a="bell">${icon('bell')}<span>${_('แจ้งเตือน','Alerts')}</span>${n?`<span class="badge">${n}</span>`:''}</button>`;
  const T=r==='patient'?[tabBtn('home'),tabBtn('log'),bellT,tabBtn('learn'),me]:[tabBtn('home'),tabBtn('meds'),tabBtn('appts'),tabBtn('learn'),me];
  return `<nav class="tabbar t5" aria-label="${_('เมนู','Menu')}">${T.join('')}</nav>`}
@@ -3131,9 +3144,9 @@ function recoveryBar(pid,cg){const p=P(pid);const na=nextAppt(pid);const tag=cg?
  const PS=[['health','สุขภาพ','Health'],['meds','ยา','Meds'],['appts','นัด','Visits'],['labs','Lab','Labs'],['record','บันทึกแทน','Record']];
  const hello=cg?_(`คุณกำลังดูแล คุณ${esc(firstName(p))}`,`Caring for ${esc(firstName(p))}`)+`<span class="rb-perm" aria-label="${_('สิทธิ์ที่ได้รับ','Your access')}">${PS.map(([k,th,en])=>{const on=!!consentOf(S.user.id,pid)?.perms[k];return `<i class="${on?'on':''}">${icon(on?'check':'lock')}${_(th,en)}</i>`}).join('')}</span>`:_(`สวัสดีค่ะ คุณ${esc(firstName(p))}`,`Hello, ${esc(firstName(p))}`);
  if(!p.txDate){const ph=PHASES[0],dn=ph.items.filter(i=>p.checklist[ph.key+'.'+i[0]]).length,pc=Math.round(dn/ph.items.length*100);
-  return `<${tag} class="rbar pre span" ${act}><span class="rb-hi">${hello}</span><span class="rb-top"><span class="rb-day"><small>${_('ระยะ','Stage')}</small><b>${_('เตรียมตัว','Getting ready')}</b></span><span class="rb-now"><small>${_('ตรวจประเมินก่อนปลูกถ่าย','Pre-transplant work-up')}</small><b class="num">${dn}/${ph.items.length} ${_('รายการ','done')}</b>${na?`<em>${_('นัดถัดไป','Next visit')} ${fmtDate(na.date,{day:'numeric',month:'short'})} · ${countdown(na.date)}</em>`:''}</span>${cg?'':icon('chev','chev')}</span><span class="rb-prog"><i style="width:${pc}%"></i></span></${tag}>`}
+  return `<${tag} class="rbar pre span" ${act}><span class="rb-hi">${p.photo?`<span class="rb-av">${initial(p)}</span>`:''}${hello}</span><span class="rb-top"><span class="rb-day"><small>${_('ระยะ','Stage')}</small><b>${_('เตรียมตัว','Getting ready')}</b></span><span class="rb-now"><small>${_('ตรวจประเมินก่อนปลูกถ่าย','Pre-transplant work-up')}</small><b class="num">${dn}/${ph.items.length} ${_('รายการ','done')}</b>${na?`<em>${_('นัดถัดไป','Next visit')} ${fmtDate(na.date,{day:'numeric',month:'short'})} · ${countdown(na.date)}</em>`:''}</span>${cg?'':icon('chev','chev')}</span><span class="rb-prog"><i style="width:${pc}%"></i></span></${tag}>`}
  const d=daysBetween(p.txDate,todayISO);const k=Math.max(0,FOLLOW.findIndex(f=>d>=f[0]&&d<f[1]));const f=FOLLOW[k];const inPct=Math.min(100,Math.round((d-f[0])/((f[1]>9e8?f[0]+365:f[1])-f[0])*100));
- return `<${tag} class="rbar span" ${act}><span class="rb-hi">${hello}</span><span class="rb-top"><span class="rb-day"><small>${_('หลังปลูกถ่าย','After transplant')}</small><b>${_('วันที่','Day')} <span class="num">${d}</span></b></span><span class="rb-now"><small>${_('ช่วงติดตาม','Follow-up stage')}: ${_(f[2],f[3])}</small><b>${_(f[6],f[7])}</b>${na?`<em>${_('นัดถัดไป','Next visit')} ${fmtDate(na.date,{day:'numeric',month:'short'})} · ${countdown(na.date)}</em>`:''}</span>${cg?'':icon('chev','chev')}</span>
+ return `<${tag} class="rbar span" ${act}><span class="rb-hi">${p.photo?`<span class="rb-av">${initial(p)}</span>`:''}${hello}</span><span class="rb-top"><span class="rb-day"><small>${_('หลังปลูกถ่าย','After transplant')}</small><b>${_('วันที่','Day')} <span class="num">${d}</span></b></span><span class="rb-now"><small>${_('ช่วงติดตาม','Follow-up stage')}: ${_(f[2],f[3])}</small><b>${_(f[6],f[7])}</b>${na?`<em>${_('นัดถัดไป','Next visit')} ${fmtDate(na.date,{day:'numeric',month:'short'})} · ${countdown(na.date)}</em>`:''}</span>${cg?'':icon('chev','chev')}</span>
  <span class="rb-steps" aria-label="${_('ขั้นตอนการติดตาม','Follow-up steps')}">${FOLLOW.map((x,i)=>`<i class="${i<k?'done':i===k?'cur':''}"><b class="tr"><u style="width:${i<k?100:i===k?Math.max(8,inPct):0}%"></u></b><span>${_(x[4],x[5])}</span></i>`).join('')}</span></${tag}>`}
 const HREQ=[['bp','ความดัน','BP'],['temp','อุณหภูมิ','Temp'],['wt','น้ำหนัก','Weight'],['sym','อาการ','Symptoms']];
 function todayHealth(pid){const vs=vitalsOf(pid).filter(v=>v.date===todayISO);const has=k=>vs.some(v=>v[k]!=null&&v[k]!=='');
@@ -4775,5 +4788,17 @@ function seedPharm(){
  D.renalAs.p5=[{at:ts(-5,'11:20'),by:'s2',crcl:49,note:A('ไม่มียาที่ต้องปรับตามไต Cr สูงขึ้นจาก 1.2 เป็น 1.6 แจ้งแพทย์ทบทวน Tacrolimus','No renal adjustments needed; Cr up 1.2 → 1.6, doctor asked to review tacrolimus')}];
  D.pw['pw|rx|rx6']={owner:'s2'};}
 
-seed();seedHealth();seedPharm();render();
+/* ---- v29 · patient profile photo ---- */
+Object.assign(ICON,{camera:'M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z'});
+const PHOTO_KEY=id=>'sj-photo|'+id;
+function loadPhotos(){D.patients.forEach(p=>{try{const v=localStorage.getItem(PHOTO_KEY(p.id));if(v)p.photo=v}catch(e){}})}
+function shrinkImage(file,size=320){return new Promise((res,rej)=>{const url=URL.createObjectURL(file);const im=new Image();im.onload=()=>{try{const s=Math.min(im.naturalWidth,im.naturalHeight);const c=document.createElement('canvas');c.width=c.height=size;const g=c.getContext('2d');g.drawImage(im,(im.naturalWidth-s)/2,(im.naturalHeight-s)/2,s,s,0,0,size,size);URL.revokeObjectURL(url);res(c.toDataURL('image/jpeg',0.85))}catch(e){rej(e)}};im.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('decode'))};im.src=url})}
+CHG.avatar=async el=>{const f=el.files&&el.files[0];el.value='';if(!f)return;const p=P(S.user.id);if(!p)return;
+ if(!/^image\//.test(f.type)&&!/\.(jpe?g|png|webp|heic|heif|gif)$/i.test(f.name))return toast(_('เลือกไฟล์รูปภาพเท่านั้น','Please choose an image file'));
+ if(f.size>25*1024*1024)return toast(_('ไฟล์ใหญ่เกินไป (เกิน 25 MB)','That file is too large (over 25 MB)'));
+ try{p.photo=await shrinkImage(f);try{localStorage.setItem(PHOTO_KEY(p.id),p.photo)}catch(e){}audit('เปลี่ยนรูปโปรไฟล์','Changed profile photo',p.id);render();toast(_('อัปเดตรูปโปรไฟล์แล้ว','Profile photo updated'))}
+ catch(e){toast(_('เปิดรูปนี้ไม่ได้ ลองเลือกรูปอื่น (JPG หรือ PNG)','Couldn’t open that photo — try a JPG or PNG'))}};
+ACT.avrm=()=>{const p=P(S.user.id);if(!p)return;delete p.photo;try{localStorage.removeItem(PHOTO_KEY(p.id))}catch(e){}audit('ลบรูปโปรไฟล์','Removed profile photo',p.id);render();toast(_('ลบรูปโปรไฟล์แล้ว','Photo removed'))};
+
+seed();seedHealth();seedPharm();loadPhotos();render();
 </script>
