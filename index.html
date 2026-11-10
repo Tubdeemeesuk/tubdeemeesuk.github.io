@@ -2381,6 +2381,7 @@ div.rbar{cursor:default}
 .pill-s.wait{background:color-mix(in srgb,var(--warn) 18%,transparent)}.pill-s.off{background:var(--line);color:var(--ink-2)}
 .sa-note{display:flex;gap:6px;align-items:center;margin:6px 4px}
 .no-x [data-a=close]:not(.btn.primary){display:none}
+.pt-addrow{margin:0 0 8px;justify-content:flex-end}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3273,7 +3274,7 @@ const sizeToggle=(cls='')=>`<button class="btn sm ghost ${cls}" data-a="size" ar
 function sidebar(){return `<aside class="sidebar"><div class="brand">${logo()}</div>${lanna('ln-side')}<nav class="nav" aria-label="${_('เมนูหลัก','Main menu')}">${navFor(S.user.role).map(i=>navBtn(i)).join('')}</nav><div class="side-foot">${userCard()}${tagline()}${hillsArt('hs-side',{flowers:false})}</div></aside>`}
 function bellCount(){const u=S.user;if(u.role==='patient')return D.notifs.filter(n=>n.patientId===u.id&&!n.read).length;if(u.role==='staff')return reviewCount();return 0}
 function bell(){const u=S.user;if(u.role==='caregiver')return'';const n=bellCount();const lbl=u.role==='staff'?_('รายการรอตรวจสอบ','Review queue'):_('การแจ้งเตือน','Notifications');return `<button class="icon-btn" data-a="bell" aria-label="${lbl}${n?` (${n})`:''}" title="${lbl}">${icon('bell')}${n?`<span class="dot">${n}</span>`:''}</button>`}
-function topbar(){const home=S.view===homeView();return `<header class="topbar ${home?'is-home':''}"><div class="tb-in"><div class="tb-title"><span class="tb-logo">${logo()}</span>${logoMark('tb-mark')}<h1>${esc(viewTitle(S.view))}</h1></div><div class="tb-act">${bell()}${langToggle()}${sizeToggle('hide-sm')}<button class="btn sm ghost hide-sm" data-a="logout" title="${_('เปลี่ยนบัญชีทดลอง','Switch demo account')}">${icon('logout')}<span>${_('เปลี่ยนบัญชี','Switch account')}</span></button></div></div></header>`}
+function topbar(){const home=S.view===homeView();return `<header class="topbar ${home?'is-home':''}"><div class="tb-in"><div class="tb-title"><span class="tb-logo">${logo()}</span>${logoMark('tb-mark')}<h1>${esc(viewTitle(S.view))}</h1></div><div class="tb-act">${bell()}${langToggle()}${sizeToggle('hide-sm')}<button class="btn sm ghost hide-sm" data-a="logout" title="${LIVE?_('ออกจากระบบ','Sign out'):_('เปลี่ยนบัญชีทดลอง','Switch demo account')}">${icon('logout')}<span>${(LIVE?_('ออกจากระบบ','Sign out'):_('เปลี่ยนบัญชี','Switch account'))}</span></button></div></div></header>`}
 const TABL={home:['หน้าหลัก','Home'],learn:['ความรู้','Learn'],log:['บันทึก','Log'],family:['ครอบครัว','Family'],meds:['ยา','Medicines'],appts:['นัดหมาย','Appts']};
 function tabBtn(k){const n=navFor(S.user.role).find(x=>x[0]===k);if(!n)return'';const b=k==='review'?reviewCount():0;const t=TABL[k]?_(...TABL[k]):viewTitle(k);return `<button class="tab ${isActive(k)?'on':''}" data-a="go" data-v="${k}" ${isActive(k)?'aria-current="page"':''}>${icon(n[1])}<span>${t}</span>${b?`<span class="badge">${b}</span>`:''}</button>`}
 function tabbar2(){const r=S.user.role;const n=bellCount();const me=`<button class="tab ${S.moreOpen?'on':''}" data-a="more">${r==='patient'&&P(S.user.id)?.photo?`<span class="tab-av"><img src="${P(S.user.id).photo}" alt=""></span>`:icon('user')}<span>${_('โปรไฟล์','Profile')}</span></button>`;
@@ -3283,7 +3284,7 @@ function tabbar2(){const r=S.user.role;const n=bellCount();const me=`<button cla
 function tabbar(){const r=S.user.role,tabs=mobileTabs(r);if(r!=='staff')return tabbar2();const inTabs=tabs.some(isActive);const more=`<button class="tab ${!inTabs||S.moreOpen?'on':''}" data-a="more">${icon('grid')}<span>${_('เพิ่มเติม','More')}</span></button>`;
  if(hasFab()){const h=Math.ceil(tabs.length/2);return `<nav class="tabbar fab5" aria-label="${_('เมนู','Menu')}">${tabs.slice(0,h).map(tabBtn).join('')}<button class="tab-fab" data-a="quick" aria-label="${_('บันทึก','Record')}"><i>${icon('plus')}</i><span>${_('บันทึก','Record')}</span></button>${tabs.slice(h).map(tabBtn).join('')}${more}</nav>`}
  return `<nav class="tabbar" aria-label="${_('เมนู','Menu')}">${tabs.map(tabBtn).join('')}${more}</nav>`}
-function moreSheet(){if(!S.moreOpen)return'';const tabs=mobileTabs(S.user.role);const rest=navFor(S.user.role).filter(([k])=>!tabs.includes(k));return `<div class="overlay" data-close="more"><div class="modal" role="dialog" aria-modal="true" aria-label="${_('เมนูเพิ่มเติม','More')}"><div class="modal-h"><h3>${S.user.role==='staff'?_('เมนูเพิ่มเติม','More'):_('โปรไฟล์และเมนู','Profile & menu')}</h3><button class="btn sm ghost" data-a="more" aria-label="${_('ปิด','Close')}">${icon('x')}</button></div>${userCard()}<nav class="nav">${rest.map(i=>navBtn(i)).join('')}${S.user.role!=='staff'?`<button class="nav-i" data-a="contact">${icon('phone')}<span>${_('ติดต่อทีมแพทย์','Contact the care team')}</span></button>`:''}${installBtn('nav-i')}</nav><div class="row sheet-row"><span class="muted">${_('ภาษา','Language')}</span>${langToggle()}</div><div class="row sheet-row"><span class="muted">${_('ขนาดตัวอักษร','Text size')}</span>${sizeToggle()}</div><button class="btn block" data-a="logout">${icon('logout')} ${_('เปลี่ยนบัญชีทดลอง','Switch demo account')}</button></div></div>`}
+function moreSheet(){if(!S.moreOpen)return'';const tabs=mobileTabs(S.user.role);const rest=navFor(S.user.role).filter(([k])=>!tabs.includes(k));return `<div class="overlay" data-close="more"><div class="modal" role="dialog" aria-modal="true" aria-label="${_('เมนูเพิ่มเติม','More')}"><div class="modal-h"><h3>${S.user.role==='staff'?_('เมนูเพิ่มเติม','More'):_('โปรไฟล์และเมนู','Profile & menu')}</h3><button class="btn sm ghost" data-a="more" aria-label="${_('ปิด','Close')}">${icon('x')}</button></div>${userCard()}<nav class="nav">${rest.map(i=>navBtn(i)).join('')}${S.user.role!=='staff'?`<button class="nav-i" data-a="contact">${icon('phone')}<span>${_('ติดต่อทีมแพทย์','Contact the care team')}</span></button>`:''}${installBtn('nav-i')}</nav><div class="row sheet-row"><span class="muted">${_('ภาษา','Language')}</span>${langToggle()}</div><div class="row sheet-row"><span class="muted">${_('ขนาดตัวอักษร','Text size')}</span>${sizeToggle()}</div><button class="btn block" data-a="logout">${icon('logout')} ${LIVE?_('ออกจากระบบ','Sign out'):_('เปลี่ยนบัญชีทดลอง','Switch demo account')}</button></div></div>`}
 const demoStrip=()=>`<div class="demo">${icon('info')}<span>${_('ต้นแบบสำหรับทดลอง · ข้อมูลทั้งหมดเป็นข้อมูลสมมติ และจะกลับเป็นค่าเริ่มต้นเมื่อรีเฟรชหน้า','Prototype · all data is fictional and resets when you reload')}</span></div>`;
 
 /* ---------- login ---------- */
@@ -5582,7 +5583,7 @@ const LIVE=!/[?&#]demo\b/.test(location.search+location.hash)&&!/\/demo\//.test(
 document.documentElement.classList.toggle('live',LIVE);
 const DBKEY='sj-live-db-v1';
 let dbWarned=false,dbT=0;
-function dbSave(){if(!LIVE)return;clearTimeout(dbT);dbT=setTimeout(()=>{try{localStorage.setItem(DBKEY,JSON.stringify(D))}catch(e){if(!dbWarned){dbWarned=true;toast(_('บันทึกข้อมูลลงเครื่องไม่สำเร็จ พื้นที่อาจเต็ม','Couldn’t save data on this device — storage may be full'))}}},250)}
+function dbSave(){if(!LIVE||APIMODE)return;clearTimeout(dbT);dbT=setTimeout(()=>{try{localStorage.setItem(DBKEY,JSON.stringify(D))}catch(e){if(!dbWarned){dbWarned=true;toast(_('บันทึกข้อมูลลงเครื่องไม่สำเร็จ พื้นที่อาจเต็ม','Couldn’t save data on this device — storage may be full'))}}},250)}
 function syncDocs(){DOCS.length=0;(D.settings.doctors||[]).forEach(n=>DOCS.push({th:n,en:n}))}
 function liveBoot(){
  Object.assign(D,{staff:[],patients:[],caregivers:[],consents:[],omeds:[],pmr:{},drp:[],ddiRev:{},tdm:{},adr:[],adhAs:[],couns:[],renalAs:{},pw:{},medEdu:{},moments:[]});
@@ -5592,7 +5593,7 @@ function liveBoot(){
  const js=JSON.stringify(D);let mx=0;for(const m of js.matchAll(/"id":"[a-z]+(\d+)"/g))mx=Math.max(mx,+m[1]);_n=Math.max(_n,mx,Math.floor((Date.now()-1.7e12)/1000));
  let rx=0;for(const m of js.matchAll(/"no":"RX-\d+-(\d+)"/g))rx=Math.max(rx,+m[1]);rxSeq=Math.max(rx,0)}
 {const _r=render;render=function(){_r();dbSave()}}
-window.addEventListener('pagehide',()=>{if(LIVE){clearTimeout(dbT);try{localStorage.setItem(DBKEY,JSON.stringify(D))}catch(e){}}});
+window.addEventListener('pagehide',()=>{if(LIVE&&!APIMODE){clearTimeout(dbT);try{localStorage.setItem(DBKEY,JSON.stringify(D))}catch(e){}}});
 /* whole team sees all patients in live mode (no fixed demo staff ids) */
 
 /* ---- passwords ---- */
@@ -5680,7 +5681,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.modal?.kind==='pw
 
 /* ---- staff accounts page (administrators) ---- */
 function vStaffAcc(){if(!meAdmin())return `<section class="card"><p>${_('เฉพาะผู้ดูแลระบบ','Administrators only')}</p></section>`;
- const rows=D.staff.filter(s=>s.pw).map(s=>{const me=s.id===S.user.id;const st=s.active===false?`<span class="pill-s off">${_('ปิดใช้งาน','Off')}</span>`:s.mustChange?`<span class="pill-s wait">${_('รอตั้งรหัสใหม่','Awaiting new password')}</span>`:`<span class="pill-s on">${_('ใช้งาน','Active')}</span>`;
+ const rows=D.staff.filter(s=>s.pw||s.user).map(s=>{const me=s.id===S.user.id;const st=s.active===false?`<span class="pill-s off">${_('ปิดใช้งาน','Off')}</span>`:s.mustChange?`<span class="pill-s wait">${_('รอตั้งรหัสใหม่','Awaiting new password')}</span>`:`<span class="pill-s on">${_('ใช้งาน','Active')}</span>`;
   return `<li class="sa-row"><span class="fu-av">${esc(L(s.name).slice(0,1))}</span><span class="sa-main"><b>${esc(L(s.name))}${me?` <small>(${_('คุณ','you')})</small>`:''}</b><small>${esc(L(s.title))} · <code>${esc(s.user)}</code>${s.admin?` · ${_('ผู้ดูแลระบบ','Admin')}`:''}</small><small class="muted">${s.lastLogin?_('เข้าใช้ล่าสุด ','Last sign-in ')+fmtDate(s.lastLogin.slice(0,10),{day:'numeric',month:'short'})+' '+s.lastLogin.slice(11,16):_('ยังไม่เคยเข้าใช้','Never signed in')}</small></span>${st}
   ${me?'':`<span class="sa-act"><button class="btn sm" data-a="streset" data-id="${s.id}">${_('รีเซ็ตรหัสผ่าน','Reset password')}</button><button class="btn sm ghost" data-a="sttoggle" data-id="${s.id}">${s.active===false?_('เปิดใช้งาน','Turn on'):_('ปิดใช้งาน','Turn off')}</button><button class="btn sm ghost" data-a="stadmin" data-id="${s.id}">${s.admin?_('ยกเลิกผู้ดูแลระบบ','Remove admin'):_('ตั้งเป็นผู้ดูแลระบบ','Make admin')}</button></span>`}</li>`}).join('');
  const add=`<form class="form" data-form="stadd" novalidate><div class="fgrid2"><label class="field">${_('ชื่อ','First name')}<input name="first" required></label><label class="field">${_('นามสกุล','Surname')}<input name="last" required></label></div>
@@ -5702,5 +5703,165 @@ NAVG.nurse[NAVG.nurse.length-1][1].push('staffacc');NAVG.pharm[NAVG.pharm.length
 let lastAct=Date.now();['pointerdown','keydown'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now()},true));
 setInterval(()=>{if(LIVE&&S.user?.role==='staff'&&Date.now()-lastAct>30*60e3){ACT.logout();toast(_('ออกจากระบบอัตโนมัติ เพราะไม่ได้ใช้งาน 30 นาที','Signed out after 30 minutes of no activity'))}},60e3);
 
-if(LIVE)liveBoot();else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&person(v.id)&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
+/* ================= v39 · central store: Google Apps Script web app (two-way sync) ================= */
+const SJ_API_DEFAULT='';/*SJ_API*/
+const API={url:(window.SJ_API_OVERRIDE&&/^(file:|http:\/\/(localhost|127\.0\.0\.1))/.test(location.href)?window.SJ_API_OVERRIDE:SJ_API_DEFAULT),tok:null,since:{},base:{},busy:false,pullT:0,pushT:0,err:null,last:null,lastErrToast:0};
+const APIMODE=LIVE&&!!API.url;
+if(APIMODE){_n=1e12+Math.floor(Math.random()*8e12)}
+const MAPC=['esc','pmr','ddiRev','tdm','renalAs','pw','medEdu'];
+const ARRC=['staff','patients','caregivers','consents','prescriptions','medLogs','vitals','symptoms','labs','appts','notifs','audit','tasks','contacts','omeds','drp','adr','adhAs','couns','moments','education','criteria'];
+const PT_W=['patients','caregivers','consents','medLogs','vitals','symptoms','appts','notifs','moments','audit','omeds','contacts'];
+const CG_W={vitals:'record',symptoms:'record',medLogs:'record',notifs:'',audit:'',contacts:''};
+function apiEmpty(){ARRC.forEach(c=>{D[c]=[]});MAPC.forEach(c=>{D[c]={}});MEDEDU.forEach(e=>D.medEdu[e.k]={pub:true});D.criteria=SYMPTOMS.map(([id,level,th,en])=>({id,level,name:{th,en}}));D.settings={teamPhone:'',teamHours:'',criteriaConfirmed:false,doctors:[]};syncDocs();API.since={};API.base={}}
+async function api(action,p={}){const ac=new AbortController();const t=setTimeout(()=>ac.abort(),45000);
+ try{const r=await fetch(API.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,token:API.tok,...p}),redirect:'follow',signal:ac.signal});const j=await r.json();
+  if(!j.ok&&j.error==='session'){apiExpired();throw new Error(j.msg||'session')}API.err=null;return j}
+ catch(e){if(e.name==='AbortError')e=new Error(_('เชื่อมต่อนานเกินไป ลองใหม่อีกครั้ง','The connection took too long — try again'));else if(e instanceof TypeError)e=new Error(_('เชื่อมต่ออินเทอร์เน็ตไม่ได้','Can’t reach the internet'));API.err=e.message;throw e}finally{clearTimeout(t)}}
+function apiExpired(){if(!S.user)return;API.tok=null;ACT.logout();toast(_('เซสชันหมดอายุ โปรดเข้าสู่ระบบใหม่','Your session ended — please sign in again'))}
+/* record identity */
+function recPid(c,o,key){if(MAPC.includes(c)){if(c==='pmr'||c==='renalAs')return key;if(c==='ddiRev')return String(key).split('|')[1]||'';if(c==='tdm')return D.labs.find(l=>l.id===key)?.patientId||'';if(c==='pw'){const rx=D.prescriptions.find(r=>r.id===String(key).split('|').pop());return rx?.patientId||''}if(c==='esc'){const id=String(key).split('|').pop();const x=[...D.symptoms,...D.vitals,...D.labs].find(r=>r.id===id);return x?.patientId||''}return ''}
+ if(c==='patients')return o.id;if(c==='caregivers'){const cs=D.consents.find(x=>x.caregiverId===o.id);return cs?.patientId||''}return o.patientId||o.pid||''}
+const recDt=o=>o&&typeof o==='object'?(o.date||(typeof o.at==='string'?o.at.slice(0,10):'')||''):'';
+function apiWritable(c){const r=S.user?.role;if(r==='staff')return c!=='staff'||meAdmin();if(r==='patient')return PT_W.includes(c);if(r==='caregiver')return c in CG_W;return false}
+function apiSnap(){const m=new Map();
+ ARRC.forEach(c=>(D[c]||[]).forEach(o=>{if(o&&o.id!=null)m.set(c+'|'+o.id,{c,id:String(o.id),o})}));
+ MAPC.forEach(c=>Object.entries(D[c]||{}).forEach(([k,o])=>m.set(c+'|'+k,{c,id:k,o})));
+ m.set('settings|settings',{c:'settings',id:'settings',o:D.settings});return m}
+function apiDiff(){const cur=apiSnap(),out=[];
+ cur.forEach((v,k)=>{if(!apiWritable(v.c))return;const j=JSON.stringify(v.o);if(API.base[k]!==j){out.push({k,c:v.c,id:v.id,pid:recPid(v.c,v.o,v.id),dt:recDt(v.o),o:v.o,j})}});
+ Object.keys(API.base).forEach(k=>{if(!cur.has(k)){const [c,...r]=k.split('|');const id=r.join('|');if(apiWritable(c)&&c!=='staff')out.push({k,c,id,del:true})}});
+ if(S.user?.role==='caregiver'){const ls=D.consents.filter(x=>x.caregiverId===S.user.id&&x.active);return out.filter(x=>!x.del&&ls.some(l=>l.patientId===x.pid&&(!CG_W[x.c]||l.perms?.[CG_W[x.c]])))}
+ return out}
+function apiApply(recs){let n=0;
+ recs.forEach(r=>{const k=r.c+'|'+r.id;
+  if(r.c==='settings'){if(!r.del&&r.o){D.settings=r.o;D.settings.doctors=D.settings.doctors||[];syncDocs()}}
+  else if(MAPC.includes(r.c)){D[r.c]=D[r.c]||{};if(r.del)delete D[r.c][r.id];else D[r.c][r.id]=r.o}
+  else{const a=D[r.c]=D[r.c]||[];const i=a.findIndex(x=>String(x.id)===String(r.id));if(r.del){if(i>=0)a.splice(i,1)}else if(i>=0)a[i]=r.o;else a.push(r.o)}
+  if(r.del)delete API.base[k];else API.base[k]=JSON.stringify(r.o);n++});
+ if(n){let mx=rxSeq;D.prescriptions.forEach(p=>{const m=/-(\d+)$/.exec(p.no||'');if(m)mx=Math.max(mx,+m[1])});rxSeq=mx;loadPhotos()}
+ return n}
+async function apiPull(){const j=await api('pull',{since:API.since});const n=apiApply(j.recs||[]);Object.assign(API.since,j.since||{});API.last=nowStamp();return n}
+async function apiPush(){const ch=apiDiff();if(!ch.length)return 0;
+ for(let i=0;i<ch.length;i+=150){const part=ch.slice(i,i+150);const j=await api('push',{recs:part.map(x=>x.del?{c:x.c,id:x.id,del:true}:{c:x.c,id:x.id,pid:x.pid,dt:x.dt,o:x.o})});
+  const rej=new Set(j.rejected||[]);part.forEach(x=>{if(rej.has(x.c+'|'+x.id))return;if(x.del)delete API.base[x.k];else API.base[x.k]=x.j})}
+ API.last=nowStamp();return ch.length}
+const typing=()=>{const a=document.activeElement;return !!(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))};
+async function apiSync(full){if(!APIMODE||!API.tok||API.busy)return;API.busy=true;let n=0;
+ try{await apiPush();if(full!==false)n=await apiPull();await apiPush()}
+ catch(e){if(S.user&&Date.now()-API.lastErrToast>120e3){API.lastErrToast=Date.now();toast(_('ยังส่งข้อมูลไม่ได้ จะลองใหม่อัตโนมัติ · ','Not synced yet — will retry · ')+e.message)}}
+ finally{API.busy=false}
+ if(n&&S.user){if(typing()||S.modal)API.pendingRender=true;else render0()}}
+let render0=null;
+function apiSchedulePush(){if(!APIMODE||!API.tok)return;clearTimeout(API.pushT);API.pushT=setTimeout(()=>apiSync(false),1200)}
+function apiLoop(){clearInterval(API.pullT);if(!APIMODE||!API.tok)return;API.pullT=setInterval(()=>{if(document.visibilityState==='visible')apiSync()},S.user?.role==='staff'?45e3:90e3)}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')apiSync()});
+document.addEventListener('focusout',()=>{if(API.pendingRender)setTimeout(()=>{if(API.pendingRender&&!typing()&&!S.modal){API.pendingRender=false;render0()}},400)});
+{const _r=render;render0=_r;render=function(){_r();apiSchedulePush();if(API.pendingRender&&!S.modal&&!typing()){API.pendingRender=false}}}
+/* start a signed-in session: load this person's data, then sign in locally */
+async function apiStart(tok,id,extra={}){API.tok=tok;apiEmpty();await apiPull();const r=roleOf(id);
+ if(r==='staff'&&!ST(id)&&extra.user)D.staff.push(extra.user);
+ ACT.login({id});if(r==='caregiver'){const l=D.consents.find(x=>x.caregiverId===id&&x.active&&(!extra.pid||x.patientId===extra.pid));if(l)S.pid=l.patientId}
+ apiLoop();render()}
+{const _lo=ACT.logout;ACT.logout=d=>{if(APIMODE){const t=API.tok;clearInterval(API.pullT);if(t&&S.user){API.busy=false;apiPush().catch(()=>{})}API.tok=null;setTimeout(apiEmpty,50)}_lo(d)}}
+/* ---- sign-in forms talk to the server ---- */
+const apiForm=fn=>async(o,fd,f)=>{busy(f,true);try{await fn(o,fd,f)}catch(e){fail(f,e.message||String(e))}finally{busy(f,false)}};
+if(APIMODE){
+ FORMS.ptlogin=apiForm(async(o,fd,f)=>{const first=o.first.trim(),last=o.last.trim(),hn=o.hn.trim();if(!first||!last||!hn)return fail(f,_('กรอกชื่อ นามสกุล และ HN','Enter your name, surname and HN'));
+  const j=await api('ptlogin',{first,last,hn});if(!j.ok){if(j.code==='not_activated'){S.modal={kind:'ptauth',t:'reg'};render();toast(_('บัญชียังไม่เปิดใช้งาน กรอกข้อมูลเพื่อเปิดใช้งานครั้งแรก','Not activated yet — fill in to activate'));return}return fail(f,j.msg||_('เข้าสู่ระบบไม่สำเร็จ','Sign-in failed'))}
+  S.modal=null;await apiStart(j.token,j.user.id);pinOffer();render()});
+ FORMS.ptreg=apiForm(async(o,fd,f)=>{const first=o.first.trim(),last=o.last.trim(),hn=o.hn.trim();
+  if(!first||!last)return fail(f,_('กรอกชื่อและนามสกุล','Enter your first name and surname'));
+  if(hnDigits(hn).length<6)return fail(f,_('HN ดูไม่ถูกต้อง โปรดตรวจสอบจากบัตรโรงพยาบาล','That HN looks wrong — check your hospital card'));
+  if(hnDigits(hn)!==hnDigits(o.hn2))return fail(f,_('HN ทั้งสองช่องไม่ตรงกัน','The two HNs don’t match'));
+  if(!o.st)return fail(f,_('เลือกสถานะการปลูกถ่ายตับ','Choose your transplant status'));
+  if(!o.consent)return fail(f,_('โปรดยืนยันความยินยอมก่อนเปิดใช้งาน','Please tick the consent box'));
+  const j=await api('ptreg',{first,last,hn,st:o.st,tx:o.tx||''});if(!j.ok)return fail(f,j.msg||_('เปิดใช้งานไม่สำเร็จ','Couldn’t activate'));
+  S.modal=null;await apiStart(j.token,j.user.id);pinOffer();render();
+  toast(j.created?_('สร้างบัญชีแล้ว พยาบาลผู้ประสานงานจะตรวจสอบข้อมูลอีกครั้ง','Account created — a coordinator nurse will check it'):_('เปิดใช้งานบัญชีแล้ว ครั้งต่อไปเข้าสู่ระบบด้วยชื่อ นามสกุล และ HN','Account active — next time sign in with your name and HN'))});
+ FORMS.cglogin=apiForm(async(o,fd,f)=>{if(!o.first.trim()||!o.last.trim()||!o.hn.trim())return fail(f,_('กรอกชื่อ นามสกุล และรหัสผ่านให้ครบ','Enter your name, surname and password'));
+  const j=await api('cglogin',{first:o.first.trim(),last:o.last.trim(),hn:o.hn.trim()});if(!j.ok)return fail(f,j.msg||_('เข้าสู่ระบบไม่สำเร็จ','Sign-in failed'));
+  S.modal=null;await apiStart(j.token,j.user.id,{pid:j.pid});pinOffer();render()});
+ FORMS.cgreg=apiForm(async(o,fd,f)=>{const v=k=>String(o[k]||'').trim();
+  if(!v('first')||!v('last'))return fail(f,_('กรอกชื่อและนามสกุลของผู้ดูแล','Enter your first name and surname'));
+  if(hnDigits(v('phone')).length<9)return fail(f,_('กรอกเบอร์โทรศัพท์ให้ถูกต้อง','Enter a valid phone number'));
+  if(!v('pfirst')||!v('plast'))return fail(f,_('กรอกชื่อและนามสกุลของผู้ป่วย','Enter the patient’s name and surname'));
+  if(hnDigits(v('hn')).length<6)return fail(f,_('HN ของผู้ป่วยดูไม่ถูกต้อง โปรดตรวจสอบจากบัตรโรงพยาบาล','That HN looks wrong — check the hospital card'));
+  if(!o.consent)return fail(f,_('โปรดยืนยันก่อนลงทะเบียน','Please tick the confirmation box'));
+  const j=await api('cgreg',{first:v('first'),last:v('last'),phone:v('phone'),rel:v('rel'),pfirst:v('pfirst'),plast:v('plast'),hn:v('hn')});if(!j.ok)return fail(f,j.msg||_('ลงทะเบียนไม่สำเร็จ','Couldn’t register'));
+  S.modal=null;await apiStart(j.token,j.user.id,{pid:j.pid});pinOffer();render();toast(_('ลงทะเบียนแล้ว ครั้งต่อไปใช้ชื่อของคุณ และ HN ของผู้ป่วยเป็นรหัสผ่าน','Registered — next time use your name and the patient’s HN'))});
+ /* staff */
+ ACT.stauth=async d=>{S.modal={kind:'stauth',r:d.r||'nurse',loading:true};render();
+  try{const j=await api('status');if(S.modal?.kind!=='stauth')return;S.modal.loading=false;S.modal.first=!j.hasStaff}catch(e){if(S.modal?.kind!=='stauth')return;S.modal.loading=false;S.modal.err=e.message}
+  render();setTimeout(()=>document.querySelector('.pa-form input')?.focus(),40)};
+ const stProof=async(user,pw)=>{const s=await api('salt',{user:normUser(user)});return pwHash(pw,s.s,s.it)};
+ FORMS.stlogin=apiForm(async(o,fd,f)=>{const u=normUser(o.user);if(!u||!o.pw)return fail(f,_('กรอกชื่อผู้ใช้และรหัสผ่าน','Enter your username and password'));
+  const proof=await stProof(u,o.pw);const j=await api('stlogin',{user:u,proof});if(!j.ok)return fail(f,j.msg);
+  S.modal=null;await apiStart(j.token,j.user.id,{user:j.user});if(j.user.mustChange){S.modal={kind:'pwchange',forced:true};render()}});
+ FORMS.stsetup=apiForm(async(o,fd,f)=>{const v=k=>String(o[k]||'').trim();const u=normUser(o.user);
+  if(!v('code'))return fail(f,_('กรอกรหัสตั้งค่าครั้งแรก (อยู่ในโค้ด Apps Script บรรทัด SETUP_CODE)','Enter the first-time setup code (SETUP_CODE in Apps Script)'));
+  if(!v('first')||!v('last'))return fail(f,_('กรอกชื่อและนามสกุล','Enter your first name and surname'));
+  if(!/^[a-z0-9._-]{3,30}$/.test(u))return fail(f,_('ชื่อผู้ใช้ใช้ได้เฉพาะ a–z ตัวเลข . _ - ความยาว 3–30 ตัว','Username: a–z, numbers, . _ - (3–30 characters)'));
+  if(pwWeak(o.pw))return fail(f,_('รหัสผ่านต้องยาวอย่างน้อย 8 ตัว และมีทั้งตัวอักษรและตัวเลข','Password needs 8+ characters with letters and numbers'));
+  if(o.pw!==o.pw2)return fail(f,_('รหัสผ่านทั้งสองช่องไม่ตรงกัน','The two passwords don’t match'));
+  const j=await api('stsetup',{code:v('code'),first:v('first'),last:v('last'),prof:o.prof,user:u,pw:await pwMake(o.pw)});if(!j.ok)return fail(f,j.msg);
+  S.modal=null;await apiStart(j.token,j.user.id,{user:j.user});toast(_('สร้างบัญชีผู้ดูแลระบบแล้ว เพิ่มบัญชีเจ้าหน้าที่คนอื่นได้ที่ "บัญชีเจ้าหน้าที่"','Administrator created — add other staff in “Staff accounts”'))});
+ FORMS.pwchange=apiForm(async(o,fd,f)=>{const s=ST(S.user?.id);if(!s)return;const forced=S.modal?.forced;
+  if(pwWeak(o.pw))return fail(f,_('รหัสผ่านใหม่ต้องยาวอย่างน้อย 8 ตัว และมีทั้งตัวอักษรและตัวเลข','New password needs 8+ characters with letters and numbers'));
+  if(o.pw!==o.pw2)return fail(f,_('รหัสผ่านทั้งสองช่องไม่ตรงกัน','The two passwords don’t match'));
+  if(!forced&&o.cur===o.pw)return fail(f,_('ตั้งรหัสใหม่ที่ไม่ซ้ำกับรหัสเดิม','Choose a password different from the current one'));
+  const proof=forced?'':await stProof(s.user,o.cur||'');const j=await api('pwchange',{proof,pw:await pwMake(o.pw)});if(!j.ok)return fail(f,j.msg);
+  API.tok=j.token;Object.assign(s,{mustChange:false});API.base['staff|'+s.id]=JSON.stringify(s);S.modal=null;audit('เปลี่ยนรหัสผ่าน','Changed password',null);render();toast(_('เปลี่ยนรหัสผ่านแล้ว','Password changed'))});
+ FORMS.stadd=apiForm(async(o,fd,f)=>{if(!meAdmin())return;const v=k=>String(o[k]||'').trim();const u=normUser(o.user);
+  if(!v('first')||!v('last'))return fail(f,_('กรอกชื่อและนามสกุล','Enter first name and surname'));
+  if(!/^[a-z0-9._-]{3,30}$/.test(u))return fail(f,_('ชื่อผู้ใช้ใช้ได้เฉพาะ a–z ตัวเลข . _ - ความยาว 3–30 ตัว','Username: a–z, numbers, . _ - (3–30 characters)'));
+  const tmp=tempPw();const j=await api('staffadd',{first:v('first'),last:v('last'),prof:o.prof,user:u,admin:!!o.admin,pw:await pwMake(tmp)});if(!j.ok)return fail(f,j.msg);
+  D.staff.push(j.user);API.base['staff|'+j.user.id]=JSON.stringify(j.user);audit(`เพิ่มบัญชีเจ้าหน้าที่ ${L(j.user.name)}`,`Added staff account ${L(j.user.name)}`,null);S.modal={kind:'tempshow',id:j.user.id,pw:tmp,isNew:true};render()});
+ ACT.streset=async d=>{if(!meAdmin())return;const s=ST(d.id);if(!s)return;const tmp=tempPw();try{const j=await api('staffreset',{id:s.id,pw:await pwMake(tmp)});if(!j.ok)throw new Error(j.msg);Object.assign(s,j.user);API.base['staff|'+s.id]=JSON.stringify(s);audit(`รีเซ็ตรหัสผ่านของ ${L(s.name)}`,`Reset password for ${L(s.name)}`,null);S.modal={kind:'tempshow',id:s.id,pw:tmp};render()}catch(e){toast(e.message)}};
+}
+/* first-run setup needs the setup code; show loading / errors */
+{const _sa=stAuthModal;stAuthModal=function(){const m=S.modal;if(!APIMODE)return _sa();
+ if(m.loading)return mShell(_('เข้าสู่ระบบเจ้าหน้าที่','Staff sign-in'),`<p class="muted" style="padding:20px 0;text-align:center">${_('กำลังเชื่อมต่อ…','Connecting…')}</p>`,_('เจ้าหน้าที่','Staff'),'pa-modal');
+ if(m.err)return mShell(_('เข้าสู่ระบบเจ้าหน้าที่','Staff sign-in'),`<p class="ferr">${esc(m.err)}</p><button class="btn primary block" data-a="stauth" data-r="${m.r}">${_('ลองอีกครั้ง','Try again')}</button>`,_('เจ้าหน้าที่','Staff'),'pa-modal');
+ const save=D.staff;if(m.first)D.staff=[];else D.staff=[{pw:1,active:true}];let h=_sa();D.staff=save;
+ if(m.first)h=h.replace('<div class="fgrid2">',`<label class="field">${_('รหัสตั้งค่าครั้งแรก','First-time setup code')}<input name="code" autocomplete="off" placeholder="${_('รหัส SETUP_CODE ที่ตั้งไว้ใน Apps Script','The SETUP_CODE set in Apps Script')}" required></label><div class="fgrid2">`);
+ return h}}
+/* PIN: keep the session token on this device so the PIN can reopen it */
+{const _pd=pinDone;pinDone=function(){const m=S.modal;
+ if(APIMODE&&m?.kind==='pin'){const v=pinGet();if(!v)return;const p=S.pinBuf;S.pinBuf='';
+  if(pinHash(p,v.salt)!==v.h){v.fails=(v.fails||0)+1;if(v.fails>=5){pinSave(null);S.modal={kind:v.role==='patient'?'ptauth':'cgauth',t:'login'};render();toast(_('ใส่ PIN ผิด 5 ครั้ง PIN ถูกปิดแล้ว กรุณาเข้าสู่ระบบด้วยชื่อและรหัสผ่าน','5 wrong PINs — PIN turned off. Sign in with your name and password'));return}pinSave(v);return pinPaint(_(`PIN ไม่ถูกต้อง เหลืออีก ${5-v.fails} ครั้ง`,`Wrong PIN — ${5-v.fails} tries left`))}
+  v.fails=0;pinSave(v);if(!v.tok){S.modal={kind:v.role==='patient'?'ptauth':'cgauth',t:'login'};render();return}
+  pinPaint(_('กำลังเปิดข้อมูล…','Opening…'));
+  apiStart(v.tok,v.id,{pid:v.pid}).then(()=>{S.modal=null;render()}).catch(e=>{if(String(e.message).includes('session')||!API.tok){pinSave(null);S.modal={kind:v.role==='patient'?'ptauth':'cgauth',t:'login'};render();toast(_('PIN หมดอายุ โปรดเข้าสู่ระบบด้วยชื่อและรหัสผ่านอีกครั้ง','PIN expired — sign in with your name and password'))}else pinPaint(e.message)});return}
+ const r=_pd();if(APIMODE&&m?.kind==='pinset'&&!S.modal){const v=pinGet();if(v&&!v.tok){v.tok=API.tok;v.pid=S.pid;pinSave(v)}}return r}}
+{const _pw=pinWelcome;pinWelcome=function(){if(!APIMODE)return _pw();const v=pinGet();if(!v||!v.tok)return'';return `<button class="pin-welcome" data-a="pinopen">${icon('shield')}<span><b>${_('เข้าสู่ระบบด้วย PIN','Sign in with PIN')}</b><small>${esc(v.name||'')}</small></span>${icon('chev')}</button>`}}
+/* nurses register patients so they can activate their own accounts */
+function ptAddModal(){return mShell(_('เพิ่มผู้ป่วยในโครงการ','Add a patient'),`<form class="form pa-form" data-form="ptadd" novalidate>
+ <div class="fgrid2"><label class="field">${_('ชื่อ','First name')}<input name="first" required></label><label class="field">${_('นามสกุล','Surname')}<input name="last" required></label></div>
+ <div class="fgrid2"><label class="field">HN<input name="hn" autocomplete="off" required></label><label class="field">${_('เบอร์โทร','Phone')}<input name="phone" type="tel" inputmode="tel"></label></div>
+ <div class="fgrid2"><label class="field">${_('เพศ','Sex')}<select name="sex"><option value="">—</option><option value="M">${_('ชาย','Male')}</option><option value="F">${_('หญิง','Female')}</option></select></label><label class="field">${_('อายุ (ปี)','Age')}<input name="age" inputmode="numeric"></label></div>
+ <div class="fgrid2"><label class="field">${_('สถานะ','Status')}<select name="st"><option value="pre">${_('รอปลูกถ่าย','Waiting for transplant')}</option><option value="post">${_('ปลูกถ่ายแล้ว','Transplanted')}</option></select></label><label class="field">${_('วันที่ปลูกถ่าย','Transplant date')}<input type="date" name="tx" max="${todayISO}"></label></div>
+ <p class="hint tiny">${_('ผู้ป่วยเปิดใช้งานบัญชีเองในแอป ด้วยชื่อ นามสกุล และ HN ที่ตรงกับที่กรอกไว้นี้','The patient activates their account in the app with this same name, surname and HN')}</p>
+ <p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('plus')} ${_('เพิ่มผู้ป่วย','Add patient')}</button></form>`,_('เพิ่มผู้ป่วย','Add patient'),'pa-modal')}
+ACT.ptadd=()=>{S.modal={kind:'ptadd'};render();setTimeout(()=>document.querySelector('form[data-form=ptadd] input')?.focus(),40)};
+FORMS.ptadd=(o,fd,f)=>{const first=o.first.trim(),last=o.last.trim(),hn=o.hn.trim();
+ if(!first||!last)return fail(f,_('กรอกชื่อและนามสกุล','Enter first name and surname'));if(hnDigits(hn).length<6)return fail(f,_('HN ดูไม่ถูกต้อง','That HN looks wrong'));
+ if(D.patients.some(p=>hnDigits(p.hn)===hnDigits(hn)))return fail(f,_('มีผู้ป่วย HN นี้ในระบบแล้ว','A patient with this HN already exists'));
+ const post=o.st==='post',tx=post?(o.tx||null):null,days=tx?daysBetween(tx,todayISO):null;
+ const p={id:uid('p'),name:{th:`${first} ${last}`,en:`${first} ${last}`},hn,age:o.age?+o.age||null:null,sex:o.sex||null,phone:o.phone?.trim()||'',phase:post?(days!=null&&days>180?4:3):1,txDate:tx,discharge:null,staff:[S.user.id],checklist:{},activated:false,regOk:true,addedBy:S.user.id,addedAt:nowStamp()};
+ D.patients.push(p);audit('เพิ่มผู้ป่วยเข้าโครงการ','Added a patient',p.id);S.modal=null;render();toast(_('เพิ่มผู้ป่วยแล้ว แจ้งผู้ป่วยให้เปิดใช้งานบัญชีในแอปด้วยชื่อและ HN','Patient added — ask them to activate in the app with their name and HN'))};
+{const _mh5=modalHTML;modalHTML=function(){if(S.modal?.kind==='ptadd')return ptAddModal();return _mh5()}}
+{const _vp2=vPatients;vPatients=function(){const h=_vp2();if(S.user?.role!=='staff'||!LIVE)return h;return h.replace('<div class="pt-search">',`<div class="row pt-addrow"><button class="btn primary sm" data-a="ptadd">${icon('plus')} ${_('เพิ่มผู้ป่วย','Add patient')}</button></div><div class="pt-search">`)};VIEWS.patients=vPatients}
+/* sheet page: central store status + readable report tabs */
+{const _vg=vGsync;vGsync=function(){if(!APIMODE)return _vg();
+ return `<section class="card"><h2>${icon('grid')} ${_('ที่เก็บข้อมูลกลาง (Google Sheet)','Central store (Google Sheet)')}</h2>
+ <p class="${API.err?'ferr':'muted'}">${API.err?_('ยังเชื่อมต่อไม่ได้: ','Not connected: ')+esc(API.err):_('เชื่อมต่อแล้ว ข้อมูลจากทุกเครื่องรวมอยู่ใน Sheet เดียวกัน','Connected — every device shares the same Sheet')}</p>
+ <p class="muted tiny">${_('ซิงก์ล่าสุด','Last sync')}: ${API.last?fmtDate(API.last.slice(0,10),{day:'numeric',month:'short'})+' '+API.last.slice(11,16):'—'}</p>
+ <div class="row"><button class="btn" data-a="apisync">${icon('download')} ${_('ซิงก์ตอนนี้','Sync now')}</button>${meAdmin()?`<button class="btn" data-a="gsall2">${icon('grid')} ${_('อัปเดตแท็บรายงานใน Sheet','Update report tabs in the Sheet')}</button>`:''}</div>
+ <p class="hint tiny">${_('แท็บ db_… ใน Sheet คือฐานข้อมูลของแอป (ถูกซ่อนไว้ ห้ามแก้ไขด้วยมือ) ส่วนแท็บรายงานภาษาไทยอ่านง่าย สร้าง/อัปเดตได้ด้วยปุ่มด้านบน','The hidden db_… tabs are the app’s database — don’t edit them by hand. Readable Thai report tabs are created with the button above.')}</p></section>`};VIEWS.gsync=vGsync}
+ACT.apisync=async()=>{await apiSync();render();toast(API.err?API.err:_('ซิงก์แล้ว','Synced'))};
+ACT.gsall2=()=>{GS.url=API.url;GS.token=API.tok;ACT.gsall()};
+
+if(APIMODE){GS.on=false}
+
+if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
