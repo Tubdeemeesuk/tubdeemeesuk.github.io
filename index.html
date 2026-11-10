@@ -1748,6 +1748,20 @@ div.rbar{cursor:default}
 .wc-ring>span{position:relative;z-index:1;display:flex;align-items:baseline;gap:1px}
 .wc-ring>span b{font-family:var(--f-display);font-size:1.35rem;margin:0}
 .wc-ring>span small{font-size:.72rem;color:var(--ink-2);margin:0}
+
+/* v26 · one patient tile, status chosen next */
+.rpick.r4{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.rpick.r4{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.rpick.r4 .rimg{width:100%;border-radius:22%}.rpick.r4 .rtile b{font-size:.74rem;line-height:1.25}.rpick.r4 .rtile small{font-size:.62rem}}
+.pst-list{display:flex;flex-direction:column;gap:10px;margin:6px 0}
+.pst{display:flex;align-items:center;gap:12px;width:100%;border:1.5px solid var(--line);border-radius:18px;background:var(--surface);padding:10px 12px;font:inherit;color:var(--ink);text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
+.pst:hover,.pst:focus-visible{border-color:var(--brand);background:var(--brand-soft)}
+.pst-i{flex:none;width:64px;height:64px;border-radius:18px;overflow:hidden;display:block}
+.pst-i img,.pst-i svg{width:100%;height:100%;display:block}
+.pst-t{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
+.pst-t b{font-family:var(--f-display);font-size:1.05rem}
+.pst-t small{font-size:.8rem;color:var(--ink-2)}
+.pst-t em{font-style:normal;font-size:.7rem;color:var(--ink-2);opacity:.8}
+.pst>.ic{color:var(--ink-2);flex:none}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -2645,13 +2659,12 @@ function vLogin(){
   <div class="hg-art">${careNet()}</div></section>
  <div class="lg-notice">${icon('alert')}<div><span class="nt-l"><b>${_('โปรดทราบ','Please note')}:</b> ${_('นี่คือรูปแบบจำลองสำหรับการทดลอง ข้อมูลทั้งหมดเป็นข้อมูลสมมติ ห้ามกรอกข้อมูลผู้ป่วยจริง','This is a prototype for testing. All data is fictional; don’t enter real patient data.')}</span><span class="nt-s"><b>${_('ต้นแบบทดลอง','Prototype')}</b> · ${_('ข้อมูลสมมติ ห้ามกรอกข้อมูลผู้ป่วยจริง','fictional data only')}</span></div></div>
  <section class="lg-roles" aria-labelledby="lg-rh"><h2 id="lg-rh">${_('เลือกผู้ใช้งาน','Who is using Tub Dee Mee Suk?')}</h2>
- <div class="rpick r5">
-  ${rtile('<img src="media/ico-patient.webp" alt="" width="320" height="320">','คนไข้','Patient','p1')}
+ <div class="rpick r4">
+  <button class="rtile" data-a="ptstatus"><span class="rimg"><img src="media/ico-patient.webp" alt="" width="320" height="320"></span><b>${_('ผู้ป่วย','Patient')}</b><small>${_('ก่อนหรือหลังปลูกถ่าย','Before or after transplant')}</small></button>
   ${rtile(icoCare(),'ญาติ / <span class="nw">ผู้ดูแล</span>','Caregiver','c1')}
   ${rtile('<img src="media/ico-coord.webp" alt="" width="320" height="320">','พยาบาล<br><span class="nw">ผู้ประสานงาน</span>','Nurse<br>coordinator','s1')}
   ${rtile('<img src="media/ico-pharm.webp" alt="" width="320" height="320">','เภสัชกร','Pharmacist','s2')}
-  ${rtile(icoWait(),'<span class="nw">คนไข้รอ</span><span class="nw">ปลูกถ่าย</span>','Awaiting transplant','p3')}
- </div>
+</div>
 </section>
  <footer class="lg-foot2"><span>© 2569 <b>ตับดีมีสุข</b> by LT CMU</span>${installBtn('btn sm')}<button class="btn sm" data-a="lginfo" data-t="contact">${icon('phone')} ${_('ติดต่อฝ่ายสนับสนุน','Contact support')}</button></footer>
  </div></div>`;
@@ -3400,6 +3413,8 @@ function modalHTML(){
  if(m.kind==='contact'){return shell(_('ติดต่อทีมแพทย์','Contact the care team'),`<div class="stack">${contactRow().replace('hcon2 span','hcon2 inmodal')}<div class="lockline">${icon('phone')}<span><b>${_('ทีมปลูกถ่ายตับ','Liver transplant team')}</b></span></div>${teamContact()}
   <div class="call"><a href="tel:1669">1669</a><span class="muted">${_('อาการรุนแรง หายใจลำบาก หมดสติ เลือดออกมาก โทรทันที','Severe symptoms, trouble breathing, fainting or heavy bleeding: call now')}</span></div>
   <button class="btn block" data-a="golog" data-t="sym">${icon('alert')} ${_('ประเมินอาการผิดปกติ','Check a symptom')}</button></div>`)}
+ if(m.kind==='ptstatus'){const opt=(id,img,th,en,sth,sen)=>`<button class="pst" data-a="login" data-id="${id}"><span class="pst-i">${img}</span><span class="pst-t"><b>${_(th,en)}</b><small>${_(sth,sen)}</small><em>${_('บัญชีทดลอง','Demo')}: ${esc(L(person(id).name))}</em></span>${icon('chev')}</button>`;
+  return shell(_('ผู้ป่วย','Patient'),`<p class="muted">${_('สถานะการปลูกถ่ายตับของคุณ','Your liver transplant status')}</p><div class="pst-list">${opt('p1','<img src="media/ico-patient.webp" alt="" width="320" height="320">','ปลูกถ่ายตับแล้ว','I’ve had my transplant','ดูแลตัวเองหลังปลูกถ่าย ยากดภูมิ ผลตรวจ','Aftercare, anti-rejection medicines, labs')}${opt('p3',icoWait(),'รอปลูกถ่ายตับ','Waiting for a transplant','เตรียมตัวและตรวจประเมินก่อนปลูกถ่าย','Getting ready and pre-transplant tests')}</div><p class="hint tiny">${_('ในระบบจริง ผู้ป่วยเลือกสถานะนี้ตอนลงทะเบียน และทีมรักษาปรับให้เมื่อปลูกถ่ายแล้ว','In the real system, patients choose this when they register, and the team updates it after the transplant.')}</p>`,_('เลือกสถานะผู้ป่วย','Choose patient status'),'pst-modal')}
  if(m.kind==='lginfo'){const t=m.t||'learn';return shell(_('ตับดีมีสุข','Tub Dee Mee Suk'),`<div class="seg big lg-tabs" role="tablist">${LGTABS.map(([k,th,en])=>`<button role="tab" aria-selected="${k===t}" class="${k===t?'on':''}" data-a="lginfo" data-t="${k}">${_(th,en)}</button>`).join('')}</div><div class="lg-info">${lgInfo(t)}</div>`,_('ข้อมูลเพิ่มเติม','More information'),'wide')}
  if(m.kind==='today'){return shell(_('วันนี้ของคุณ','Your day'),`<div class="side-b">${todayPanel(currentPid(),S.user.role==='caregiver')}</div>`,_('วันนี้ของคุณ','Your day'),'wide')}
  if(m.kind==='remind'){const pid=m.pid,rec=canRecord(pid)&&!m.test;const items=m.keys.map(([iid,rid])=>D.prescriptions.find(r=>r.id===rid)?.items.find(i=>i.id===iid)).filter(Boolean);
@@ -3487,7 +3502,7 @@ document.addEventListener('toggle',e=>{const d=e.target;if(d&&d.dataset&&d.datas
 function render(){
  document.documentElement.classList.toggle('large',S.large);document.documentElement.lang=S.lang;
  const app=document.getElementById('app');
- if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(S.modal?.kind==='lginfo'?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
+ if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
  if(!allowed(S.view))S.view=homeView();
  let body;try{body=VIEWS[S.view]()}catch(err){console.error(err);body=`<div class="card"><p>${esc(err.message)}</p></div>`}
  const vh=(S.view==='home'||S.view==='log')&&S.user.role!=='staff';const entered=S._lastView!==S.view;S._lastView=S.view;
@@ -3524,6 +3539,7 @@ const fail=(f,m)=>{const e=f.querySelector('.ferr');if(e){e.textContent=m;e.scro
 const num=v=>{if(v==null||String(v).trim()==='')return null;const n=Number(String(v).replace(',','.'));return isFinite(n)?n:NaN};
 
 const ACT={
+ ptstatus:()=>{S.modal={kind:'ptstatus'};render()},
  ptflt:d=>{S.ptFilter=d.f;render()},
  labsel:d=>{S.labSel=d.c;render()},
  tmet:d=>{S.tMet=d.m;render()},
