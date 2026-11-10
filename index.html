@@ -2334,6 +2334,33 @@ div.rbar{cursor:default}
 .fu-head{flex-wrap:wrap}.fu-act{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
 .ap-prep{flex-wrap:wrap;margin:4px 0 8px;overflow:visible}.ap-prep .chip{font-size:.8rem;white-space:normal;text-align:left;max-width:100%;height:auto;line-height:1.35;padding-block:5px}
 @media(max-width:520px){.rx-slots{grid-template-columns:repeat(2,1fr)}}
+.fu-search{max-width:640px}.fu-search h2{font-size:1.15rem;margin:0 0 10px}
+.fu-hint{display:flex;gap:8px;align-items:center;color:var(--ink-2);font-size:.92rem;margin:12px 2px 2px}
+.fu-list{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+.fu-list button{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--surface);font:inherit;color:var(--ink);text-align:left;cursor:pointer}
+.fu-list button:hover{border-color:var(--brand)}
+.fu-av{width:38px;height:38px;flex:0 0 38px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--brand) 14%,transparent);color:var(--brand);font-weight:700}
+.fu-nm{flex:1;display:flex;flex-direction:column;min-width:0}.fu-nm small{color:var(--ink-2);font-size:.82rem}
+.fu-due{display:flex;gap:8px;align-items:center;margin:14px 0 0;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--warn) 12%,transparent);font-size:.9rem}
+.fu-bar{margin-bottom:6px}
+.cg-fs{border:1px solid var(--line);border-radius:16px;padding:10px 12px 12px;margin:0 0 10px}
+.cg-fs legend{display:flex;gap:6px;align-items:center;padding:0 6px;font-weight:600;font-size:.92rem;color:var(--brand)}
+.cg-fs .fgrid2{padding:0}
+.pin-box{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:4px 0 6px}
+.pin-box h3{margin:6px 0 0;font-size:1.2rem}.pin-box .muted{margin:0 0 6px;font-size:.92rem;max-width:300px}
+.pin-ic{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--brand) 14%,transparent);color:var(--brand)}
+.pin-ic svg{width:28px;height:28px}.pin-av{width:64px;height:64px;border-radius:50%;object-fit:cover}
+.pin-dots{display:flex;gap:14px;margin:12px 0 2px}.pin-dots span{width:16px;height:16px;border-radius:50%;border:2px solid var(--brand);transition:background .15s}
+.pin-dots span.on{background:var(--brand)}
+.pin-dots.shake{animation:pinshake .4s}@keyframes pinshake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.pin-err{min-height:1.3em;margin:4px 0;color:var(--danger);font-size:.88rem}
+.pin-pad{display:grid;grid-template-columns:repeat(3,72px);gap:12px 22px;margin:4px 0 12px}
+.pin-k{width:72px;height:72px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font:inherit;font-size:1.6rem;font-weight:600;color:var(--ink);cursor:pointer;display:grid;place-items:center}
+.pin-k:active{background:color-mix(in srgb,var(--brand) 16%,transparent)}.pin-k.del{border:0;background:none}
+.pin-links{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.pin-row{align-items:center}
+.pin-welcome{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 14px;padding:14px 16px;border:0;border-radius:18px;background:linear-gradient(135deg,var(--brand),var(--leaf));color:#fff;font:inherit;text-align:left;cursor:pointer;box-shadow:0 10px 24px -12px rgba(30,90,85,.6)}
+.pin-welcome span{flex:1;display:flex;flex-direction:column}.pin-welcome small{opacity:.9}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3300,9 +3327,9 @@ function vLogin(){
   <div class="hg-art">${careNet()}</div></section>
  <div class="lg-notice">${icon('alert')}<div><span class="nt-l"><b>${_('โปรดทราบ','Please note')}:</b> ${_('นี่คือรูปแบบจำลองสำหรับการทดลอง ข้อมูลทั้งหมดเป็นข้อมูลสมมติ ห้ามกรอกข้อมูลผู้ป่วยจริง','This is a prototype for testing. All data is fictional; don’t enter real patient data.')}</span><span class="nt-s"><b>${_('ต้นแบบทดลอง','Prototype')}</b> · ${_('ข้อมูลสมมติ ห้ามกรอกข้อมูลผู้ป่วยจริง','fictional data only')}</span></div></div>
  <section class="lg-roles" aria-labelledby="lg-rh"><h2 id="lg-rh">${_('เลือกผู้ใช้งาน','Who is using Tub Dee Mee Suk?')}</h2>
- <div class="rpick r4">
+ ${pinWelcome()}<div class="rpick r4">
   <button class="rtile" data-a="ptstatus"><span class="rimg"><img src="media/ico-patient.webp" alt="" width="320" height="320"></span><b>${_('ผู้ป่วย','Patient')}</b><small>${_('เข้าสู่ระบบด้วยชื่อและ HN','Sign in with name and HN')}</small></button>
-  ${rtile(icoCare(),'ญาติ / <span class="nw">ผู้ดูแล</span>','Caregiver','c1')}
+  <button class="rtile" data-a="cgstatus"><span class="rimg">${icoCare()}</span><b>${_('ญาติ / <span class="nw">ผู้ดูแล</span>','Caregiver')}</b><small>${_('ลงทะเบียนด้วยชื่อและ HN ผู้ป่วย','Register with the patient’s name and HN')}</small></button>
   ${rtile('<img src="media/ico-coord.webp" alt="" width="320" height="320">','พยาบาล<br><span class="nw">ผู้ประสานงาน</span>','Nurse<br>coordinator','s1')}
   ${rtile('<img src="media/ico-pharm.webp" alt="" width="320" height="320">','เภสัชกร','Pharmacist','s2')}
 </div>
@@ -4344,7 +4371,7 @@ document.addEventListener('toggle',e=>{const d=e.target;if(d&&d.dataset&&d.datas
 function render(){
  document.documentElement.classList.toggle('large',S.large);document.documentElement.lang=S.lang;
  const app=document.getElementById('app');
- if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus','ptauth'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
+ if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus','ptauth','cgauth','pin'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
  if(!allowed(S.view))S.view=homeView();
  let body;try{body=VIEWS[S.view]()}catch(err){console.error(err);body=`<div class="card"><p>${esc(err.message)}</p></div>`}
  const vh=(S.view==='home'||S.view==='log')&&S.user.role!=='staff';const entered=S._lastView!==S.view;S._lastView=S.view;
@@ -5422,5 +5449,112 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-prep]');if
 {const _ap=FORMS.appt;FORMS.appt=(o,fd,f)=>{const doc=String(o.doc||'').trim();if(doc)o.loc=[String(o.loc||'').trim(),_('พบ ','with ')+doc].filter(Boolean).join(' · ');const n0=D.appts.length;_ap(o,fd,f);const a=D.appts.length>n0?D.appts[D.appts.length-1]:null;
  if(a){if(doc)a.doctor=doc;if(o.task&&S.user?.role==='staff'){const due=dAdd(a.date,-1)<todayISO?todayISO:dAdd(a.date,-1);D.tasks.push({id:uid('t'),pid:a.patientId,type:'appt',title:{th:`โทรเตือนนัด: ${a.type} ${fmtDate(a.date,{day:'numeric',month:'short'})} ${a.time}`,en:`Reminder call: ${a.type} ${a.date} ${a.time}`},due,status:'todo',by:S.user.id,at:nowStamp()})}}}}
 
-seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);loadPhotos();seedMoments();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();
+/* ================= v37 · follow-up search · caregiver sign-up · 6-digit PIN ================= */
+/* ---- follow-up: search first, no patient names until searched ---- */
+function fuResults(q){const mine=myPatients();if(!normTxt(q))return `<p class="fu-hint">${icon('search')} ${_('พิมพ์ชื่อ นามสกุล หรือ HN แล้วรายชื่อจะแสดงที่นี่','Type a name, surname or HN to see matches')}</p>`;
+ const m=mine.filter(p=>ptMatch(p,q.replace(/\bhn\b/ig,''))).slice(0,8);if(!m.length)return `<p class="fu-hint">${_('ไม่พบผู้ป่วยที่ตรงกับคำค้น','No matching patient')}</p>`;
+ return `<ul class="fu-list">${m.map(p=>{const n=openTasks([p.id]).filter(t=>t.due<=todayISO).length;return `<li><button data-a="fuopen" data-pid="${p.id}"><span class="fu-av">${esc(L(p.name).slice(0,1))}</span><span class="fu-nm"><b>${esc(L(p.name))}</b><small>HN ${esc(p.hn)} · ${isPost(p)?_('หลังปลูกถ่าย','Post-transplant'):_('รอปลูกถ่าย','Waiting')}</small></span>${n?`<em class="dotw">${n}</em>`:''}${icon('chev')}</button></li>`}).join('')}</ul>`}
+function fuSearchView(){const mine=myPatients();const due=mine.map(p=>openTasks([p.id]).filter(t=>t.due<=todayISO).length);const nt=due.reduce((a,b)=>a+b,0),np=due.filter(Boolean).length;
+ return `<section class="card fu-search"><h2>${_('ค้นหาผู้ป่วยที่ต้องการติดตาม','Find a patient to follow up')}</h2>
+ <div class="pt-search"><span class="ps-ic">${icon('search')}</span><input type="search" id="fu-q" placeholder="${_('ชื่อ นามสกุล หรือ HN','Name, surname or HN')}" aria-label="${_('ค้นหาผู้ป่วย','Search patients')}" value="${esc(S.fuQ||'')}" autocomplete="off" enterkeyhint="search"></div>
+ <div id="fu-res" aria-live="polite">${fuResults(S.fuQ||'')}</div>
+ ${nt?`<p class="fu-due">${icon('bell')} ${_(`มีงานติดตามถึงกำหนด ${nt} รายการ ในผู้ป่วย ${np} ราย`,`${nt} follow-up tasks due across ${np} patients`)}</p>`:''}</section>`}
+{const _vf3=vFollowup;vFollowup=function(){const mine=myPatients();if(!S.fuPid||!mine.some(p=>p.id===S.fuPid))return fuSearchView();
+ return `<div class="fu-bar"><button class="btn sm ghost" data-a="fuclear">${icon('search')} ${_('ค้นหาผู้ป่วยคนอื่น','Find another patient')}</button></div>`+_vf3().replace(/<div class="ptpick">[\s\S]*?<\/div>/,'')};VIEWS.followup=vFollowup}
+ACT.fuclear=()=>{S.fuPid=null;S.fuQ='';render();setTimeout(()=>document.getElementById('fu-q')?.focus(),30)};
+document.addEventListener('input',e=>{if(e.target.id!=='fu-q')return;S.fuQ=e.target.value;const r=document.getElementById('fu-res');if(r)r.innerHTML=fuResults(S.fuQ)});
+document.addEventListener('keydown',e=>{if(e.target.id==='fu-q'&&e.key==='Enter'){const b=document.querySelectorAll('#fu-res [data-a=fuopen]');if(b.length===1)b[0].click()}});
+
+/* ---- caregiver: register with own name + phone + patient's name + HN, sign in with own name + patient's HN ---- */
+const CG_REL=['คู่สมรส','บุตร','บิดา / มารดา','พี่ / น้อง','ญาติ','ผู้ดูแลอื่น ๆ'];
+let cgFails=0,cgLockUntil=0;
+const fullName=(a,b)=>normTxt(`${a} ${b}`);
+function cgAuthModal(){const t=S.modal.t||'login';
+ const tabs=`<div class="seg big lg-tabs" role="tablist"><button role="tab" aria-selected="${t==='login'}" class="${t==='login'?'on':''}" data-a="cgauth" data-t="login">${_('เข้าสู่ระบบ','Sign in')}</button><button role="tab" aria-selected="${t==='reg'}" class="${t==='reg'?'on':''}" data-a="cgauth" data-t="reg">${_('ลงทะเบียนผู้ดูแล','Register')}</button></div>`;
+ const nm=(a,b,pa,pb)=>`<div class="fgrid2"><label class="field">${_('ชื่อ','First name')}<input name="${a}" autocomplete="${pa}" required></label><label class="field">${_('นามสกุล','Surname')}<input name="${b}" autocomplete="${pb}" required></label></div>`;
+ const demo=`<div class="pa-demo"><span>${_('บัญชีทดลอง','Demo account')}</span><button type="button" class="chip brand" data-a="login" data-id="c1">${esc(L(C('c1').name))} · ${_('ผู้ดูแลของ','caring for')} ${esc(L(P('p1').name).split(' ')[0])}</button></div>`;
+ const body=t==='login'?`<form class="form pa-form" data-form="cglogin" novalidate><p class="muted tiny">${_('ใช้ชื่อ-นามสกุลของผู้ดูแล และรหัสผ่านคือ HN ของผู้ป่วยที่ดูแล','Use your own name. Your password is the HN of the patient you care for.')}</p>${nm('first','last','given-name','family-name')}
+  <label class="field">${_('รหัสผ่าน (HN ของผู้ป่วย)','Password (patient’s HN)')}<input name="hn" type="password" autocomplete="current-password" placeholder="${_('เช่น 65-001234','e.g. 65-001234')}" required></label><p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${_('เข้าสู่ระบบ','Sign in')}</button><p class="hint tiny">${_('ยังไม่เคยใช้งาน? กด "ลงทะเบียนผู้ดูแล" ด้านบน','First time? Choose “Register” above')}</p></form>${demo}`
+ :`<form class="form pa-form" data-form="cgreg" novalidate>
+  <fieldset class="cg-fs"><legend>${icon('users')} ${_('ข้อมูลผู้ดูแล','About you')}</legend>${nm('first','last','given-name','family-name')}
+  <div class="fgrid2"><label class="field">${_('เบอร์โทรศัพท์','Phone')}<input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="08x-xxx-xxxx" required></label><label class="field">${_('เกี่ยวข้องเป็น','Relationship')}<select name="rel"><option value="">${_('เลือก','Choose')}</option>${CG_REL.map(r=>`<option>${r}</option>`).join('')}</select></label></div></fieldset>
+  <fieldset class="cg-fs"><legend>${icon('user')} ${_('ผู้ป่วยที่ดูแล','The patient you care for')}</legend>${nm('pfirst','plast','off','off')}
+  <label class="field">${_('HN ของผู้ป่วย','Patient’s HN')}<input name="hn" autocomplete="off" placeholder="${_('ดูจากบัตรโรงพยาบาลของผู้ป่วย','From the patient’s hospital card')}" required></label></fieldset>
+  <label class="chk pa-ok"><input type="checkbox" name="consent" value="1"><span>${_('ยืนยันว่าเป็นผู้ดูแลของผู้ป่วยรายนี้ และผู้ป่วยรับทราบ ผู้ป่วยกำหนดหรือยกเลิกสิทธิ์การดูข้อมูลได้ทุกเมื่อ','I confirm I care for this patient and they know. The patient can change or remove my access at any time.')}</span></label>
+  <p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${_('ลงทะเบียน','Register')}</button>
+  <p class="hint tiny">${_('ครั้งต่อไปเข้าสู่ระบบด้วยชื่อ-นามสกุลของคุณ รหัสผ่านคือ HN ของผู้ป่วย','Next time, sign in with your name; the password is the patient’s HN')}</p></form>`;
+ return mShell(_('ญาติ / ผู้ดูแล','Family / caregiver'),tabs+body,_('บัญชีผู้ดูแล','Caregiver account'),'pa-modal')}
+ACT.cgstatus=()=>{S.modal={kind:'cgauth',t:'login'};render()};
+ACT.cgauth=d=>{S.modal={kind:'cgauth',t:d.t};render();setTimeout(()=>document.querySelector('.pa-form input')?.focus(),30)};
+const cgLinks=c=>D.consents.filter(x=>x.caregiverId===c.id&&x.active);
+Object.assign(FORMS,{
+ cglogin:(o,fd,f)=>{if(Date.now()<cgLockUntil)return fail(f,_('ลองผิดหลายครั้ง โปรดรอ 1 นาทีแล้วลองใหม่','Too many tries — wait a minute and try again'));
+  if(!o.first.trim()||!o.last.trim()||!o.hn.trim())return fail(f,_('กรอกชื่อ นามสกุล และรหัสผ่านให้ครบ','Enter your name, surname and password'));
+  const fn=fullName(o.first,o.last);const c=D.caregivers.find(c=>[L(c.name),c.name?.th,c.name?.en,typeof c.name==='string'?c.name:''].some(n=>n&&normTxt(n)===fn)&&cgLinks(c).some(x=>hnDigits(P(x.patientId)?.hn)===hnDigits(o.hn)));
+  if(!c){cgFails++;if(cgFails>=5){cgLockUntil=Date.now()+60e3;cgFails=0}return fail(f,_('ชื่อ นามสกุล หรือรหัสผ่านไม่ถูกต้อง','Name, surname or password doesn’t match'))}
+  cgFails=0;const pid=cgLinks(c).find(x=>hnDigits(P(x.patientId)?.hn)===hnDigits(o.hn)).patientId;S.modal=null;ACT.login({id:c.id});S.pid=pid;pinOffer();render()},
+ cgreg:(o,fd,f)=>{const v=k=>String(o[k]||'').trim();
+  if(!v('first')||!v('last'))return fail(f,_('กรอกชื่อและนามสกุลของผู้ดูแล','Enter your first name and surname'));
+  if(hnDigits(v('phone')).length<9)return fail(f,_('กรอกเบอร์โทรศัพท์ให้ถูกต้อง','Enter a valid phone number'));
+  if(!v('pfirst')||!v('plast'))return fail(f,_('กรอกชื่อและนามสกุลของผู้ป่วย','Enter the patient’s name and surname'));
+  if(hnDigits(v('hn')).length<6)return fail(f,_('HN ของผู้ป่วยดูไม่ถูกต้อง โปรดตรวจสอบจากบัตรโรงพยาบาล','That HN looks wrong — check the hospital card'));
+  if(!o.consent)return fail(f,_('โปรดยืนยันก่อนลงทะเบียน','Please tick the confirmation box'));
+  const p=findPatientByName(v('pfirst'),v('plast')).find(x=>hnDigits(x.hn)===hnDigits(v('hn')));
+  if(!p)return fail(f,_('ไม่พบผู้ป่วยตามชื่อและ HN นี้ โปรดตรวจสอบอีกครั้ง หรือติดต่อพยาบาลผู้ประสานงาน','No patient matches that name and HN — check again or contact the coordinator nurse'));
+  const fn=fullName(v('first'),v('last'));
+  if(D.caregivers.some(c=>normTxt(L(c.name))===fn&&cgLinks(c).some(x=>x.patientId===p.id)))return fail(f,_('คุณลงทะเบียนเป็นผู้ดูแลของผู้ป่วยรายนี้แล้ว กลับไปที่ "เข้าสู่ระบบ"','You’re already registered for this patient — use “Sign in”'));
+  const name=`${v('first')} ${v('last')}`,rel=v('rel')||'ผู้ดูแล';const id=uid('c');
+  D.caregivers.push({id,name:{th:name,en:name},phone:v('phone'),selfReg:true,at:nowStamp()});
+  D.consents.push({id:uid('cs'),caregiverId:id,patientId:p.id,relation:{th:rel,en:rel},active:true,since:todayISO,selfReg:true,perms:{health:true,meds:true,labs:false,appts:true,record:false}});
+  notify(p.id,`${name} (${rel}) ลงทะเบียนเป็นผู้ดูแลของคุณ ตรวจสอบหรือเปลี่ยนสิทธิ์ได้ที่ "ญาติและสิทธิ์"`,`${name} registered as your caregiver. Review or change access in “Family & access”.`);
+  S.modal=null;ACT.login({id});S.pid=p.id;audit(`ผู้ดูแลลงทะเบียน (${rel}) เชื่อมกับผู้ป่วย`,`Caregiver self-registered (${rel})`,p.id);pinOffer();render();
+  toast(_('ลงทะเบียนแล้ว ครั้งต่อไปใช้ชื่อของคุณ และ HN ของผู้ป่วยเป็นรหัสผ่าน','Registered — next time use your name and the patient’s HN'))}});
+
+/* ---- 6-digit PIN on this device (patient & caregiver) ---- */
+const PIN_K='sj-pin';
+function pinHash(pin,salt){let h=0x811c9dc5;const s=salt+'|'+pin;for(let r=0;r<2000;r++){for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0}h^=r;}return h.toString(36)+'.'+s.length}
+const pinGet=()=>{try{const v=JSON.parse(LS.get(PIN_K)||'null');return v&&v.id?v:null}catch(e){return null}};
+const pinSave=v=>LS.set(PIN_K,v?JSON.stringify(v):'');
+const pinMine=()=>{const v=pinGet();return v&&S.user&&v.id===S.user.id?v:null};
+const pinWeak=p=>/^(\d)\1{5}$/.test(p)||'0123456789'.includes(p)||'9876543210'.includes(p);
+function pinOffer(){const u=S.user;if(!u||u.role==='staff'||pinMine())return;S.modal={kind:'pinset',step:1};S.pinBuf='';S.pinFirst=''}
+function pinPad(){const k=['1','2','3','4','5','6','7','8','9','','0','del'];return `<div class="pin-dots" aria-hidden="true">${[0,1,2,3,4,5].map(i=>`<span class="${i<(S.pinBuf||'').length?'on':''}"></span>`).join('')}</div><p class="pin-err" role="alert"></p>
+ <div class="pin-pad">${k.map(x=>!x?'<span></span>':`<button type="button" class="pin-k${x==='del'?' del':''}" data-a="pinkey" data-k="${x}" aria-label="${x==='del'?_('ลบ','Delete'):x}">${x==='del'?icon('x'):x}</button>`).join('')}</div>`}
+function pinSetModal(){const m=S.modal;const t=m.step===1?_('ตั้ง PIN 6 หลัก','Set a 6-digit PIN'):_('ใส่ PIN อีกครั้งเพื่อยืนยัน','Enter the PIN again');
+ return mShell(_('PIN เข้าสู่ระบบ','Sign-in PIN'),`<div class="pin-box"><span class="pin-ic">${icon('shield')}</span><h3>${t}</h3><p class="muted">${m.step===1?_('ครั้งต่อไปเข้าสู่ระบบด้วย PIN บนโทรศัพท์เครื่องนี้ได้เลย ไม่ต้องพิมพ์ชื่อ','Next time, sign in on this phone with your PIN — no typing your name'):_('ใส่ 6 หลักเดิมอีกครั้ง','Type the same 6 digits again')}</p>${pinPad()}
+ <button type="button" class="btn ghost block" data-a="pinskip">${m.step===1?_('ไว้ทีหลัง','Not now'):_('เริ่มตั้งใหม่','Start again')}</button></div>`,_('ตั้ง PIN','Set PIN'),'pin-modal')}
+function pinLoginModal(){const v=pinGet();const who=person(v.id);const nm=L(who?.name)||v.name;
+ return mShell(_('เข้าสู่ระบบด้วย PIN','Sign in with PIN'),`<div class="pin-box">${v.role==='patient'&&who?.photo?`<img class="pin-av" src="${who.photo}" alt="">`:`<span class="pin-ic">${icon(v.role==='patient'?'user':'users')}</span>`}<h3>${_('สวัสดีคุณ','Welcome back,')} ${esc(String(nm).split(' ')[0])}</h3><p class="muted">${_('ใส่ PIN 6 หลัก','Enter your 6-digit PIN')}</p>${pinPad()}
+ <div class="pin-links"><button type="button" class="link-btn" data-a="pinuse" data-t="pw">${_('ใช้ชื่อและรหัสผ่านแทน','Use name and password')}</button><button type="button" class="link-btn" data-a="pinforget">${_('ไม่ใช่ฉัน','Not me')}</button></div></div>`,_('PIN','PIN'),'pin-modal')}
+{const _mh3=modalHTML;modalHTML=function(){const k=S.modal?.kind;if(k==='cgauth')return cgAuthModal();if(k==='pinset')return pinSetModal();if(k==='pin'){if(!pinGet()){S.modal=null;return _mh3()}return pinLoginModal()}return _mh3()}}
+function pinPaint(err){document.querySelectorAll('.pin-dots span').forEach((s,i)=>s.classList.toggle('on',i<(S.pinBuf||'').length));const e=document.querySelector('.pin-err');if(e){e.textContent=err||'';if(err){const d=document.querySelector('.pin-dots');d?.classList.remove('shake');void d?.offsetWidth;d?.classList.add('shake')}}}
+function pinDone(){const m=S.modal,p=S.pinBuf;
+ if(m.kind==='pinset'){if(m.step===1){if(pinWeak(p)){S.pinBuf='';return pinPaint(_('PIN ง่ายเกินไป เช่น 111111 หรือ 123456 ลองตัวเลขอื่น','Too easy to guess — try other digits'))}S.pinFirst=p;S.pinBuf='';m.step=2;render();return}
+  if(p!==S.pinFirst){S.pinBuf='';S.pinFirst='';m.step=1;render();return pinPaint(_('PIN ไม่ตรงกัน เริ่มตั้งใหม่อีกครั้ง','PINs didn’t match — start again'))}
+  const salt=Math.random().toString(36).slice(2,10);pinSave({id:S.user.id,role:S.user.role,name:L(person(S.user.id)?.name),salt,h:pinHash(p,salt),fails:0,at:nowStamp()});
+  S.modal=null;S.pinBuf='';S.pinFirst='';render();audit('ตั้ง PIN เข้าสู่ระบบบนเครื่องนี้','Set a sign-in PIN on this device',S.user.role==='patient'?S.user.id:S.pid);toast(_('ตั้ง PIN แล้ว ครั้งต่อไปเข้าสู่ระบบด้วย PIN ได้เลย','PIN set — use it to sign in next time'));return}
+ if(m.kind==='pin'){const v=pinGet();if(!v)return;S.pinBuf='';
+  if(pinHash(p,v.salt)!==v.h){v.fails=(v.fails||0)+1;if(v.fails>=5){pinSave(null);S.modal={kind:v.role==='patient'?'ptauth':'cgauth',t:'login'};render();toast(_('ใส่ PIN ผิด 5 ครั้ง PIN ถูกปิดแล้ว กรุณาเข้าสู่ระบบด้วยชื่อและรหัสผ่าน','5 wrong PINs — PIN turned off. Sign in with your name and password'));return}
+   pinSave(v);return pinPaint(_(`PIN ไม่ถูกต้อง เหลืออีก ${5-v.fails} ครั้ง`,`Wrong PIN — ${5-v.fails} tries left`))}
+  if(!person(v.id)){pinSave(null);S.modal={kind:v.role==='patient'?'ptauth':'cgauth',t:'login'};render();toast(_('ไม่พบบัญชีนี้แล้ว กรุณาเข้าสู่ระบบใหม่','Account not found — please sign in again'));return}
+  v.fails=0;pinSave(v);S.modal=null;ACT.login({id:v.id});if(v.role==='caregiver'){const c=cgLinks(C(v.id))[0];if(c)S.pid=c.patientId}render()}}
+ACT.pinkey=d=>{const k=d.k;if(k==='del')S.pinBuf=(S.pinBuf||'').slice(0,-1);else if((S.pinBuf||'').length<6)S.pinBuf=(S.pinBuf||'')+k;pinPaint();if(S.pinBuf.length===6)setTimeout(pinDone,160)};
+ACT.pinskip=()=>{if(S.modal?.step===2){S.modal.step=1;S.pinBuf='';S.pinFirst='';render();return}S.modal=null;S.pinBuf='';render()};
+ACT.pinset=()=>{S.moreOpen=false;S.modal={kind:'pinset',step:1};S.pinBuf='';S.pinFirst='';render()};
+ACT.pinoff=()=>{if(pinMine()){pinSave(null);audit('ปิด PIN เข้าสู่ระบบบนเครื่องนี้','Turned off sign-in PIN on this device',S.user.role==='patient'?S.user.id:S.pid)}render();toast(_('ปิด PIN แล้ว','PIN turned off'))};
+ACT.pinopen=()=>{if(!pinGet())return;S.modal={kind:'pin'};S.pinBuf='';render()};
+ACT.pinuse=()=>{const v=pinGet();S.modal={kind:v?.role==='caregiver'?'cgauth':'ptauth',t:'login'};render()};
+ACT.pinforget=()=>{pinSave(null);S.modal=null;render();toast(_('ลบ PIN ออกจากเครื่องนี้แล้ว','PIN removed from this device'))};
+document.addEventListener('keydown',e=>{const k=S.modal?.kind;if(k!=='pin'&&k!=='pinset')return;if(/^\d$/.test(e.key)){e.preventDefault();ACT.pinkey({k:e.key})}else if(e.key==='Backspace'){e.preventDefault();ACT.pinkey({k:'del'})}});
+/* offer PIN after a name/password sign-in or first registration */
+for(const k of ['ptlogin','ptreg']){const f0=FORMS[k];FORMS[k]=(o,fd,f)=>{const before=S.user;f0(o,fd,f);if(!before&&S.user){pinOffer();render()}}}
+/* profile sheet: PIN settings */
+{const _ms=moreSheet;moreSheet=function(){const h=_ms();if(!S.moreOpen||!S.user||S.user.role==='staff')return h;const on=!!pinMine();
+ const row=`<div class="row sheet-row pin-row"><span class="muted">${icon('shield')} ${_('PIN 6 หลัก','6-digit PIN')}</span><span class="row" style="gap:6px"><button class="btn sm" data-a="pinset">${on?_('เปลี่ยน PIN','Change'):_('ตั้ง PIN','Set PIN')}</button>${on?`<button class="btn sm ghost" data-a="pinoff">${_('ปิด','Turn off')}</button>`:''}</span></div>`;
+ return h.replace('<button class="btn block" data-a="logout">',row+'<button class="btn block" data-a="logout">')}}
+/* landing: quick PIN entry */
+function pinWelcome(){const v=pinGet();if(!v||!person(v.id))return'';const nm=L(person(v.id).name)||v.name;
+ return `<button class="pin-welcome" data-a="pinopen">${icon('shield')}<span><b>${_('เข้าสู่ระบบด้วย PIN','Sign in with PIN')}</b><small>${esc(nm)}</small></span>${icon('chev')}</button>`}
+
+seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);loadPhotos();seedMoments();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&person(v.id)&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
