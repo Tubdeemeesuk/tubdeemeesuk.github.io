@@ -4348,9 +4348,8 @@ function lgSections(pid){
    <div class="optrow"><b>${_('คุณภาพการนอน','Sleep quality')}</b>${rad('sleep',SLEEP)}</div>
    <div class="lgcol"><b>${_('ความเครียด / ความกังวลใจ','Stress / worry')}</b>${lvl('stress',STRESS)}</div>
    <p class="lgx-tip">${_('การนอนพักเพียงพอช่วยให้ร่างกายฟื้นตัว ถ้ากังวลเรื่องผลเลือดหรืออาการ พูดคุยกับทีมรักษาหรือครอบครัวได้เสมอ','Good sleep helps you recover. If you’re worried about results or symptoms, talk to your care team or family')}</p>`)}
- ${sec('food','#FDE7D6','อาหารและน้ำดื่ม','Food and water','อาหารสะอาด ปรุงสุกใหม่ น้ำดื่มต่อวัน','Clean, freshly cooked food; daily water',
+ ${sec('food','#FDE7D6','อาหารและน้ำดื่ม','Food and water','ความอยากอาหาร และน้ำดื่มต่อวัน','Appetite and daily water',
   `<div class="optrow"><b>${_('การกิน','Appetite')}</b>${rad('appetite',APPETITE)}</div>
-   <div class="optrow"><b>${_('อาหารที่กินวันนี้','Food today')}</b>${FOOD.map(([v,th,en,r])=>`<label class="opt ${r?'risk':''}"><input type="checkbox" name="food" value="${v}"><span>${_(th,en)}</span></label>`).join('')}</div>
    <div class="lgrow"><b>${_('น้ำสะอาดที่ดื่ม','Clean water')}</b>${stp('water_g',_(`แก้ว (${GLASS} มล.)`,`glasses (${GLASS} ml)`),1,20)}</div>
    <p class="lgx-tip">${drank?`<b>${_(`วันนี้บันทึกแล้ว ${drank} มล.`,`${drank} ml logged today`)}</b> · `:''}${wtTxt} · ${_('หลีกเลี่ยงอาหารดิบ หมักดอง ค้างคืน และส้มโอ/เกรปฟรุตที่มีผลต่อระดับยา','Avoid raw, fermented or leftover food, and pomelo/grapefruit, which affect drug levels')}</p>`)}
  ${sec('note','#DDF1EC','อาการร่วมและหมายเหตุ','Symptoms and notes','สิ่งที่อยากบอกทีมรักษา','Anything for the team',
