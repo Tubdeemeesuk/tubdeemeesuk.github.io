@@ -2395,6 +2395,7 @@ div.rbar{cursor:default}
 .rxd-add b{color:var(--brand)}.rxd-chg b{color:#b26b00}.rxd-del b{color:var(--danger)}
 .rxp-head{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:4px 0 8px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--warn) 12%,transparent);font-size:.9rem}
 .rxp-diff{margin:0 0 8px}.pt-tips{margin:8px 0 0;padding-left:20px;color:var(--ink-2);font-size:.9rem}
+.code-box{padding:10px 12px 4px;margin:0 0 10px;border-radius:14px;background:color-mix(in srgb,var(--brand) 8%,transparent);border:1px solid color-mix(in srgb,var(--brand) 25%,transparent)}.code-box .hint{display:flex;gap:6px;align-items:center;margin:4px 0 6px}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -5695,7 +5696,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.modal?.kind==='pw
 /* ---- staff accounts page (administrators) ---- */
 function vStaffAcc(){if(!meAdmin())return `<section class="card"><p>${_('เฉพาะผู้ดูแลระบบ','Administrators only')}</p></section>`;
  const rows=D.staff.filter(s=>s.pw||s.user).map(s=>{const me=s.id===S.user.id;const st=s.active===false?`<span class="pill-s off">${_('ปิดใช้งาน','Off')}</span>`:s.mustChange?`<span class="pill-s wait">${_('รอตั้งรหัสใหม่','Awaiting new password')}</span>`:`<span class="pill-s on">${_('ใช้งาน','Active')}</span>`;
-  return `<li class="sa-row"><span class="fu-av">${esc(L(s.name).slice(0,1))}</span><span class="sa-main"><b>${esc(L(s.name))}${me?` <small>(${_('คุณ','you')})</small>`:''}</b><small>${esc(L(s.title))} · <code>${esc(s.user)}</code>${s.admin?` · ${_('ผู้ดูแลระบบ','Admin')}`:''}</small><small class="muted">${s.lastLogin?_('เข้าใช้ล่าสุด ','Last sign-in ')+fmtDate(s.lastLogin.slice(0,10),{day:'numeric',month:'short'})+' '+s.lastLogin.slice(11,16):_('ยังไม่เคยเข้าใช้','Never signed in')}</small></span>${st}
+  return `<li class="sa-row"><span class="fu-av">${esc(L(s.name).slice(0,1))}</span><span class="sa-main"><b>${esc(L(s.name))}${me?` <small>(${_('คุณ','you')})</small>`:''}</b><small>${esc(L(s.title))} · <code>${esc(s.user)}</code>${s.admin?` · ${_('ผู้ดูแลระบบ','Admin')}`:''}${s.selfReg?` · ${_('สมัครด้วยรหัส','signed up with code')}`:''}</small><small class="muted">${s.lastLogin?_('เข้าใช้ล่าสุด ','Last sign-in ')+fmtDate(s.lastLogin.slice(0,10),{day:'numeric',month:'short'})+' '+s.lastLogin.slice(11,16):_('ยังไม่เคยเข้าใช้','Never signed in')}</small></span>${st}
   ${me?'':`<span class="sa-act"><button class="btn sm" data-a="streset" data-id="${s.id}">${_('รีเซ็ตรหัสผ่าน','Reset password')}</button><button class="btn sm ghost" data-a="sttoggle" data-id="${s.id}">${s.active===false?_('เปิดใช้งาน','Turn on'):_('ปิดใช้งาน','Turn off')}</button><button class="btn sm ghost" data-a="stadmin" data-id="${s.id}">${s.admin?_('ยกเลิกผู้ดูแลระบบ','Remove admin'):_('ตั้งเป็นผู้ดูแลระบบ','Make admin')}</button></span>`}</li>`}).join('');
  const add=`<form class="form" data-form="stadd" novalidate><div class="fgrid2"><label class="field">${_('ชื่อ','First name')}<input name="first" required></label><label class="field">${_('นามสกุล','Surname')}<input name="last" required></label></div>
   <div class="fgrid2"><label class="field">${_('ตำแหน่ง','Role')}<select name="prof">${Object.entries(PROF).map(([k,v])=>`<option value="${k}">${_(...v)}</option>`).join('')}</select></label><label class="field">${_('ชื่อผู้ใช้','Username')}<input name="user" autocapitalize="none" spellcheck="false" placeholder="${_('เช่น somsri.k','e.g. somsri.k')}" required></label></div>
@@ -6041,6 +6042,51 @@ FORMS.rxrej=(o,fd,f)=>{const r=D.prescriptions.find(x=>x.id===f.dataset.id);cons
   ${rec?`<div class="row"><button class="btn sm" data-a="rxpt">${icon('edit')} ${_('แก้ไขคำขอ','Edit request')}</button><button class="btn sm ghost" data-a="rxwithdraw" data-id="${pr.id}">${icon('x')} ${_('ยกเลิกคำขอ','Withdraw')}</button></div>`:''}</section>`;
  else if(rec)top+=`<section class="card rxp-cta"><div><b>${_('ยาไม่ตรงกับที่ทานจริง หรือมียาอื่นที่ต้องทาน?','Schedule not right, or taking something else?')}</b><p class="muted">${_('เพิ่ม ลด หรือแก้วิธีทานยาได้เอง แล้วพยาบาลจะตรวจสอบและยืนยันให้','Add, remove or change medicines yourself — a nurse checks and confirms')}</p></div><button class="btn primary" data-a="rxpt">${icon('plus')} ${_('เพิ่มหรือแก้ไขรายการยา','Add or edit medicines')}</button></section>`;
  return top+h}}
+
+/* ================= v44 · staff self sign-up needs the team code ================= */
+/* only a one-way hash of the code is kept in the page; with the central store the Sheet's script checks the code itself */
+const STCODE={s:'sj-staff-code-v1',it:150000,h:'aac134e5e4e47f070a4eddb437392f1412d2b6b54fd851a4453aa2f2da064525'};
+const stCodeOk=async c=>(await pwHash(String(c||'').trim(),STCODE.s,STCODE.it))===STCODE.h;
+let codeFails=0,codeLock=0;
+stAuthModal=function(){const m=S.modal,r=m.r||'nurse';
+ const shell=b=>mShell(_('เจ้าหน้าที่ · พยาบาลและเภสัชกร','Staff · nurses and pharmacists'),b,_('เจ้าหน้าที่','Staff'),'pa-modal');
+ if(m.loading)return shell(`<p class="muted" style="padding:20px 0;text-align:center">${_('กำลังเชื่อมต่อ…','Connecting…')}</p>`);
+ if(m.err)return shell(`<p class="ferr">${esc(m.err)}</p><button class="btn primary block" data-a="stauth" data-r="${r}">${_('ลองอีกครั้ง','Try again')}</button>`);
+ const first=APIMODE?!!m.first:!stActive().length;const t=first?'signup':(m.t||'login');
+ const head=`<div class="st-head"><span class="st-ic">${icon(r==='pharm'?'pill':'shield')}</span><div><b>${_(...PROF[r])}</b><small>${first?_('ยังไม่มีบัญชีเจ้าหน้าที่ · บัญชีแรกจะเป็นผู้ดูแลระบบ','No staff accounts yet · the first becomes the administrator'):_('สำหรับเจ้าหน้าที่ทีมปลูกถ่ายตับ','For transplant team staff')}</small></div></div>`;
+ const tabs=first?'':`<div class="seg big lg-tabs" role="tablist"><button role="tab" aria-selected="${t==='login'}" class="${t==='login'?'on':''}" data-a="sttab" data-t="login">${_('เข้าสู่ระบบ','Sign in')}</button><button role="tab" aria-selected="${t==='signup'}" class="${t==='signup'?'on':''}" data-a="sttab" data-t="signup">${_('สมัครบัญชีเจ้าหน้าที่','Staff sign-up')}</button></div>`;
+ const body=t==='login'?`<form class="form pa-form" data-form="stlogin" novalidate>${head}
+  <label class="field">${_('ชื่อผู้ใช้','Username')}<input name="user" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+  ${pwField('pw',_('รหัสผ่าน','Password'),'current-password')}
+  <p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${_('เข้าสู่ระบบ','Sign in')}</button>
+  <p class="hint tiny">${_('ลืมรหัสผ่าน ติดต่อผู้ดูแลระบบของทีมเพื่อรีเซ็ต','Forgot your password? Ask your team administrator to reset it.')}</p></form>`
+ :`<form class="form pa-form" data-form="stsignup" novalidate>${head}
+  <div class="code-box">${pwField('code',_('รหัสสมัครสำหรับเจ้าหน้าที่','Staff sign-up code'),'off',_('ขอรหัสจากผู้ดูแลโครงการ','Ask the project lead for the code'))}<p class="hint tiny">${icon('lock')} ${_('ป้องกันบุคคลภายนอกสมัครเข้ามาดูข้อมูลผู้ป่วย','Keeps outsiders from signing up to see patient data')}</p></div>
+  <div class="fgrid2"><label class="field">${_('ชื่อ','First name')}<input name="first" autocomplete="given-name" required></label><label class="field">${_('นามสกุล','Surname')}<input name="last" autocomplete="family-name" required></label></div>
+  <label class="field">${_('ตำแหน่ง','Role')}<select name="prof">${Object.entries(PROF).map(([k,v])=>`<option value="${k}" ${k===r?'selected':''}>${_(...v)}</option>`).join('')}</select></label>
+  <label class="field">${_('ชื่อผู้ใช้','Username')}<input name="user" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="${_('ภาษาอังกฤษหรือตัวเลข เช่น maneerat.t','Letters or numbers, e.g. maneerat.t')}" required></label>
+  ${pwField('pw',_('ตั้งรหัสผ่าน','Password'),'new-password',_('อย่างน้อย 8 ตัว มีทั้งตัวอักษรและตัวเลข','8+ characters, letters and numbers'))}${pwField('pw2',_('ยืนยันรหัสผ่าน','Confirm password'),'new-password')}
+  <p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${first?_('สร้างบัญชีผู้ดูแลระบบ','Create administrator account'):_('สมัครบัญชีเจ้าหน้าที่','Create staff account')}</button></form>`;
+ return shell(tabs+body)};
+ACT.sttab=d=>{if(S.modal?.kind!=='stauth')return;S.modal.t=d.t;render();setTimeout(()=>document.querySelector('.pa-form input')?.focus(),40)};
+FORMS.stsignup=async(o,fd,f)=>{const v=k=>String(o[k]||'').trim();const u=normUser(o.user);
+ if(Date.now()<codeLock)return fail(f,_('ใส่รหัสสมัครผิดหลายครั้ง โปรดรอ 5 นาที','Too many wrong codes — wait 5 minutes'));
+ if(!v('code'))return fail(f,_('กรอกรหัสสมัครสำหรับเจ้าหน้าที่','Enter the staff sign-up code'));
+ if(!v('first')||!v('last'))return fail(f,_('กรอกชื่อและนามสกุล','Enter your first name and surname'));
+ if(!/^[a-z0-9._-]{3,30}$/.test(u))return fail(f,_('ชื่อผู้ใช้ใช้ได้เฉพาะ a–z ตัวเลข . _ - ความยาว 3–30 ตัว','Username: a–z, numbers, . _ - (3–30 characters)'));
+ if(pwWeak(o.pw))return fail(f,_('รหัสผ่านต้องยาวอย่างน้อย 8 ตัว และมีทั้งตัวอักษรและตัวเลข','Password needs 8+ characters with letters and numbers'));
+ if(o.pw!==o.pw2)return fail(f,_('รหัสผ่านทั้งสองช่องไม่ตรงกัน','The two passwords don’t match'));
+ busy(f,true);
+ try{
+  if(APIMODE){const j=await api('stsignup',{code:v('code'),first:v('first'),last:v('last'),prof:o.prof,user:u,pw:await pwMake(o.pw)});if(!j.ok)return fail(f,j.msg);
+   S.modal=null;await apiStart(j.token,j.user.id,{user:j.user});toast(j.user.admin?_('สร้างบัญชีผู้ดูแลระบบแล้ว','Administrator account created'):_('สมัครบัญชีเจ้าหน้าที่แล้ว','Staff account created'));return}
+  if(!(await stCodeOk(v('code')))){codeFails++;if(codeFails>=5){codeLock=Date.now()+5*60e3;codeFails=0}return fail(f,_('รหัสสมัครไม่ถูกต้อง','That sign-up code is not correct'))}
+  codeFails=0;if(D.staff.some(x=>x.user===u))return fail(f,_('ชื่อผู้ใช้นี้มีแล้ว','That username is taken'));
+  const first=!stActive().length;const name=`${v('first')} ${v('last')}`;const prof=PROF[o.prof]?o.prof:'nurse';
+  const s={id:uid('s'),name:{th:name,en:name},title:{th:PROF[prof][0],en:PROF[prof][1]},prof,user:u,pw:await pwMake(o.pw),admin:first,active:true,mustChange:false,selfReg:true,at:nowStamp()};
+  D.staff.push(s);stEnter(s);audit(first?'สร้างบัญชีผู้ดูแลระบบ (ด้วยรหัสสมัคร)':'สมัครบัญชีเจ้าหน้าที่ด้วยรหัสสมัคร',first?'Created administrator with sign-up code':'Staff signed up with the code',null);
+  toast(first?_('สร้างบัญชีผู้ดูแลระบบแล้ว','Administrator account created'):_('สมัครบัญชีเจ้าหน้าที่แล้ว','Staff account created'))}
+ catch(e){fail(f,e.message||String(e))}finally{busy(f,false)}};
 
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
