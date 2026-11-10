@@ -1762,6 +1762,164 @@ div.rbar{cursor:default}
 .pst-t small{font-size:.8rem;color:var(--ink-2)}
 .pst-t em{font-style:normal;font-size:.7rem;color:var(--ink-2);opacity:.8}
 .pst>.ic{color:var(--ink-2);flex:none}
+
+/* =================== v27 · coordinator portal =================== */
+.cp-hero{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--grad-brand);color:#fff;border-radius:22px;padding:16px 18px;box-shadow:var(--sh1)}
+.cp-hero small{opacity:.85;letter-spacing:.04em;font-size:.74rem}
+.cp-hero h2{font-family:var(--f-display);font-size:1.25rem;margin:2px 0;color:#fff}
+.cp-hero p{margin:0;font-size:.84rem;opacity:.9}
+.cp-badge{flex:none;background:rgba(255,255,255,.2);border-radius:999px;padding:4px 12px;font-size:.76rem;font-weight:700}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:12px}
+.kpi{display:flex;flex-direction:column;align-items:flex-start;gap:1px;border:0;border-radius:18px;background:var(--surface);box-shadow:var(--sh1);padding:10px 12px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;position:relative}
+.kpi-i{position:absolute;right:10px;top:10px;color:var(--brand);opacity:.8}
+.kpi-i .ic{width:18px;height:18px}
+.kpi b{font-family:var(--f-display);font-size:1.6rem;line-height:1.1}
+.kpi span{font-size:.8rem;font-weight:600}
+.kpi small{font-size:.7rem;color:var(--ink-2)}
+.kpi.warn b{color:#C9822B}.kpi.danger b{color:#C9584B}
+.cp-grid{display:grid;gap:12px;margin-top:12px}
+@media (min-width:900px){.cp-grid{grid-template-columns:1fr 1.3fr}}
+.cp-today{display:flex;flex-direction:column;gap:4px}
+.td-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:0;background:var(--surface-2);border-radius:12px;padding:9px 12px;font:inherit;color:var(--ink);cursor:pointer;text-align:left}
+.pill-n{border-radius:999px;padding:2px 10px;font-size:.8rem;white-space:nowrap}
+.pill-n.warn{background:#FDE8D4;color:#B0631B}.pill-n.info{background:#DCE9F8;color:#2E5E9E}.pill-n.danger{background:#FBE0DC;color:#B4422F}
+.cp-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (min-width:600px){.cp-menu{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.cpm{display:flex;flex-direction:column;align-items:flex-start;gap:2px;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:12px;font:inherit;color:var(--ink);cursor:pointer;text-align:left}
+.cpm .ic{width:24px;height:24px;color:var(--brand);margin-bottom:4px}
+.cpm b{font-family:var(--f-display);font-size:.98rem}
+.cpm small{font-size:.72rem;color:var(--ink-2)}
+.cpm:hover{border-color:var(--brand)}
+.fq{margin-top:12px}
+.fq-f{flex-wrap:wrap;margin-bottom:8px}
+.fq-list,.fu-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.fq-list li,.fu-list li{display:flex;align-items:center;gap:10px;padding:9px 4px 9px 10px;border-bottom:1px solid var(--line);border-left:4px solid transparent}
+.g-urgent{border-left-color:#C9584B!important}.g-todo{border-left-color:#E09A3E!important}.g-wait{border-left-color:#5B8FD0!important}.g-done{border-left-color:#2C9A5A!important;opacity:.7}
+.fq-ic{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand-2)}
+.fq-ic .ic{width:16px;height:16px}
+.fq-t{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;line-height:1.3}
+.fq-t b{font-size:.9rem}
+.fq-t small,.fq-t .lnk{font-size:.76rem;color:var(--ink-2)}
+.fq-m{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex:none}
+.due{font-size:.72rem;color:var(--ink-2)}.due.today{color:#B0631B;font-weight:700}.due.late{color:#C9584B;font-weight:700}
+.lnk{border:0;background:none;padding:0;font:inherit;color:var(--brand-2);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.fu-list select{flex:none;max-width:130px;border:1px solid var(--line);border-radius:10px;padding:5px 6px;background:var(--surface-2);color:var(--ink);font:inherit;font-size:.8rem}
+.prof-grid{display:grid;gap:12px;margin-bottom:12px}
+@media (min-width:900px){.prof-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.kv2{margin:0;display:flex;flex-direction:column}
+.kv2>div{display:grid;grid-template-columns:minmax(96px,38%) 1fr;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:.86rem}
+.kv2 dt{color:var(--ink-2)}
+.kv2 dd{margin:0;font-weight:500}
+.lflag{display:inline-block;background:#FBE0DC;color:#B4422F;border-radius:6px;padding:0 6px;margin:1px 2px 1px 0;font-size:.78rem}
+.warnt{color:#B0631B}
+.ptpick{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 2px 8px}
+.ptpick::-webkit-scrollbar{display:none}
+.ptpick button{flex:none;display:flex;flex-direction:column;align-items:flex-start;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:6px 12px;font:inherit;color:var(--ink);cursor:pointer;line-height:1.2}
+.ptpick button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.ptpick small{font-size:.68rem;opacity:.85}
+.dotw{font-style:normal;background:#E0603F;color:#fff;border-radius:999px;padding:0 6px;font-size:.66rem}
+.lm-act{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.lm-al{border-left:5px solid #E09A3E}
+.lm-al-r{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:.86rem}
+.lm-q{border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:var(--surface-2);color:var(--ink);font:inherit;font-size:.84rem;min-width:0;width:200px;max-width:50%}
+.lm-tbl{width:100%;border-collapse:collapse;font-size:.84rem}
+.lm-tbl th,.lm-tbl td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.lm-tbl thead th{font-size:.74rem;color:var(--ink-2);font-weight:600;white-space:nowrap}
+.lm-tbl small{display:block;font-size:.68rem;color:var(--ink-2);font-weight:400}
+.lm-tbl tbody th{font-weight:600}
+.lm-g td{background:var(--surface-2);font-family:var(--f-display);font-weight:700;font-size:.8rem;color:var(--brand-2)}
+.lres{display:inline-block;min-width:44px;text-align:center;border:1.5px solid #2C9A5A;color:#2C7A4B;border-radius:6px;padding:1px 6px;font-weight:700}
+.lres.off{border-color:#E0603F;color:#C9584B;background:#FFF1EE}
+.okk{color:#2C9A5A}.up{color:#E0603F}
+.rules{margin:0;padding-left:18px;font-size:.86rem;display:flex;flex-direction:column;gap:3px}
+.mr-tbl{width:100%;border-collapse:collapse;font-size:.84rem}
+.mr-tbl th,.mr-tbl td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.mr-tbl th{font-size:.76rem;color:var(--ink-2)}
+.mr-tbl th small{display:block;font-weight:400}
+.mr-tbl td b{display:block;font-size:.84rem}
+.mr-tbl td span{font-size:.78rem;color:var(--ink-2)}
+.mr-tbl .nw-col{color:var(--brand-2)}
+.mp-tbl{width:100%;border-collapse:collapse;font-size:.82rem}
+.mp-tbl th,.mp-tbl td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.mp-tbl thead th{font-size:.72rem;color:var(--ink-2);white-space:nowrap}
+.mp-tbl small{display:block;font-size:.7rem;color:var(--ink-2)}
+.mr-ver{border-left:5px solid var(--brand)}
+.mr-steps{margin:6px 0 10px;padding:0;list-style:none;counter-reset:st;display:flex;flex-direction:column;gap:4px}
+.mr-steps li{counter-increment:st}
+.mr-steps label{display:flex;align-items:center;gap:8px;font-size:.88rem;cursor:pointer;padding:5px 8px;border-radius:10px;background:var(--surface-2)}
+.mr-steps label::before{content:counter(st);flex:none;width:22px;height:22px;border-radius:50%;background:var(--brand-soft);color:var(--brand-2);display:grid;place-items:center;font-size:.74rem;font-weight:700}
+.mr-steps input{width:18px;height:18px;accent-color:var(--brand)}
+.fu-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 10px}
+.fu-head h2{font-family:var(--f-display);font-size:1.15rem;margin:0}
+.fu-head h2 small{font-size:.76rem;color:var(--ink-2);font-weight:500}
+.cl-list{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.cl-list>li{border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.cl-h{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-bottom:4px}
+.cl-h small{margin-left:auto;color:var(--ink-2);font-size:.72rem}
+.cl-kv>div{grid-template-columns:110px 1fr;font-size:.82rem}
+.al-filt{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.al-filt .tp-seg{flex-wrap:wrap}
+.al-filt .tp-seg .ic{width:14px;height:14px;vertical-align:-2px}
+.chk{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;color:var(--ink-2)}
+.al-list{display:grid;gap:10px}
+@media (min-width:1000px){.al-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.al-card{background:var(--surface);border-radius:18px;box-shadow:var(--sh1);padding:12px;display:flex;flex-direction:column;gap:8px;border-left:5px solid #5B8FD0}
+.al-card.sev-high{border-left-color:#C9584B}.al-card.sev-med{border-left-color:#E09A3E}
+.al-card.closed{opacity:.6;border-left-color:#2C9A5A}
+.al-h{display:flex;gap:10px;align-items:flex-start}
+.al-ic{flex:none;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand-2)}
+.al-ic .ic{width:18px;height:18px}
+.al-t{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
+.al-t small{font-size:.72rem;color:var(--ink-2)}
+.al-t b{font-size:.94rem}
+.al-t span{font-size:.8rem;color:var(--ink-2)}
+.al-m{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex:none}
+.al-m small{font-size:.7rem;color:var(--ink-2)}
+.esc-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px}
+.esc-steps li{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;font-size:.62rem;color:var(--ink-2);position:relative}
+.esc-steps i{width:14px;height:14px;border-radius:50%;background:var(--surface-2);border:2px solid var(--line);z-index:1}
+.esc-steps li::before{content:"";position:absolute;top:6px;left:-50%;right:50%;height:2px;background:var(--line)}
+.esc-steps li:first-child::before{display:none}
+.esc-steps li.done i{background:var(--brand);border-color:var(--brand)}
+.esc-steps li.done::before,.esc-steps li.cur::before{background:var(--brand)}
+.esc-steps li.cur i{background:#F4B740;border-color:#F4B740;box-shadow:0 0 0 4px color-mix(in srgb,#F4B740 25%,transparent)}
+.esc-steps li.cur span{color:var(--ink);font-weight:700}
+.al-warn{display:flex;align-items:center;gap:6px;margin:0;font-size:.8rem;color:#B4422F;background:#FBE9E6;border-radius:10px;padding:5px 9px}
+.al-warn .ic{width:15px;height:15px}
+.al-act{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px}
+.al-f{display:flex;flex-direction:column;gap:2px;font-size:.72rem;color:var(--ink-2)}
+.al-f select{border:1px solid var(--line);border-radius:10px;padding:5px 6px;background:var(--surface-2);color:var(--ink);font:inherit;font-size:.8rem;max-width:200px}
+.al-order{display:flex;gap:6px;flex:1 1 220px}
+.al-order input{flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;padding:6px 8px;background:var(--surface-2);color:var(--ink);font:inherit;font-size:.82rem}
+.btn.ok{background:#2C9A5A;color:#fff;border-color:#2C9A5A}
+.al-log{list-style:none;margin:0;padding:6px 0 0;border-top:1px dashed var(--line);font-size:.74rem;color:var(--ink-2);display:flex;flex-direction:column;gap:2px}
+.rp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.rp-grid>div{background:var(--surface-2);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.rp-grid b{font-family:var(--f-display);font-size:1.5rem;color:var(--brand-2)}
+.rp-grid span{font-size:.78rem;color:var(--ink-2)}
+.lp-g{border:1px solid var(--line);border-radius:14px;padding:6px 10px 10px;margin:0 0 8px}
+.lp-g legend{font-family:var(--f-display);font-weight:700;font-size:.82rem;color:var(--brand-2);padding:0 4px}
+.lp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.lp-grid label{display:flex;flex-direction:column;gap:2px;font-size:.78rem}
+.lp-grid label span{font-weight:600}
+.lp-grid input{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--surface-2);color:var(--ink);font:inherit;min-width:0}
+.lp-grid small{font-size:.66rem;color:var(--ink-2)}
+@media print{.sidebar,.side,.tabbar,.topbar,.no-print,.demo,.demoStrip,button{display:none!important}body{background:#fff}.card{box-shadow:none;border:1px solid #ccc}}
+
+@media (max-width:640px){
+ .mr-tbl thead{display:none}
+ .mr-tbl,.mr-tbl tbody,.mr-tbl tr,.mr-tbl td{display:block;width:100%}
+ .mr-tbl tr{border:1px solid var(--line);border-radius:14px;padding:8px 10px;margin-bottom:8px;display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}
+ .mr-tbl td{border:0;padding:2px 0}
+ .mr-tbl td[data-l]::before{content:attr(data-l);display:block;font-size:.66rem;color:var(--ink-2);font-weight:600}
+ .mr-tbl td.mr-tag{grid-column:1/-1;order:-1}
+ .mr-tbl td.nw-col{grid-column:1/-1;background:var(--brand-soft);border-radius:10px;padding:4px 8px}
+ .lm-tbl th:nth-child(4),.lm-tbl td:nth-child(4),.lm-tbl thead th:nth-child(6),.lm-tbl td:nth-child(6){display:none}
+ .lm-tbl th,.lm-tbl td{padding:6px 4px}
+ .lm-q{width:140px}
+}
+@media (max-width:640px){.lm-tbl th:nth-child(7),.lm-tbl td:nth-child(7){display:none}.lm-tbl tbody th small{display:none}}
+.tchart{max-width:760px;margin-inline:auto;max-height:340px}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -1827,7 +1985,7 @@ lock:'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4',
 clock:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
 pin:'M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12zM12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
 info:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v5M12 8h.01',
-play:'M8 5v14l11-7z',monitor:'M3 5h18v11H3zM8 20h8M12 16v4M6 11h3l1.5-3 2 5 1.5-2H18',target:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 11.5a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1z',download:'M12 3v12M7 10l5 5 5-5M5 21h14',
+play:'M8 5v14l11-7z',send:'M4 12l16-8-6 16-2-6z',edit:'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',monitor:'M3 5h18v11H3zM8 20h8M12 16v4M6 11h3l1.5-3 2 5 1.5-2H18',target:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 11.5a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1z',download:'M12 3v12M7 10l5 5 5-5M5 21h14',
  eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z',
  up:'M6 15l6-6 6 6',
  down:'M6 9l6 6 6-6',
@@ -2059,6 +2217,7 @@ const LAB_GROUPS=[
  ['kidney',{th:'การทำงานของไต',en:'Kidney function'}],
  ['cbc',{th:'ความสมบูรณ์ของเม็ดเลือด (CBC)',en:'Complete blood count (CBC)'}],
  ['drug',{th:'ระดับยา',en:'Drug level'}],
+ ['elec',{th:'เกลือแร่ในเลือด',en:'Electrolytes'}],
 ];
 const LABS=[
  {code:'AST',g:'liver',name:'AST',unit:'U/L',p:{th:'เอนไซม์ตับ',en:'Liver enzyme'}},
@@ -2076,6 +2235,12 @@ const LABS=[
  {code:'HB',g:'cbc',name:'Hemoglobin',unit:'g/dL',p:{th:'เม็ดเลือดแดง',en:'Red cells'}},
  {code:'PLT',g:'cbc',name:'Platelet',unit:'×10³/µL',p:{th:'เกล็ดเลือด',en:'Platelets'}},
  {code:'TAC',g:'drug',name:'Tacrolimus level',unit:'ng/mL',p:{th:'ระดับยาเมื่อมีการตรวจ',en:'Drug level when tested'}},
+ {code:'BUN',g:'kidney',name:'BUN',unit:'mg/dL',p:{th:'ของเสียในเลือด',en:'Urea nitrogen'}},
+ {code:'HCT',g:'cbc',name:'Hematocrit',unit:'%',p:{th:'ความเข้มข้นเลือด',en:'Packed cell volume'}},
+ {code:'NA',g:'elec',name:'Sodium',unit:'mmol/L',p:{th:'เกลือแร่',en:'Electrolyte'}},
+ {code:'K',g:'elec',name:'Potassium',unit:'mmol/L',p:{th:'เกลือแร่',en:'Electrolyte'}},
+ {code:'CL',g:'elec',name:'Chloride',unit:'mmol/L',p:{th:'เกลือแร่',en:'Electrolyte'}},
+ {code:'CO2',g:'elec',name:'CO₂',unit:'mmol/L',p:{th:'ภาวะกรด-ด่าง',en:'Bicarbonate'}},
 ];
 const LAB=c=>LABS.find(l=>l.code===c);
 /* หัวข้อความรู้ — เนื้อหาจะเพิ่มภายหลังใน EDUCATION */
@@ -2408,10 +2573,14 @@ const D={
  patients:[
   {id:'p1',name:{th:'สมชาย ใจดี',en:'Somchai Jaidee'},hn:'65-001234',age:58,sex:'M',phase:3,txDate:dOff(-12),staff:['s1','s2'],checklist:{}},
   {id:'p2',name:{th:'บุญมี แก้วมา',en:'Bunmee Kaewma'},hn:'63-004567',age:63,sex:'F',phase:4,txDate:dOff(-731),staff:['s1','s2'],checklist:{}},
-  {id:'p3',name:{th:'คำแก้ว ศรีวงศ์',en:'Khamkaew Sriwong'},hn:'67-000890',age:47,sex:'M',phase:1,txDate:null,staff:['s1'],checklist:{}}],
+  {id:'p3',name:{th:'คำแก้ว ศรีวงศ์',en:'Khamkaew Sriwong'},hn:'67-000890',age:47,sex:'M',phase:1,txDate:null,staff:['s1'],checklist:{}},
+  {id:'p4',name:{th:'วิไล สุขสม',en:'Wilai Suksom'},hn:'66-002211',age:52,sex:'F',phase:3,txDate:dOff(-45),staff:['s1','s2'],checklist:{}},
+  {id:'p5',name:{th:'ประเสริฐ ทองดี',en:'Prasert Thongdee'},hn:'64-007788',age:61,sex:'M',phase:4,txDate:dOff(-210),staff:['s1','s2'],checklist:{}},
+  {id:'p6',name:{th:'นงลักษณ์ มณีวงศ์',en:'Nongluck Maneewong'},hn:'67-001455',age:44,sex:'F',phase:1,txDate:null,staff:['s1'],checklist:{}},
+  {id:'p7',name:{th:'สุริยา คำมา',en:'Suriya Khamma'},hn:'67-003320',age:39,sex:'M',phase:2,txDate:dOff(-6),staff:['s1','s2'],checklist:{}}],
  caregivers:[{id:'c1',name:{th:'สมศรี ใจดี',en:'Somsri Jaidee'},phone:'081-234-5678'}],
  consents:[{id:'cs1',caregiverId:'c1',patientId:'p1',relation:{th:'ภรรยา',en:'Spouse'},active:true,since:dOff(-20),perms:{health:true,meds:true,labs:false,appts:true,record:true}}],
- prescriptions:[],medLogs:[],vitals:[],symptoms:[],labs:[],appts:[],notifs:[],audit:[],
+ prescriptions:[],medLogs:[],vitals:[],symptoms:[],labs:[],appts:[],notifs:[],audit:[],tasks:[],contacts:[],esc:{},
  criteria:SYMPTOMS.map(([id,level,th,en])=>({id,level,name:{th,en}})),
  education:[],
  settings:{teamPhone:'',teamHours:'',criteriaConfirmed:false,confirmedBy:null,confirmedAt:null},
@@ -2452,7 +2621,7 @@ function seed(){
   {id:'sy2',patientId:'p1',date:dOff(-1),time:'18:40',syms:['fever'],level:'contact',note:{th:'วัดไข้ได้ 37.9 °C ช่วงเย็น',en:'Temperature 37.9 °C in the evening'},by:'c1',reviewed:false},
   {id:'sy3',patientId:'p2',date:dOff(-6),time:'20:00',syms:[],level:'none',note:'',by:'p2',reviewed:true});
 
- const REF={AST:[0,40],ALT:[0,41],TBIL:[0.3,1.2],DBIL:[0,0.3],ALP:[40,129],GGT:[8,61],ALB:[3.5,5.2],PT:[10.5,13.5],INR:[0.8,1.2],CR:[0.7,1.2],EGFR:[90,null],WBC:[4.5,11],HB:[13,17],PLT:[150,450],TAC:[null,null]};
+ const REF={AST:[0,40],ALT:[0,41],TBIL:[0.3,1.2],DBIL:[0,0.3],ALP:[40,129],GGT:[8,61],ALB:[3.5,5.2],PT:[10.5,13.5],INR:[0.8,1.2],CR:[0.7,1.2],EGFR:[90,null],WBC:[4.5,11],HB:[13,17],PLT:[150,450],TAC:[null,null],BUN:[7,25],HCT:[39,50],NA:[135,146],K:[3.5,5.3],CL:[98,107],CO2:[22,29]};
  const src={th:'ห้องปฏิบัติการ รพ. (ตัวอย่าง)',en:'Hospital laboratory (sample)'};
  const addLabs=(pid,date,vals,ref=REF)=>Object.entries(vals).forEach(([c,v])=>D.labs.push({id:uid('l'),patientId:pid,test:c,value:v,unit:LAB(c).unit,refLow:ref[c][0],refHigh:ref[c][1],date,time:'07:00',source:src,by:'s1'}));
  const series={AST:[68,52,41],ALT:[95,70,48],TBIL:[2.1,1.6,1.1],DBIL:[1.2,0.8,0.4],ALP:[180,150,132],GGT:[120,98,80],ALB:[3.0,3.2,3.4],PT:[14.8,13.6,12.9],INR:[1.3,1.2,1.1],CR:[1.1,1.2,1.0],EGFR:[72,68,78],WBC:[8.2,6.9,6.2],HB:[10.4,10.8,11.2],PLT:[120,145,168],TAC:[8.4,9.1,7.6]};
@@ -2487,6 +2656,64 @@ function seed(){
  P('p3').journey={pre:dOff(-40)};
  P('p1').tacTarget=[8,10];P('p2').tacTarget=[5,8];
  addLabs('p1',dOff(-1),{AST:36,ALT:39,TBIL:0.9,ALP:118,INR:1.0,CR:1.0,TAC:8.8});
+ /* ---- v26 coordinator demo data ---- */
+ D.labs.forEach(l=>{l.status='verified';l.src2='hosp';l.verifiedBy='s2';l.verifiedAt=stamp(l.date,'10:00');l.hist=[]});
+ [[-10,[22,41,13,98,3.9,102,23]],[-7,[20,40,13.5,97,4.2,101,24]],[-3,[18,40,13.8,96,4.4,100,24]],[-1,[17,41,14,97,5.6,100,23]]].forEach(([o,[bun,hct,hb,na,k,cl,co2]])=>addLabs('p1',dOff(o),{BUN:bun,HCT:hct,NA:na,K:k,CL:cl,CO2:co2}));
+ addLabs('p4',dOff(-30),{AST:44,ALT:58,TBIL:1.0,ALP:120,INR:1.0,CR:1.0,BUN:16,HB:11.8,WBC:5.2,PLT:190,NA:138,K:4.1,TAC:8.2});
+ addLabs('p4',dOff(-14),{AST:62,ALT:88,TBIL:1.3,ALP:150,INR:1.1,CR:1.1,BUN:18,HB:11.6,WBC:4.8,PLT:176,NA:137,K:4.3,TAC:6.1});
+ addLabs('p4',dOff(-2),{AST:95,ALT:130,TBIL:1.9,ALP:210,INR:1.1,CR:1.3,BUN:21,HB:11.2,WBC:4.1,PLT:160,NA:136,K:4.6,TAC:4.8});
+ addLabs('p5',dOff(-60),{AST:28,ALT:30,TBIL:0.7,ALP:95,INR:1.0,CR:1.2,BUN:18,HB:13.4,WBC:6.1,PLT:220,NA:140,K:4.2,TAC:5.6});
+ addLabs('p5',dOff(-5),{AST:30,ALT:33,TBIL:0.8,ALP:98,INR:1.0,CR:1.6,BUN:24,HB:13.1,WBC:5.8,PLT:210,NA:139,K:4.9,TAC:7.4});
+ addLabs('p7',dOff(-5),{AST:310,ALT:420,TBIL:4.2,ALP:260,INR:1.6,CR:1.4,BUN:30,HB:9.4,WBC:11.8,PLT:85,NA:134,K:4.8,TAC:6.2});
+ addLabs('p7',dOff(-1),{AST:140,ALT:220,TBIL:2.6,ALP:220,INR:1.3,CR:1.2,BUN:26,HB:9.8,WBC:9.6,PLT:110,NA:136,K:4.4,TAC:9.4});
+ D.labs.forEach(l=>{if(!l.status){l.status='verified';l.src2='hosp';l.verifiedBy='s2';l.verifiedAt=stamp(l.date,'10:00');l.hist=[]}});
+ D.labs.push({id:uid('l'),patientId:'p6',test:'CR',value:0.9,unit:'mg/dL',refLow:0.7,refHigh:1.2,date:dOff(-2),time:'09:30',source:{th:'แล็บเอกชนใกล้บ้าน (ผู้ป่วยส่งภาพผล)',en:'Private lab near home (photo sent by patient)'},by:'s1',status:'draft',src2:'outside',attach:'lab_result_photo.jpg',hist:[]},
+  {id:uid('l'),patientId:'p6',test:'INR',value:1.4,unit:'',refLow:0.8,refHigh:1.2,date:dOff(-2),time:'09:30',source:{th:'แล็บเอกชนใกล้บ้าน (ผู้ป่วยส่งภาพผล)',en:'Private lab near home (photo sent by patient)'},by:'s1',status:'draft',src2:'outside',attach:'lab_result_photo.jpg',hist:[]});
+ const rx4={id:'rx4',no:rxNo(),patientId:'p4',doctor:doc2,date:dOff(-40),enteredBy:'s1',enteredAt:stamp(dOff(-40),'10:00'),verifiedBy:'s2',verifiedAt:stamp(dOff(-40),'10:30'),status:'active',items:[
+  {id:'i41',name:'Tacrolimus',form:F.cap,dose:'3 mg',times:['08:00','20:00'],start:dOff(-40),end:'',note:same},
+  {id:'i42',name:'Mycophenolate mofetil',form:F.tab,dose:'750 mg',times:['08:00','20:00'],start:dOff(-40),end:'',note:''},
+  {id:'i43',name:'Prednisolone',form:F.tab,dose:'5 mg',times:['08:00'],start:dOff(-40),end:'',note:afterB}]};
+ const rx5={id:'rx5',no:rxNo(),patientId:'p5',doctor:doc2,date:dOff(-90),enteredBy:'s1',enteredAt:stamp(dOff(-90),'10:00'),verifiedBy:'s2',verifiedAt:stamp(dOff(-90),'10:30'),status:'active',items:[
+  {id:'i51',name:'Tacrolimus',form:F.cap,dose:'1.5 mg',times:['08:00','20:00'],start:dOff(-90),end:'',note:same},
+  {id:'i52',name:'Amlodipine',form:F.tab,dose:'5 mg',times:['08:00'],start:dOff(-90),end:'',note:''}]};
+ const rx6={id:'rx6',no:rxNo(),patientId:'p1',doctor:doc1,date:todayISO,enteredBy:'s2',enteredAt:stamp(todayISO,'08:40'),status:'pending',items:[
+  {id:'i61',name:'Tacrolimus',form:F.cap,dose:'2.5 mg',times:['08:00','20:00'],start:todayISO,end:'',note:same,why:{th:'ระดับยา Tac ต่ำกว่าเป้าหมาย',en:'Tac level below target'}},
+  {id:'i62',name:'Mycophenolate mofetil',form:F.tab,dose:'500 mg',times:['08:00','20:00'],start:todayISO,end:'',note:''},
+  {id:'i63',name:'Prednisolone',form:F.tab,dose:'7.5 mg',times:['08:00'],start:todayISO,end:'',note:afterB,why:{th:'ลดขนาดตามแผน',en:'Planned taper'}},
+  {id:'i64',name:'Sulfamethoxazole/Trimethoprim',form:F.tab,dose:{th:'1 เม็ด',en:'1 tablet'},times:['08:00'],start:todayISO,end:'',note:'',why:{th:'ป้องกันการติดเชื้อ (PJP prophylaxis)',en:'Infection prevention (PJP prophylaxis)'}}]};
+ rx2.items[0].why={th:'ปรับตามระดับยา Tac 7.6',en:'Adjusted for Tac level 7.6'};rx2.items[2].why={th:'ลดขนาดตามแผน',en:'Planned taper'};
+ D.prescriptions.push(rx4,rx5,rx6);
+ logs('p4',rx4,5,{'i41|2|20:00':'missed','i42|2|20:00':'missed'});logs('p5',rx5,3,{});
+ P('p4').journey={pre:dOff(-200),icu:[dOff(-45),dOff(-42)],ward:[dOff(-42),dOff(-33)],home:dOff(-33)};P('p4').tacTarget=[8,10];
+ P('p5').journey={pre:dOff(-400),icu:[dOff(-210),dOff(-207)],ward:[dOff(-207),dOff(-196)],home:dOff(-196)};P('p5').tacTarget=[5,8];
+ P('p6').journey={pre:dOff(-25)};P('p7').journey={pre:dOff(-120),icu:[dOff(-6),dOff(-3)],ward:[dOff(-3),null]};P('p7').tacTarget=[8,10];
+ const PROF={p1:['081-111-2233',{th:'สมศรี ใจดี (ภรรยา)',en:'Somsri Jaidee (spouse)'},'081-234-5678',['HBV-related cirrhosis','Type 2 DM'],['Mild acute kidney injury (resolved)'],doc1,dOff(-4)],
+  p2:['089-222-3344',{th:'สมหมาย แก้วมา (บุตร)',en:'Sommai Kaewma (son)'},'086-555-1122',['NASH cirrhosis','Hypertension'],[],doc2,dOff(-717)],
+  p3:['082-333-4455',{th:'บัวคำ ศรีวงศ์ (ภรรยา)',en:'Buakham Sriwong (spouse)'},'087-123-9988',['Alcohol-related cirrhosis'],[],doc1,null],
+  p4:['083-444-5566',{th:'ธนา สุขสม (สามี)',en:'Thana Suksom (husband)'},'089-765-4321',['HCC within Milan criteria','HBV'],['Biliary stricture — on follow-up'],doc2,dOff(-33)],
+  p5:['084-555-6677',{th:'สุดา ทองดี (ภรรยา)',en:'Suda Thongdee (wife)'},'081-999-0001',['Alcohol-related cirrhosis','Hypertension'],['Post-transplant hypertension'],doc2,dOff(-196)],
+  p6:['085-666-7788',{th:'สมชาย มณีวงศ์ (พี่ชาย)',en:'Somchai Maneewong (brother)'},'082-111-2020',['Primary biliary cholangitis'],[],doc1,null],
+  p7:['086-777-8899',{th:'มาลี คำมา (มารดา)',en:'Malee Khamma (mother)'},'088-202-3030',['Acute liver failure'],['Post-op bleeding — re-explored day 1'],doc1,null]};
+ Object.entries(PROF).forEach(([id,[ph,ec,ecp,cm,cx,dr,dc]])=>Object.assign(P(id),{phone:ph,emerg:{name:ec,phone:ecp},comorb:cm,complic:cx,doctor:dr,discharge:dc}));
+ P('p4').targets={sys:[100,130],dia:[60,85],hr:[60,100],temp:[36,37.5],spo2:[95,100],wt:[55,59]};P('p5').targets={sys:[100,130],dia:[60,80],hr:[55,95],temp:[36,37.5],spo2:[95,100],wt:[70,75]};
+ const T=(pid,type,th,en,due,st,by='s1')=>D.tasks.push({id:uid('t'),pid,type,title:{th,en},due,status:st,by,at:stamp(dOff(-1),'09:00')});
+ T('p1','call','โทรติดตามอาการไข้','Call about the fever',todayISO,'urgent');
+ T('p1','lab','ติดตามผล Lab (CBC, LFT, Tac level)','Follow up labs (CBC, LFT, Tac level)',todayISO,'waiting');
+ T('p1','level','ตรวจสอบระดับยา Tacrolimus','Check tacrolimus level',todayISO,'review');
+ T('p1','adh','ติดตามการรับประทานยา','Follow up medicine taking',dOff(3),'tracking');
+ T('p1','appt','นัดพบแพทย์','Doctor visit',dOff(3),'booked');
+ T('p4','call','โทรติดตามหลังปรับยา','Call after dose change',dOff(-1),'todo');
+ T('p4','lab','ติดตามผล LFT ซ้ำ','Repeat LFT follow-up',dOff(1),'waiting');
+ T('p5','adh','ติดตามความดันและการกินยา','Follow up BP and medicines',dOff(5),'tracking');
+ T('p5','appt','นัดพบแพทย์ 7 เดือน','7-month doctor visit',dOff(20),'booked');
+ T('p6','call','ติดตามผลตรวจฟัน','Follow up dental check',dOff(2),'todo');
+ T('p7','plan','ประสานแผนจำหน่ายกลับบ้าน','Coordinate discharge plan',dOff(1),'todo');
+ T('p2','call','โทรติดตามรายปี','Annual check-in call',dOff(-8),'done');
+ D.contacts.push({id:uid('k'),pid:'p1',date:dOff(-1),time:'19:05',who:'caregiver',whoName:{th:'สมศรี ใจดี (ภรรยา)',en:'Somsri Jaidee (spouse)'},ch:'phone',sym:{th:'ไข้ 37.9 °C ช่วงเย็น อ่อนเพลีย',en:'Fever 37.9 °C in the evening, tired'},prob:{th:'สงสัยติดเชื้อหลังปลูกถ่าย',en:'Possible infection after transplant'},adv:{th:'วัดไข้ทุก 4 ชม. ถ้าเกิน 38 °C หรือหนาวสั่น ให้มาห้องฉุกเฉิน',en:'Check temperature every 4 h; come to emergency if over 38 °C or chills'},doc:true,docName:doc1,out:{th:'แพทย์สั่งเจาะ CBC, LFT, Tac level พรุ่งนี้เช้า',en:'Doctor ordered CBC, LFT, Tac level tomorrow morning'},next:todayISO,by:'s1'},
+  {id:uid('k'),pid:'p4',date:dOff(-5),time:'10:30',who:'patient',whoName:{th:'วิไล สุขสม',en:'Wilai Suksom'},ch:'line',sym:{th:'ไม่มีอาการผิดปกติ',en:'No new symptoms'},prob:{th:'ลืมกินยามื้อเย็น 1 ครั้ง',en:'Missed one evening dose'},adv:{th:'ทบทวนการตั้งเตือนในแอป ห้ามกินยาเพิ่มเป็น 2 เท่า',en:'Reviewed app reminders; never double a dose'},doc:false,out:{th:'ผู้ป่วยเข้าใจ จะตั้งเตือนเพิ่ม',en:'Understood; will add reminders'},next:dOff(-1),by:'s1'});
+ D.esc['sym|sy2']={owner:'s1',sev:'med',doctor:doc1,notifiedAt:stamp(dOff(-1),'19:20'),ack:true,order:{th:'เจาะ CBC, LFT, Tac level พรุ่งนี้เช้า วัดไข้ทุก 4 ชม.',en:'CBC, LFT, Tac level tomorrow morning; temperature every 4 h'},closed:false,log:[{at:stamp(dOff(-1),'19:20'),by:'s1',t:{th:'แจ้งแพทย์ทางโทรศัพท์',en:'Phoned the doctor'}},{at:stamp(dOff(-1),'19:35'),by:'s1',t:{th:'แพทย์รับทราบและให้คำสั่ง',en:'Doctor acknowledged and gave orders'}}]};
+ D.appts.push({id:uid('ap'),patientId:'p4',date:dOff(-3),time:'09:00',type:{th:'ตรวจติดตามหลังปลูกถ่าย',en:'Post-transplant follow-up'},loc:{th:'คลินิกปลูกถ่ายตับ (ตัวอย่าง)',en:'Liver transplant clinic (sample)'},prep:'',status:'scheduled',confirmed:true,by:'s1'},
+  {id:uid('ap'),patientId:'p5',date:dOff(20),time:'10:00',type:{th:'ตรวจติดตาม 7 เดือน',en:'7-month follow-up'},loc:{th:'คลินิกปลูกถ่ายตับ (ตัวอย่าง)',en:'Liver transplant clinic (sample)'},prep:'',status:'scheduled',confirmed:true,by:'s1'});
  const ck=(p,keys)=>keys.forEach(k=>p.checklist[k]=true);
  const all=n=>PHASES[n-1].items.map(i=>PHASES[n-1].key+'.'+i[0]);
  ck(P('p1'),[...all(1),...all(2),'early.meds','early.vit','early.lab']);
@@ -2558,20 +2785,20 @@ function emergencyCard(){return `<section class="card emerg"><div class="card-h"
 <p class="hint">${_('ติดต่อทีมปลูกถ่ายตับ','Liver transplant team')}: ${D.settings.teamPhone?`<b class="num">${esc(D.settings.teamPhone)}</b> ${esc(D.settings.teamHours||'')}`:_('รอทีมระบุเบอร์ติดต่อ','number to be added by the team')}</p></section>`}
 
 /* ---------- navigation ---------- */
-const TITLES={home:['หน้าหลัก','Home'],journey:['เส้นทางการรักษา','My journey'],meds:['ยา','Medicines'],log:['บันทึกสุขภาพ','Health log'],labs:['ผลตรวจ Lab','Lab results'],appts:['นัดหมาย','Appointments'],family:['ญาติและสิทธิ์','Family access'],learn:['ความรู้','Learn'],
- patients:['ผู้ป่วยที่ดูแล','My patients'],review:['รอตรวจสอบ','Review queue'],reports:['รายงาน','Reports'],criteria:['เกณฑ์อาการเตือน','Warning criteria'],audit:['ประวัติการใช้งาน','Audit log'],rxnew:['บันทึกใบสั่งยาใหม่','New prescription']};
+const TITLES={coord:['หน้าหลัก','Home'],labmgmt:['บันทึกผล Lab','Lab Management'],medrev:['ตรวจทานยา','Medication Review'],followup:['ติดตามผู้ป่วย','Follow-up'],alerts:['แจ้งเตือน','Clinical Alerts'],home:['หน้าหลัก','Home'],journey:['เส้นทางการรักษา','My journey'],meds:['ยา','Medicines'],log:['บันทึกสุขภาพ','Health log'],labs:['ผลตรวจ Lab','Lab results'],appts:['นัดหมาย','Appointments'],family:['ญาติและสิทธิ์','Family access'],learn:['ความรู้','Learn'],
+ patients:['ทะเบียนผู้ป่วย','Patient registry'],review:['รอตรวจสอบ','Review queue'],reports:['รายงาน','Reports'],criteria:['เกณฑ์อาการเตือน','Warning criteria'],audit:['ประวัติการใช้งาน','Audit log'],rxnew:['บันทึกใบสั่งยาใหม่','New prescription']};
 const viewTitle=v=>v==='patient'&&P(S.pid)?L(P(S.pid).name):_(...(TITLES[v]||TITLES.home));
 function navFor(r){
  if(r==='patient')return[['home','home'],['journey','route'],['meds','pill'],['log','pulse'],['labs','flask'],['appts','calendar'],['family','users'],['learn','book']];
  if(r==='caregiver')return[['home','home'],['meds','pill'],['log','pulse'],['labs','flask'],['appts','calendar'],['learn','book']];
- return[['patients','users'],['review','clipboard'],['reports','chart'],['criteria','shield'],['learn','book'],['audit','list']];
+ return[['coord','home'],['patients','users'],['labmgmt','flask'],['medrev','pill'],['followup','clipboard'],['alerts','bell'],['reports','chart'],['review','check'],['criteria','shield'],['learn','book'],['audit','list']];
 }
 const hasFab=()=>false;
-const mobileTabs=r=>r==='staff'?['patients','review','reports']:r==='patient'?['home','log','learn']:['home','meds','appts','learn'];
-const homeView=()=>S.user.role==='staff'?'patients':'home';
+const mobileTabs=r=>r==='staff'?['coord','patients','followup','alerts']:r==='patient'?['home','log','learn']:['home','meds','appts','learn'];
+const homeView=()=>S.user.role==='staff'?'coord':'home';
 const isActive=k=>S.view===k||(k==='patients'&&['patient','rxnew'].includes(S.view));
 function reviewCount(){if(S.user.role!=='staff')return 0;const p=pendingFor(myPatients().map(x=>x.id));return p.syms.length+p.vit.length+p.rx.length}
-function navBtn([k,ic],cls='nav-i'){const b=k==='review'?reviewCount():0;return `<button class="${cls} ${isActive(k)?'on':''}" data-a="go" data-v="${k}" ${isActive(k)?'aria-current="page"':''}>${icon(ic)}<span>${viewTitle(k)}</span>${b?`<span class="badge">${b}</span>`:''}</button>`}
+function navBtn([k,ic],cls='nav-i'){const b=k==='review'?reviewCount():k==='alerts'&&S.user.role==='staff'?openAlerts(myPatients().map(p=>p.id)).filter(a=>!a.st.owner).length:0;return `<button class="${cls} ${isActive(k)?'on':''}" data-a="go" data-v="${k}" ${isActive(k)?'aria-current="page"':''}>${icon(ic)}<span>${viewTitle(k)}</span>${b?`<span class="badge">${b}</span>`:''}</button>`}
 function userCard(){const u=S.user,per=person(u.id);const sub=u.role==='staff'?L(per.title):roleLabel(u.role);return `<div class="ucard"><div class="avatar">${initial(per)}</div><div><b>${esc(L(per.name))}</b><span>${esc(sub)}</span></div></div>`}
 let BIP=null;const inFrame=(()=>{try{return window.top!==window}catch(e){return true}})();
 const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
@@ -3332,6 +3559,197 @@ function nurseBoard(mine){const flt=S.ptFilter||'attn';const rows=mine.map(p=>({
  <div class="nb-list">${show.map(({p,m})=>`<article class="nb-card ${m.f[0]?'lv'+m.f[0].lv:''}"><button class="nb-top" data-a="openpt" data-pid="${p.id}"><div><b>${esc(L(p.name))}</b><small>HN ${p.hn} · ${m.days!=null?_(`วันที่ ${m.days} หลังปลูกถ่าย`,`Day ${m.days} post-tx`):_('ก่อนปลูกถ่าย','Pre-transplant')}</small></div>${icon('chev','chev')}</button>
   <div class="nb-stats"><span><small>${_('บันทึกวันนี้','Today')}</small><b class="num">${m.hd}/4</b></span><span><small>${_('ยา 7 วัน','Meds 7d')}</small><b class="num">${m.adh==null?'—':m.adh+'%'}</b></span><span class="${m.tac&&m.tt&&(m.tac.value<m.tt[0]||m.tac.value>m.tt[1])?'off':''}"><small>Tac</small><b class="num">${m.tac?m.tac.value:'—'}</b></span><span><small>${_('วิดีโอ','Videos')}</small><b class="num">${m.w}/${VIDEOS.length}</b></span></div>
   ${m.f.length?`<div class="nb-flags">${m.f.map(x=>`<button class="chip ${lvc(x.lv)}" data-a="openpt" data-pid="${p.id}" data-t="${x.tab}">${x.txt}</button>`).join('')}</div>`:`<div class="nb-flags">${chip('ok',icon('check')+_('ไม่มีเรื่องต้องติดตาม','Nothing to follow up'))}</div>`}</article>`).join('')||`<p class="muted">${_('ไม่มีผู้ป่วยในกลุ่มนี้','No patients in this group')}</p>`}</div></section>`}
+/* =================== v27 · Transplant Coordinator Portal =================== */
+const TST={urgent:['เร่งด่วน','Urgent','danger',0],todo:['รอดำเนินการ','To do','warn',1],review:['รอตรวจทาน','To review','warn',1],waiting:['รอผล','Awaiting result','info',2],tracking:['กำลังติดตาม','Tracking','info',2],booked:['นัดหมายแล้ว','Booked','info',2],done:['ดำเนินการแล้ว','Done','ok',3]};
+const TGRP=[['urgent','เร่งด่วน','Urgent','danger'],['todo','รอดำเนินการ','To do','warn'],['wait','รอติดตาม','Waiting','info'],['done','ดำเนินการแล้ว','Done','ok']];
+const tgrp=st=>st==='urgent'?'urgent':['todo','review'].includes(st)?'todo':st==='done'?'done':'wait';
+const TTYPE={lab:['ติดตามผล Lab','Lab follow-up','flask'],level:['ตรวจสอบระดับยา','Drug level check','pill'],call:['โทรติดตามผู้ป่วย','Phone follow-up','phone'],adh:['ติดตามการรับประทานยา','Adherence follow-up','check'],appt:['นัดพบแพทย์','Doctor visit','calendar'],plan:['ประสานแผนการรักษา','Care coordination','users']};
+const DOCS=[{th:'นพ.วิชัย สุขเจริญ (ตัวอย่าง)',en:'Dr. Wichai Sukcharoen (sample)'},{th:'พญ.อรุณี แสงทอง (ตัวอย่าง)',en:'Dr. Arunee Saengthong (sample)'},{th:'ภก.ธนากร วงศ์ใหญ่ (เภสัชกร)',en:'Thanakorn Wongyai (pharmacist)'}];
+const pName=pid=>L(P(pid)?.name)||pid;
+const isPost=p=>!!p.txDate;
+const tasksOf=pid=>D.tasks.filter(t=>t.pid===pid);
+const openTasks=pids=>D.tasks.filter(t=>pids.includes(t.pid)&&t.status!=='done');
+const tsChip=st=>{const x=TST[st]||TST.todo;return `<span class="chip ${x[2]}">${_(x[0],x[1])}</span>`};
+const dueTxt=d=>{const n=daysBetween(todayISO,d);return `<span class="due ${n<0?'late':n===0?'today':''}">${n<0?_(`เลยกำหนด ${-n} วัน`,`${-n} d overdue`):n===0?_('วันนี้','Today'):fmtDate(d,{day:'numeric',month:'short'})}</span>`};
+/* ---- lab rules ---- */
+const LRULES=[['ALT','uln',2],['AST','uln',2],['TBIL','gt',2],['CR','gt',1.5],['INR','gt',1.5],['PLT','lt',100],['WBC','lt',3],['K','gt',5.5],['TAC','target']];
+const ruleTxt=([c,k,x])=>k==='uln'?`${LAB(c).name} > ${x}× ULN`:k==='gt'?`${LAB(c).name} > ${x}`:k==='lt'?`${LAB(c).name} < ${x}`:_('Tacrolimus นอกช่วงเป้าหมายรายบุคคล','Tacrolimus outside personal target');
+function labAlerts(pid){const out=[];const p=P(pid);
+ if(p.txDate)LRULES.forEach(r=>{const [c,k,x]=r;const h=labsOf(pid,c);const l=h[h.length-1];if(!l)return;let hit=false,sev='med';
+  if(k==='uln'&&l.refHigh&&l.value>x*l.refHigh){hit=true;if(l.value>5*l.refHigh)sev='high'}
+  if(k==='gt'&&l.value>x)hit=true;if(k==='lt'&&l.value<x)hit=true;
+  if(k==='target'&&p.tacTarget&&(l.value<p.tacTarget[0]||l.value>p.tacTarget[1])){hit=true;sev=l.value<p.tacTarget[0]-2||l.value>p.tacTarget[1]+3?'high':'med'}
+  if(hit)out.push({key:`lab|${pid}|${c}|${l.date}`,type:'lab',pid,sev,date:l.date,time:l.time,title:`${LAB(c).name} ${l.value} ${l.unit}`,sub:ruleTxt(r),go:['labmgmt',pid]})});
+ const dr=D.labs.filter(l=>l.patientId===pid&&l.status==='draft');
+ if(dr.length)out.push({key:`lab|${pid}|draft`,type:'lab',pid,sev:'low',date:dr[0].date,time:dr[0].time,title:_(`ผล Lab รอยืนยัน ${dr.length} รายการ`,`${dr.length} lab results to verify`),sub:_('กรอกจากแหล่งภายนอก ต้องตรวจทานก่อนใช้','Entered from an outside source — check before use'),go:['labmgmt',pid]});
+ return out}
+/* ---- medication reconciliation ---- */
+const BRAND={tacrolimus:'Prograf / Advagraf',mycophenolate:'CellCept / Myfortic',prednisolone:'—',omeprazole:'Miracid',amlodipine:'Norvasc','sulfamethoxazole/trimethoprim':'Bactrim',calcium:'Caltrate'};
+const gkey=n=>String(n).toLowerCase().split(/\s|\+/)[0];
+const rxPrev=pid=>D.prescriptions.filter(r=>r.patientId===pid&&r.status==='superseded').sort((a,b)=>b.date.localeCompare(a.date))[0];
+const rxNew=pid=>D.prescriptions.filter(r=>r.patientId===pid&&r.status==='pending').sort((a,b)=>b.date.localeCompare(a.date))[0];
+function cmpRx(a,b){const A=a?.items||[],B=b?.items||[];const keys=[...new Set([...A,...B].map(i=>gkey(i.name)))];
+ return keys.map(k=>{const x=A.find(i=>gkey(i.name)===k),y=B.find(i=>gkey(i.name)===k);let tag='same';
+  if(!x&&y)tag='new';else if(x&&!y)tag='stop';else if(doseTxt(x)!==doseTxt(y))tag='dose';else if(x.times.join()!==y.times.join())tag='time';return {k,x,y,tag}})}
+const CTAG={new:['เพิ่มยาใหม่','New','info'],stop:['หยุดยา','Stopped','danger'],dose:['เปลี่ยนขนาดยา','Dose changed','warn'],time:['เปลี่ยนเวลา','Time changed','warn'],same:['ยังคงใช้ยาเดิม','Continued','ok']};
+function medAlerts(pid){const out=[];const cur=activeRx(pid),nw=rxNew(pid);
+ if(nw){const ch=cmpRx(cur,nw).filter(c=>c.tag!=='same');out.push({key:`med|${pid}|${nw.id}`,type:'med',pid,sev:'med',date:nw.date,time:(nw.enteredAt||'').slice(11,16),title:_(`ใบสั่งยาใหม่ ${nw.no} เปลี่ยน ${ch.length} รายการ รอตรวจทาน`,`New prescription ${nw.no}: ${ch.length} changes to review`),sub:ch.filter(c=>c.tag==='dose').length?_('มีการเปลี่ยนขนาดยาที่ยังไม่มีผู้ยืนยัน','Dose changes not yet confirmed'):'',go:['medrev',pid]})}
+ [cur,nw].filter(Boolean).forEach(r=>{const bad=r.items.filter(i=>!doseTxt(i)||!i.times?.length);if(bad.length)out.push({key:`med|${pid}|inc|${r.id}`,type:'med',pid,sev:'med',date:r.date,time:'',title:_('ข้อมูลยาไม่ครบถ้วน','Incomplete medicine data'),sub:bad.map(i=>i.name).join(', '),go:['medrev',pid]})});
+ const miss=D.medLogs.filter(m=>m.patientId===pid&&m.date>=dOff(-7)&&m.status!=='taken');
+ if(miss.length)out.push({key:`med|${pid}|miss|${miss[miss.length-1].date}`,type:'med',pid,sev:miss.length>2?'high':'med',date:miss[miss.length-1].date,time:miss[miss.length-1].time,title:_(`ผู้ป่วยรายงานว่าไม่ได้กินยา ${miss.length} ครั้ง (7 วัน)`,`Patient reported ${miss.length} missed doses (7 days)`),sub:[...new Set(miss.map(m=>D.prescriptions.flatMap(r=>r.items).find(i=>i.id===m.itemId)?.name))].join(', '),go:['medrev',pid]});
+ const p=P(pid);if(cur&&p.discharge&&!D.medLogs.some(m=>m.patientId===pid&&m.date>=dOff(-1)))out.push({key:`med|${pid}|nolog|${dOff(-1)}`,type:'med',pid,sev:'low',date:dOff(-1),time:'',title:_('ไม่พบการบันทึกการกินยาเมื่อวาน','No medicine records yesterday'),sub:'',go:['medrev',pid]});
+ return out}
+/* ---- alerts ---- */
+function symAlerts(pid){return D.symptoms.filter(x=>x.patientId===pid&&['contact','emergency'].includes(x.level)&&x.date>=dOff(-7)&&(!x.reviewed||(D.esc['sym|'+x.id]&&!D.esc['sym|'+x.id].closed))).map(x=>({key:'sym|'+x.id,type:'sym',pid,sev:x.level==='emergency'?'high':'med',date:x.date,time:x.time,title:x.syms.map(id=>L(D.criteria.find(c=>c.id===id)?.name)||id).join(', ')||_('อาการผิดปกติ','Symptoms'),sub:L(LEVELS[x.level].label)+(x.note?' · '+L(x.note):''),go:['patient',pid,'log']}))}
+function fuAlerts(pid){const out=[];D.tasks.filter(t=>t.pid===pid&&t.status!=='done'&&t.due<todayISO).forEach(t=>out.push({key:'fu|'+t.id,type:'fu',pid,sev:t.status==='urgent'?'high':'med',date:t.due,time:'',title:_(`เลยกำหนด: ${t.title.th}`,`Overdue: ${t.title.en}`),sub:_(`กำหนด ${fmtDate(t.due,{day:'numeric',month:'short'})}`,`Due ${fmtDate(t.due,{day:'numeric',month:'short'})}`),go:['followup',pid]}));
+ D.appts.filter(a=>a.patientId===pid&&a.date<todayISO&&a.status==='scheduled').forEach(a=>out.push({key:'fu|'+a.id,type:'fu',pid,sev:'med',date:a.date,time:a.time,title:_('ผู้ป่วยขาดนัดตามแผน','Missed a planned visit'),sub:L(a.type),go:['followup',pid]}));return out}
+const SEVL={high:['สูง','High','danger'],med:['ปานกลาง','Medium','warn'],low:['ต่ำ','Low','info']};
+const ATYPE={lab:['Lab Alert','Lab','flask'],med:['Medication Alert','Medicines','pill'],sym:['Symptom Alert','Symptoms','alert'],fu:['Follow-up Alert','Follow-up','calendar']};
+function labGrouped(pid){const a=labAlerts(pid);const hits=a.filter(x=>!x.key.endsWith('|draft')),dr=a.filter(x=>x.key.endsWith('|draft'));if(!hits.length)return dr;
+ const d=hits.map(x=>x.date).sort().pop();return [{key:`lab|${pid}|${d}`,type:'lab',pid,sev:hits.some(x=>x.sev==='high')?'high':'med',date:d,time:hits[0].time,title:_(`ผล Lab เข้าเกณฑ์เฝ้าระวัง ${hits.length} รายการ`,`${hits.length} lab results meet watch criteria`),sub:hits.map(x=>x.title).join(' · '),go:['labmgmt',pid]},...dr]}
+function allAlerts(pids){const a=pids.flatMap(pid=>[...labGrouped(pid),...medAlerts(pid),...symAlerts(pid),...fuAlerts(pid)]);
+ return a.map(x=>{const st=D.esc[x.key]||{};return {...x,st,sev:st.sev||x.sev}}).sort((x,y)=>(!!x.st.closed-!!y.st.closed)||({high:0,med:1,low:2}[x.sev]-{high:0,med:1,low:2}[y.sev])||(y.date+y.time).localeCompare(x.date+x.time))}
+const openAlerts=pids=>allAlerts(pids).filter(a=>!a.st.closed);
+const escStep=st=>!st.owner?1:!st.notifiedAt?2:!st.ack?3:!st.order?4:!st.closed?5:6;
+function alertCard(a,open){const st=a.st,step=escStep(st);const t=ATYPE[a.type];const late=st.notifiedAt&&!st.ack&&(Date.now()-new Date(st.notifiedAt.replace(' ','T')).getTime())>2*36e5;
+ const steps=[['พบปัญหา','Found'],['ผู้รับผิดชอบ','Owner'],['แจ้งแพทย์','Doctor told'],['แพทย์รับทราบ','Acknowledged'],['ได้รับคำสั่ง','Orders'],['ปิดเคส','Closed']];
+ const k=esc(a.key);
+ return `<article class="al-card t-${a.type} ${st.closed?'closed':''} sev-${a.sev}"><div class="al-h"><span class="al-ic">${icon(t[2])}</span><div class="al-t"><small>${t[0]} · <button class="lnk" data-a="openpt" data-pid="${a.pid}">${esc(pName(a.pid))}</button></small><b>${esc(a.title)}</b>${a.sub?`<span>${esc(a.sub)}</span>`:''}</div><div class="al-m">${chip(SEVL[a.sev][2],_(SEVL[a.sev][0],SEVL[a.sev][1]))}<small class="num">${fmtDate(a.date,{day:'numeric',month:'short'})} ${a.time||''}</small></div></div>
+ <ol class="esc-steps">${steps.map(([th,en],i)=>`<li class="${i+1<step||(st.closed&&i<6)?'done':i+1===step?'cur':''}"><i></i><span>${_(th,en)}</span></li>`).join('')}</ol>
+ ${!st.owner&&!st.closed?`<p class="al-warn">${icon('alert')} ${_('ยังไม่มีผู้รับผิดชอบ','No one has taken this yet')}</p>`:''}${late?`<p class="al-warn">${icon('clock')} ${_('แจ้งแพทย์เกิน 2 ชั่วโมงแล้ว ยังไม่ได้รับการตอบรับ','Doctor told over 2 hours ago, no reply yet')}</p>`:''}
+ ${open?`<div class="al-act">
+  ${!st.owner?`<button class="btn sm primary" data-a="esc" data-k="${k}" data-op="own">${icon('check')} ${_('รับเรื่อง','Take it')}</button>`:`<span class="muted">${_('ผู้รับผิดชอบ','Owner')}: <b>${esc(nameOf(st.owner))}</b></span>`}
+  <label class="al-f">${_('ความรุนแรง','Severity')}<select data-c="escsev" data-k="${k}">${Object.entries(SEVL).map(([v,l])=>`<option value="${v}" ${a.sev===v?'selected':''}>${_(l[0],l[1])}</option>`).join('')}</select></label>
+  <label class="al-f">${_('แพทย์ที่แจ้ง','Doctor')}<select data-c="escdoc" data-k="${k}"><option value="">—</option>${DOCS.map((d,i)=>`<option value="${i}" ${st.doctor&&L(st.doctor)===L(d)?'selected':''}>${esc(L(d))}</option>`).join('')}</select></label>
+  ${st.owner&&!st.notifiedAt?`<button class="btn sm" data-a="esc" data-k="${k}" data-op="notify">${icon('phone')} ${_('แจ้งแพทย์แล้ว','Doctor told')}</button>`:''}
+  ${st.notifiedAt&&!st.ack?`<button class="btn sm" data-a="esc" data-k="${k}" data-op="ack">${icon('check')} ${_('แพทย์รับทราบแล้ว','Doctor acknowledged')}</button>`:''}
+  <form class="al-order" data-form="escorder" data-k="${k}"><input name="order" value="${esc(L(st.order)||'')}" placeholder="${_('คำสั่งการรักษาที่ได้รับ','Orders received')}"><button class="btn sm" type="submit">${_('บันทึก','Save')}</button></form>
+  ${!st.closed?`<button class="btn sm ok" data-a="esc" data-k="${k}" data-op="close">${icon('check')} ${_('ปิดเคส','Close')}</button>`:`<button class="btn sm ghost" data-a="esc" data-k="${k}" data-op="reopen">${_('เปิดเคสอีกครั้ง','Reopen')}</button>`}
+  <button class="btn sm ghost" data-a="algo" data-v="${a.go[0]}" data-pid="${a.pid}" data-t="${a.go[2]||''}">${_('ไปที่ข้อมูล','Open')} ${icon('chev')}</button></div>
+  ${st.log?.length?`<ul class="al-log">${st.log.map(l=>`<li><span class="num">${fmtDT(l.at)}</span> ${esc(nameOf(l.by))}: ${esc(L(l.t))}</li>`).join('')}</ul>`:''}`:''}</article>`}
+/* ---- home ---- */
+function vCoord(){const me=person(S.user.id);const mine=myPatients(),ids=mine.map(p=>p.id);const al=openAlerts(ids);
+ const pre=mine.filter(p=>!isPost(p)).length,post=mine.length-pre;
+ const labPts=new Set(al.filter(a=>a.type==='lab').map(a=>a.pid)),medPts=new Set(al.filter(a=>a.type==='med').map(a=>a.pid));
+ const ot=openTasks(ids);const today=ot.filter(t=>t.due<=todayISO);const fuPts=new Set(today.map(t=>t.pid));
+ const appToday=D.appts.filter(a=>ids.includes(a.patientId)&&a.date===todayISO).length;
+ const urgentPts=new Set([...al.filter(a=>a.sev==='high').map(a=>a.pid),...ot.filter(t=>t.status==='urgent').map(t=>t.pid)]);
+ const kpi=(v,lab,sub,ic,go,cls='')=>`<button class="kpi ${cls}" data-a="go" data-v="${go}"><span class="kpi-i">${icon(ic)}</span><b class="num">${v}</b><span>${lab}</span>${sub?`<small>${sub}</small>`:''}</button>`;
+ const flt=S.qf||'all';const q=D.tasks.filter(t=>ids.includes(t.pid)).filter(t=>flt==='all'?t.status!=='done':tgrp(t.status)===flt).sort((a,b)=>TST[a.status][3]-TST[b.status][3]||a.due.localeCompare(b.due));
+ const cnt=g=>D.tasks.filter(t=>ids.includes(t.pid)&&tgrp(t.status)===g).length;
+ return `<section class="cp-hero"><div><small>Transplant Coordinator Portal</small><h2>${_('สวัสดีค่ะ','Hello,')} ${esc(L(me.name))}</h2><p>${_(`ผู้ป่วยที่ดูแล ${mine.length} ราย · วันนี้ ${fmtDate(todayISO,{weekday:'long',day:'numeric',month:'long'})}`,`${mine.length} patients under care · ${fmtDate(todayISO,{weekday:'long',day:'numeric',month:'long'})}`)}</p></div><span class="cp-badge">LT Coordinator</span></section>
+ <div class="kpis">${kpi(mine.length,_('ผู้ป่วยทั้งหมด','All patients'),'','users','patients')}${kpi(pre,'Pre-transplant',_('ก่อนปลูกถ่าย','Before transplant'),'clock','patients')}${kpi(post,'Post-transplant',_('หลังปลูกถ่าย','After transplant'),'heart','patients')}${kpi(labPts.size,_('รอตรวจ Lab','Labs to check'),_('ราย','patients'),'flask','labmgmt',labPts.size?'warn':'')}${kpi(medPts.size,_('รอตรวจทานยา','Medicines to review'),_('ราย','patients'),'pill','medrev',medPts.size?'warn':'')}${kpi(today.length+appToday,_('นัดติดตามวันนี้','Follow-ups today'),_('รายการ','items'),'calendar','followup')}${kpi(urgentPts.size,_('ต้องติดตามเร่งด่วน','Urgent'),_('ราย','patients'),'alert','alerts',urgentPts.size?'danger':'')}</div>
+ <div class="cp-grid"><section class="card cp-today"><div class="card-h"><h3>${icon('clock')} ${_('งานที่ต้องดำเนินการวันนี้','Today’s work')}</h3></div>
+  <button class="td-row" data-a="go" data-v="labmgmt"><span>${_('รอตรวจ Lab','Labs to check')}</span><b class="pill-n warn">${labPts.size} ${_('ราย','pts')}</b></button>
+  <button class="td-row" data-a="go" data-v="medrev"><span>${_('รอตรวจทานยา','Medicines to review')}</span><b class="pill-n warn">${medPts.size} ${_('ราย','pts')}</b></button>
+  <button class="td-row" data-a="go" data-v="followup"><span>${_('รอติดตามผู้ป่วย','Patients to follow up')}</span><b class="pill-n info">${fuPts.size} ${_('ราย','pts')}</b></button>
+  <button class="td-row" data-a="go" data-v="alerts"><span>${_('แจ้งเตือนที่ยังไม่มีผู้รับผิดชอบ','Alerts with no owner')}</span><b class="pill-n danger">${al.filter(a=>!a.st.owner).length}</b></button></section>
+ <section class="cp-menu">${[['patients','users','ทะเบียนผู้ป่วย','Patient Management'],['labmgmt','flask','บันทึกผล Lab','Lab Management'],['medrev','pill','ตรวจทานยา','Medication Review'],['followup','clipboard','ติดตามผู้ป่วย','Follow-up'],['alerts','bell','แจ้งเตือน','Clinical Alerts'],['reports','chart','รายงานและสถิติ','Reports & Analytics']].map(([v,ic,th,en])=>`<button class="cpm" data-a="go" data-v="${v}">${icon(ic)}<b>${th}</b><small>${en}</small></button>`).join('')}</section></div>
+ <section class="card fq"><div class="card-h"><h3>${icon('list')} Patient Follow-up Queue</h3><span class="muted">${_('เรียงตามความเร่งด่วนและวันครบกำหนด','By urgency, then due date')}</span></div>
+ <div class="tp-seg fq-f"><button class="${flt==='all'?'on':''}" data-a="qf" data-f="all">${_('ทั้งหมด','All')}</button>${TGRP.map(([k,th,en])=>`<button class="${flt===k?'on':''}" data-a="qf" data-f="${k}">${_(th,en)} <b class="num">${cnt(k)}</b></button>`).join('')}</div>
+ <ul class="fq-list">${q.map(t=>`<li class="g-${tgrp(t.status)}"><span class="fq-ic">${icon(TTYPE[t.type]?.[2]||'clipboard')}</span><div class="fq-t"><b>${esc(L(t.title))}</b><button class="lnk" data-a="fuopen" data-pid="${t.pid}">${esc(pName(t.pid))} · HN ${P(t.pid).hn}</button></div><div class="fq-m">${tsChip(t.status)}${dueTxt(t.due)}</div></li>`).join('')||`<li class="muted">${_('ไม่มีรายการ','Nothing here')}</li>`}</ul></section>`}
+/* ---- patient profile ---- */
+function profileCards(p){const days=p.txDate?daysBetween(p.txDate,todayISO):null;const cg=D.consents.find(c=>c.patientId===p.id&&c.active);const lastC=D.contacts.filter(c=>c.pid===p.id).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time))[0];
+ const na=nextAppt(p.id);const al=openAlerts([p.id]);const nt=openTasks([p.id]).sort((a,b)=>a.due.localeCompare(b.due))[0];const rx=activeRx(p.id);const adh=adherence(p.id);
+ const ld=labsOf(p.id).slice(-1)[0]?.date;const fl=ld?labsOf(p.id).filter(l=>l.date===ld&&['H','L'].includes(flagOf(l))):[];
+ const kv=(k,v)=>`<div><dt>${k}</dt><dd>${v||'—'}</dd></div>`;
+ return `<div class="prof-grid"><section class="card prof"><div class="card-h"><h3>${icon('users')} ${_('ข้อมูลทั่วไป','General')}</h3></div><dl class="kv2">${kv('HN',p.hn)}${kv(_('ชื่อ-นามสกุล','Name'),esc(L(p.name)))}${kv(_('อายุ','Age'),p.age+' '+_('ปี','yrs')+' · '+sexLabel(p.sex))}${kv(_('เบอร์ติดต่อ','Phone'),p.phone?`<a href="tel:${p.phone}">${p.phone}</a>`:'')}${kv(_('ผู้ดูแลหลัก','Main caregiver'),cg?esc(L(C(cg.caregiverId).name))+' ('+esc(L(cg.relation))+')':(p.emerg?esc(L(p.emerg.name)):''))}${kv(_('ติดต่อฉุกเฉิน','Emergency contact'),p.emerg?`${esc(L(p.emerg.name))} · <a href="tel:${p.emerg.phone}">${p.emerg.phone}</a>`:'')}</dl></section>
+ <section class="card prof"><div class="card-h"><h3>${icon('heart')} ${_('ข้อมูลการปลูกถ่าย','Transplant')}</h3>${chip(isPost(p)?'brand':'warn',isPost(p)?'Post-transplant':'Pre-transplant')}</div><dl class="kv2">${kv(_('วันปลูกถ่ายตับ','Transplant date'),p.txDate?fmtDate(p.txDate):_('รอปลูกถ่าย','Waiting'))}${kv(_('วันจำหน่ายจาก รพ.','Discharged'),p.discharge?fmtDate(p.discharge):p.txDate?_('ยังอยู่ รพ.','Still in hospital'):'')}${kv(_('ระยะเวลาหลังปลูกถ่าย','Time since'),days!=null?_(`${days} วัน`,`${days} days`):'')}${kv(_('โรคร่วมและประวัติสำคัญ','Conditions'),(p.comorb||[]).map(esc).join(', '))}${kv(_('ภาวะแทรกซ้อน','Complications'),(p.complic||[]).map(esc).join(', ')||_('ไม่มี','None'))}${kv(_('แพทย์ผู้ดูแล','Doctor'),p.doctor?esc(L(p.doctor)):'')}</dl></section>
+ <section class="card prof"><div class="card-h"><h3>${icon('clipboard')} ${_('ข้อมูลการติดตาม','Follow-up')}</h3><button class="btn sm ghost" data-a="tab" data-t="fu">${_('ติดตาม','Follow-up')} ${icon('chev')}</button></div><dl class="kv2">${kv(_('ติดตามครั้งล่าสุด','Last contact'),lastC?fmtDate(lastC.date,{day:'numeric',month:'short'})+' '+lastC.time+' · '+esc(L(lastC.prob)):'')}${kv(_('นัดครั้งต่อไป','Next visit'),na?fmtDate(na.date,{day:'numeric',month:'short'})+' · '+countdown(na.date):'')}${kv(_('ผล Lab ล่าสุด','Latest labs'),ld?fmtDate(ld,{day:'numeric',month:'short'})+' · '+(fl.length?fl.map(l=>`<span class="lflag">${LAB(l.test).name} ${l.value}${flagOf(l)==='H'?'↑':'↓'}</span>`).join(' '):_('ปกติ','In range')):'')}${kv(_('สถานะการใช้ยา','Medicines'),rx?`${rx.no} · ${rx.items.length} ${_('รายการ','items')}${adh!=null?' · '+_('กินยาครบ','taken')+' '+adh+'%':''}${rxNew(p.id)?' · <b class="warnt">'+_('มีใบสั่งยาใหม่รอตรวจทาน','new prescription to review')+'</b>':''}`:'')}${kv(_('ปัญหาที่ยังไม่แก้ไข','Open problems'),al.length?al.slice(0,3).map(a=>esc(a.title)).join('<br>'):_('ไม่มี','None'))}${kv(_('แผนการติดตามครั้งถัดไป','Next plan'),nt?esc(L(nt.title))+' · '+fmtDate(nt.due,{day:'numeric',month:'short'}):'')}</dl></section></div>`}
+/* ---- lab management ---- */
+const LM_GROUPS=[['Liver Function',['AST','ALT','ALP','GGT']],['Bilirubin',['TBIL','DBIL']],['Synthetic Function',['ALB','PT','INR']],['Renal Function',['BUN','CR','EGFR']],['CBC',['HB','HCT','WBC','PLT']],['Immunosuppressant',['TAC']],['Electrolyte',['NA','K','CL','CO2']]];
+const LSTAT={draft:['Draft','warn'],verified:['Verified','ok'],corrected:['Corrected','info']};
+const SRC2={hosp:['นำเข้าจาก รพ.','Hospital import'],outside:['แล็บภายนอก','Outside lab'],self:['ผู้ป่วยกรอกเอง','Patient-entered']};
+function ptPicker(cur,act,extra=()=>''){return `<div class="ptpick">${myPatients().map(p=>`<button class="${p.id===cur?'on':''}" data-a="${act}" data-pid="${p.id}"><b>${esc(L(p.name).split(' ')[0])}</b><small>${isPost(p)?'Post':'Pre'}${extra(p.id)}</small></button>`).join('')}</div>`}
+function multiTrend(pid,days){const codes=['AST','ALT','TBIL','CR'],col=['#3A8A86','#C08A2B','#5B8FD0','#C9584B'];const from=dOff(-(days-1));
+ const W=340,H=170,Lp=30,R=10,T=10,B=24;const t0=parseISO(from).getTime(),t1=parseISO(todayISO).getTime()+864e5;const xs=t=>Lp+(t-t0)/(t1-t0)*(W-Lp-R);
+ const ser=codes.map(c=>labsOf(pid,c).filter(l=>l.date>=from&&l.refHigh).map(l=>({t:parseISO(l.date).getTime()+hm2m(l.time||'07:00')*6e4,v:l.value/l.refHigh,l})));
+ const all=ser.flat();if(!all.length)return `<div class="tc-empty">${icon('chart')}<span>${_('ไม่มีผลในช่วงนี้','No results in this period')}</span></div>`;
+ const hi=Math.max(1.4,...all.map(x=>x.v))*1.1;const ys=v=>T+(hi-v)/hi*(H-T-B);
+ const xl=[];const step=days<=7?1:days<=30?7:30;for(let k=days-1;k>=0;k-=step){const d=dOff(-k);xl.push(`<text x="${xs(parseISO(d).getTime()+432e5).toFixed(1)}" y="${H-6}" class="tc-xl" text-anchor="middle">${parseISO(d).getDate()}/${parseISO(d).getMonth()+1}</text>`)}
+ return `<svg class="tchart" viewBox="0 0 ${W} ${H}" role="img" aria-label="AST ALT Bilirubin Creatinine"><rect x="${Lp}" y="${ys(1)}" width="${W-Lp-R}" height="${ys(0)-ys(1)}" class="tc-band"/>${[0.5,1,Math.round(hi*10)/10].map(v=>`<text x="${Lp-4}" y="${ys(v)+3}" class="tc-yl" text-anchor="end">${v}×</text><line x1="${Lp}" x2="${W-R}" y1="${ys(v)}" y2="${ys(v)}" class="tc-grid"/>`).join('')}${xl.join('')}
+ ${ser.map((sr,i)=>sr.length?`<polyline fill="none" stroke="${col[i]}" stroke-width="2.2" points="${sr.map(x=>xs(x.t).toFixed(1)+','+ys(x.v).toFixed(1)).join(' ')}"/>${sr.map(x=>`<circle cx="${xs(x.t).toFixed(1)}" cy="${ys(x.v).toFixed(1)}" r="3.3" fill="${col[i]}" stroke="var(--surface)" stroke-width="1.4"><title>${LAB(codes[i]).name} ${x.l.value} ${x.l.unit} · ${fmtDate(x.l.date,{day:'numeric',month:'short'})}</title></circle>`).join('')}`:'').join('')}</svg>
+ <div class="tp-legend">${codes.map((c,i)=>`<span><i style="background:${col[i]}"></i>${LAB(c).name}</span>`).join('')}<span><i class="band"></i>${_('ไม่เกินค่าสูงสุดปกติ (≤1× ULN)','Within normal (≤1× ULN)')}</span></div>`}
+function vLabMgmt(){const mine=myPatients();const pid=mine.some(p=>p.id===S.lmPid)?S.lmPid:(mine.find(p=>labAlerts(p.id).length)||mine[0]).id;S.lmPid=pid;const p=P(pid);const days=S.lmDays||30;const q=(S.lmQ||'').toLowerCase();
+ const al=labAlerts(pid);const drafts=D.labs.filter(l=>l.patientId===pid&&l.status==='draft');
+ const row=c=>{const h=labsOf(pid,c);const l=h[h.length-1];const t=LAB(c);if(!l)return'';if(q&&!(t.name+' '+c).toLowerCase().includes(q))return'';const f=flagOf(l);
+  const tg=c==='TAC'&&p.tacTarget?`${p.tacTarget[0]}–${p.tacTarget[1]}`:l.refLow==null&&l.refHigh==null?'—':l.refHigh==null?`≥ ${l.refLow}`:l.refLow==null||l.refLow===0?`≤ ${l.refHigh}`:`${l.refLow}–${l.refHigh}`;
+  const off=c==='TAC'&&p.tacTarget?(l.value<p.tacTarget[0]?'L':l.value>p.tacTarget[1]?'H':'N'):f;
+  return `<tr class="${off==='H'||off==='L'?'off':''}"><th scope="row">${t.name}<small>${esc(L(t.p))}</small></th><td class="num">${tg}<small>${esc(l.unit)}</small></td><td><span class="lres ${off==='H'||off==='L'?'off':''} num">${l.value}</span></td><td>${off==='H'?'<b class="up">↑</b>':off==='L'?'<b class="up">↓</b>':'<b class="okk">✓</b>'}</td><td class="num">${fmtDate(l.date,{day:'numeric',month:'short'})}<small>${l.time||''}</small></td><td>${chip(LSTAT[l.status||'verified'][1],LSTAT[l.status||'verified'][0])}<small>${_(...(SRC2[l.src2||'hosp']))}</small></td><td>${spark(h.map(x=>x.value),90,24)}</td><td><button class="btn sm ghost" data-a="labfix" data-id="${l.id}" aria-label="${_('แก้ไข','Correct')}">${icon('edit')}</button></td></tr>`};
+ return `${ptPicker(pid,'lmpt',id=>labAlerts(id).length?` · <em class="dotw">${labAlerts(id).length}</em>`:'')}
+ <div class="lm-act"><button class="btn primary" data-a="labpanel" data-pid="${pid}">${icon('plus')} ${_('กรอกผล Lab','Enter lab results')}</button>${drafts.length?`<button class="btn" data-a="labver" data-pid="${pid}">${icon('check')} ${_(`ยืนยันผล Draft ${drafts.length} รายการ`,`Verify ${drafts.length} drafts`)}</button>`:''}</div>
+ ${al.length?`<section class="card lm-al"><div class="card-h"><h3>${icon('alert')} ${_('ผลที่เข้าเกณฑ์เฝ้าระวัง','Results meeting watch criteria')}</h3></div>${al.map(a=>`<div class="lm-al-r sev-${a.sev}">${chip(SEVL[a.sev][2],_(SEVL[a.sev][0],SEVL[a.sev][1]))}<b>${esc(a.title)}</b><span class="muted">${esc(a.sub)} · ${fmtDate(a.date,{day:'numeric',month:'short'})}</span></div>`).join('')}<p class="hint tiny">${_('ค่าผิดปกติเป็นสัญญาณให้ตรวจสอบ ไม่ใช่การวินิจฉัยภาวะแทรกซ้อน','Abnormal values are a prompt to check, not a diagnosis')}</p></section>`:''}
+ <section class="card"><div class="card-h"><h3>${icon('chart')} Lab Trend Monitoring</h3><div class="tp-seg">${[7,30,90].map(d=>`<button class="${days===d?'on':''}" data-a="lmdays" data-d="${d}">${d} ${_('วัน','d')}</button>`).join('')}</div></div>${multiTrend(pid,days)}<p class="hint tiny">${_('แสดงเป็นจำนวนเท่าของค่าสูงสุดปกติ (ULN) เพื่อดู 4 รายการในกราฟเดียว','Shown as multiples of the upper normal limit so all four fit one chart')}</p></section>
+ <section class="card"><div class="card-h"><h3>${icon('flask')} ${_('ผล Lab ล่าสุดและแนวโน้ม','Latest results and trends')}</h3><input class="lm-q" type="search" placeholder="${_('ค้นหารายการตรวจ…','Filter by biomarker…')}" value="${esc(S.lmQ||'')}" data-c="lmq" aria-label="${_('ค้นหา','Filter')}"></div>
+ <div class="tbl-wrap"><table class="lm-tbl"><thead><tr><th>Biomarker</th><th>${_('ช่วงอ้างอิง/เป้าหมาย','Target range')}</th><th>${_('ผลล่าสุด','Latest')}</th><th>vs Ref</th><th>${_('วันที่','Date')}</th><th>${_('สถานะ','Status')}</th><th>Trend</th><th></th></tr></thead>
+ ${LM_GROUPS.map(([g,cs])=>{const rows=cs.map(row).join('');return rows?`<tbody><tr class="lm-g"><td colspan="8">${g}</td></tr>${rows}</tbody>`:''}).join('')}</table></div></section>
+ ${fold('lmrules',`<h3>${icon('shield')} ${_('เกณฑ์เฝ้าระวังที่ทีมกำหนด (ตัวอย่าง)','Team watch criteria (sample)')}</h3>`,`<ul class="rules">${LRULES.map(r=>`<li>${ruleTxt(r)}</li>`).join('')}</ul><p class="hint tiny">${_('ทีมรักษากำหนดเกณฑ์จริงก่อนใช้งาน','The care team sets the real criteria before use')}</p>`,false)}
+ ${fold('lmhist',`<h3>${icon('list')} ${_('ประวัติการบันทึกและแก้ไข','Entry and correction history')}</h3>`,`<ul class="tlist">${D.labs.filter(l=>l.patientId===pid&&(l.status!=='verified'||l.hist?.length||l.src2!=='hosp')).sort((a,b)=>(b.date).localeCompare(a.date)).map(l=>`<li><span class="num">${fmtDate(l.date,{day:'numeric',month:'short'})}</span><b>${LAB(l.test).name} ${l.value}</b>${chip(LSTAT[l.status][1],LSTAT[l.status][0])}<small>${_('บันทึก','by')} ${esc(nameOf(l.by))}${l.verifiedBy?' · '+_('ยืนยัน','verified')+' '+esc(nameOf(l.verifiedBy)):''}${l.attach?' · 📎 '+esc(l.attach):''}</small>${(l.hist||[]).map(h=>`<em>${_('แก้จาก','was')} ${h.old} → ${h.new} · ${esc(h.why)} · ${esc(nameOf(h.by))}</em>`).join('')}</li>`).join('')||`<li class="muted">${_('ยังไม่มีรายการ','None yet')}</li>`}</ul>`,false)}`}
+/* ---- medication review ---- */
+function vMedRev(){const mine=myPatients();const pid=mine.some(p=>p.id===S.mrPid)?S.mrPid:(mine.find(p=>rxNew(p.id))||mine.find(p=>activeRx(p.id))||mine[0]).id;S.mrPid=pid;
+ const prev=rxPrev(pid),cur=activeRx(pid),nw=rxNew(pid);const ma=medAlerts(pid);
+ const cell=i=>i?`<b>${esc(i.name)}</b><span class="num">${esc(doseTxt(i))} · ${i.times.join(', ')}</span>`:`<span class="muted">—</span>`;
+ const rows=(a,b,c)=>{const keys=[...new Set([...(a?.items||[]),...(b?.items||[]),...(c?.items||[])].map(i=>gkey(i.name)))];const base=c?cmpRx(b,c):cmpRx(a,b);
+  return keys.map(k=>{const f=r=>r?.items.find(i=>gkey(i.name)===k);const tg=base.find(x=>x.k===k)?.tag||'same';return `<tr><td data-l="${_('ยาเดิม','Previous')}">${cell(f(a))}</td><td data-l="${_('ยาปัจจุบัน','Current')}">${cell(f(b))}</td>${c?`<td data-l="${_('ใบสั่งใหม่','New')}" class="nw-col">${cell(f(c))}</td>`:''}<td class="mr-tag">${chip(CTAG[tg][2],_(CTAG[tg][0],CTAG[tg][1]))}</td></tr>`}).join('')};
+ const rv=nw?(nw.rev||(nw.rev={steps:{},notes:'',sentTo:'',result:''})):null;
+ const STEPS=[['รับข้อมูลใบสั่งยาใหม่','Receive the new prescription'],['บันทึกรายการยา','Record the medicines'],['เปรียบเทียบกับรายการยาเดิม','Compare with current medicines'],['ตรวจสอบขนาดยา ความถี่ และเวลา','Check dose, frequency and times'],['บันทึกข้อสงสัยหรือรายการที่ไม่ตรงกัน','Note queries or mismatches'],['ส่งให้แพทย์หรือเภสัชกรยืนยันเมื่อพบความคลาดเคลื่อน','Send to doctor or pharmacist if anything is off'],['บันทึกผลการตรวจทานและผู้รับผิดชอบ','Record the result and who checked']];
+ return `${ptPicker(pid,'mrpt',id=>rxNew(id)?` · <em class="dotw">${_('ใหม่','new')}</em>`:'')}
+ ${ma.length?`<section class="card lm-al"><div class="card-h"><h3>${icon('alert')} Medication Safety Alert</h3></div>${ma.map(a=>`<div class="lm-al-r sev-${a.sev}">${chip(SEVL[a.sev][2],_(SEVL[a.sev][0],SEVL[a.sev][1]))}<b>${esc(a.title)}</b>${a.sub?`<span class="muted">${esc(a.sub)}</span>`:''}</div>`).join('')}</section>`:''}
+ <section class="card"><div class="card-h"><h3>${icon('pill')} Medication Reconciliation</h3><span class="muted">${nw?_('ยาปัจจุบัน → ใบสั่งใหม่','Current → new'):_('ยาเดิม → ยาปัจจุบัน','Previous → current')}</span></div>
+ <div class="tbl-wrap"><table class="mr-tbl"><thead><tr><th>${_('ยาเดิม','Previous')}${prev?`<small>${prev.no} · ${fmtDate(prev.date,{day:'numeric',month:'short'})}</small>`:''}</th><th>${_('ยาปัจจุบัน','Current')}${cur?`<small>${cur.no} · ${fmtDate(cur.date,{day:'numeric',month:'short'})}</small>`:''}</th>${nw?`<th class="nw-col">${_('ใบสั่งใหม่','New prescription')}<small>${nw.no} · ${fmtDate(nw.date,{day:'numeric',month:'short'})}</small></th>`:''}<th>${_('การเปลี่ยนแปลง','Change')}</th></tr></thead><tbody>${rows(prev,cur,nw)||`<tr><td colspan="4" class="muted">${_('ยังไม่มีใบสั่งยา','No prescriptions yet')}</td></tr>`}</tbody></table></div></section>
+ ${nw?`<section class="card mr-ver"><div class="card-h"><h3>${icon('shield')} Medication Verification · ${nw.no}</h3>${chip('warn',_('รอตรวจทาน','To review'))}</div><p class="muted">${_('บันทึกโดย','Entered by')} ${esc(nameOf(nw.enteredBy))} · ${esc(L(nw.doctor))}</p>
+  <ol class="mr-steps">${STEPS.map(([th,en],i)=>`<li><label><input type="checkbox" data-c="rvstep" data-id="${nw.id}" data-i="${i}" ${rv.steps[i]?'checked':''}><span>${_(th,en)}</span></label></li>`).join('')}</ol>
+  <form class="form mr-form" data-form="rvnote" data-id="${nw.id}"><label class="field">${_('ข้อสงสัย / รายการที่ไม่ตรงกัน','Queries or mismatches')}<textarea name="notes" rows="2">${esc(rv.notes||'')}</textarea></label>
+  <div class="fgrid2"><label class="field">${_('ส่งให้ยืนยัน','Send to confirm')}<select name="sentTo"><option value="">—</option>${DOCS.map((d,i)=>`<option value="${i}" ${rv.sentTo===L(d)?'selected':''}>${esc(L(d))}</option>`).join('')}</select></label><label class="field">${_('ผลการตรวจทาน','Result')}<input name="result" value="${esc(rv.result||'')}" placeholder="${_('เช่น ตรงกับคำสั่งแพทย์','e.g. matches the doctor’s order')}"></label></div>
+  <p class="ferr" role="alert"></p><div class="row"><button class="btn" type="submit">${_('บันทึก','Save')}</button><button class="btn primary" type="button" data-a="rvdone" data-id="${nw.id}">${icon('check')} ${_('ยืนยันการตรวจทานและเปิดใช้ใบสั่งยา','Confirm and activate')}</button></div></form>
+  <p class="hint tiny">${_('พยาบาลตรวจทานความถูกต้องของรายการยาเท่านั้น ไม่เปลี่ยนคำสั่งยาเอง การเปลี่ยนแปลงต้องมาจากแพทย์','Nurses check that the list is correct; they never change orders themselves — changes come from the doctor')}</p></section>`:''}
+ ${cur?`<section class="card"><div class="card-h"><h3>${icon('list')} Medication Profile · ${cur.no}</h3><button class="btn sm ghost" data-a="openpt" data-pid="${pid}" data-t="meds">${_('ดูทั้งหมด','All')} ${icon('chev')}</button></div><div class="tbl-wrap"><table class="mp-tbl"><thead><tr><th>${_('ชื่อสามัญ / การค้า','Generic / brand')}</th><th>${_('ขนาด','Dose')}</th><th>${_('วิธีใช้','Route')}</th><th>${_('เวลา / ความถี่','Times')}</th><th>${_('เริ่ม–หยุด','Start–stop')}</th><th>${_('เหตุผลที่เปลี่ยน','Reason')}</th><th>${_('แพทย์ผู้สั่ง','Prescriber')}</th></tr></thead><tbody>${cur.items.map(i=>`<tr><td><b>${esc(i.name)}</b><small>${BRAND[gkey(i.name)]||BRAND[i.name.toLowerCase()]||'—'}</small></td><td class="num">${esc(doseTxt(i))}</td><td>${_('รับประทาน','Oral')}</td><td class="num">${i.times.join(', ')}<small>${i.times.length} ${_('ครั้ง/วัน','×/day')}</small></td><td class="num">${fmtDate(i.start||cur.date,{day:'numeric',month:'short'})} – ${i.end?fmtDate(i.end,{day:'numeric',month:'short'}):_('ต่อเนื่อง','ongoing')}</td><td>${i.why?esc(L(i.why)):'—'}</td><td>${esc(L(cur.doctor))}</td></tr>`).join('')}</tbody></table></div></section>`:''}`}
+/* ---- follow-up ---- */
+const CHN={phone:['โทรศัพท์','Phone'],line:['LINE','LINE'],video:['วิดีโอคอล','Video call'],visit:['พบที่ รพ.','In person']};
+function followupPanel(pid){const p=P(pid);const ts=tasksOf(pid).sort((a,b)=>(a.status==='done')-(b.status==='done')||TST[a.status][3]-TST[b.status][3]||a.due.localeCompare(b.due));const cs=D.contacts.filter(c=>c.pid===pid).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
+ return `<section class="card"><div class="card-h"><h3>${icon('calendar')} ${_('ตารางติดตามรายบุคคล','Personal follow-up schedule')}</h3></div>
+ <ul class="fu-list">${ts.map(t=>`<li class="g-${tgrp(t.status)}"><span class="fq-ic">${icon(TTYPE[t.type]?.[2]||'clipboard')}</span><div class="fq-t"><b>${esc(L(t.title))}</b><small>${_(...(TTYPE[t.type]||['งานติดตาม','Task']).slice(0,2))} · ${dueTxt(t.due)}</small></div><select data-c="taskst" data-id="${t.id}" aria-label="${_('สถานะ','Status')}">${Object.entries(TST).map(([k,v])=>`<option value="${k}" ${t.status===k?'selected':''}>${_(v[0],v[1])}</option>`).join('')}</select></li>`).join('')||`<li class="muted">${_('ยังไม่มีงานติดตาม','No follow-up tasks')}</li>`}</ul>
+ ${fold('taskadd-'+pid,`<h3>${icon('plus')} ${_('เพิ่มงานติดตาม','Add a task')}</h3>`,`<form class="form" data-form="task" data-pid="${pid}"><div class="fgrid2"><label class="field">${_('ประเภท','Type')}<select name="type">${Object.entries(TTYPE).map(([k,v])=>`<option value="${k}">${_(v[0],v[1])}</option>`).join('')}</select></label><label class="field">${_('กำหนด','Due')}<input type="date" name="due" value="${todayISO}"></label></div><label class="field">${_('รายละเอียด','Details')}<input name="title" placeholder="${_('เช่น โทรสอบถามอาการหลังปรับยา','e.g. call about symptoms after dose change')}"></label><label class="field">${_('สถานะ','Status')}<select name="status">${Object.entries(TST).filter(([k])=>k!=='done').map(([k,v])=>`<option value="${k}" ${k==='todo'?'selected':''}>${_(v[0],v[1])}</option>`).join('')}</select></label><p class="ferr" role="alert"></p><button class="btn primary" type="submit">${_('เพิ่มงาน','Add task')}</button></form>`,false)}</section>
+ <section class="card"><div class="card-h"><h3>${icon('phone')} Contact Log</h3><span class="muted">${cs.length} ${_('ครั้ง','entries')}</span></div>
+ ${fold('cadd-'+pid,`<h3>${icon('plus')} ${_('บันทึกการติดต่อ','Log a contact')}</h3>`,`<form class="form cl-form" data-form="contact" data-pid="${pid}"><div class="fgrid2"><label class="field">${_('วันที่','Date')}<input type="date" name="date" value="${todayISO}" max="${todayISO}"></label><label class="field">${_('เวลา','Time')}<input type="time" name="time" value="${nowHM()}"></label>
+  <label class="field">${_('ติดต่อใคร','Who')}<select name="who"><option value="patient">${_('ผู้ป่วย','Patient')}</option><option value="caregiver">${_('ญาติ/ผู้ดูแล','Caregiver')}</option></select></label><label class="field">${_('ช่องทาง','Channel')}<select name="ch">${Object.entries(CHN).map(([k,v])=>`<option value="${k}">${_(v[0],v[1])}</option>`).join('')}</select></label></div>
+  <label class="field">${_('ผู้ป่วยมีอาการอย่างไร','Symptoms')}<input name="sym"></label><label class="field">${_('ปัญหาที่พบ','Problem')}<input name="prob"></label><label class="field">${_('คำแนะนำตามแผนทีมรักษา','Advice given (per team plan)')}<input name="adv"></label>
+  <div class="fgrid2"><label class="field">${_('ได้ประสานแพทย์หรือไม่','Doctor contacted?')}<select name="doc"><option value="">${_('ไม่ได้ประสาน','No')}</option>${DOCS.map((d,i)=>`<option value="${i}">${esc(L(d))}</option>`).join('')}</select></label><label class="field">${_('วันติดตามครั้งต่อไป','Next follow-up')}<input type="date" name="next" min="${todayISO}"></label></div>
+  <label class="field">${_('ผลการดำเนินการ','Outcome')}<input name="out"></label><p class="ferr" role="alert"></p><button class="btn primary" type="submit">${_('บันทึกการติดต่อ','Save contact')}</button></form>`,false)}
+ <ul class="cl-list">${cs.map(c=>`<li><div class="cl-h"><b class="num">${fmtDate(c.date,{day:'numeric',month:'short'})} ${c.time}</b>${chip('brand',_(...CHN[c.ch]))}<span>${esc(L(c.whoName)||'')}</span><small>${_('โดย','by')} ${esc(nameOf(c.by))}</small></div><dl class="kv2 cl-kv">${[[_('อาการ','Symptoms'),c.sym],[_('ปัญหา','Problem'),c.prob],[_('คำแนะนำ','Advice'),c.adv],[_('ประสานแพทย์','Doctor'),c.doc?c.docName||_('ใช่','Yes'):_('ไม่ได้ประสาน','No')],[_('ผลการดำเนินการ','Outcome'),c.out],[_('ติดตามครั้งต่อไป','Next'),c.next?fmtDate(c.next,{day:'numeric',month:'short'}):'']].map(([k,v])=>`<div><dt>${k}</dt><dd>${v?esc(L(v)):'—'}</dd></div>`).join('')}</dl></li>`).join('')||`<li class="muted">${_('ยังไม่มีบันทึก','No contacts yet')}</li>`}</ul>
+ <p class="hint tiny">${_('บันทึกไว้ให้พยาบาลคนอื่นดูแลต่อได้ แม้เปลี่ยนเวรหรือเปลี่ยนผู้รับผิดชอบ','So any nurse can pick up the care, even across shifts')}</p></section>`}
+function vFollowup(){const mine=myPatients();const pid=mine.some(p=>p.id===S.fuPid)?S.fuPid:(mine.find(p=>openTasks([p.id]).some(t=>t.due<=todayISO))||mine[0]).id;S.fuPid=pid;const p=P(pid);
+ return `${ptPicker(pid,'fuopen',id=>{const n=openTasks([id]).filter(t=>t.due<=todayISO).length;return n?` · <em class="dotw">${n}</em>`:''})}
+ <div class="fu-head"><h2>${esc(L(p.name))} <small>HN ${p.hn}</small></h2><button class="btn sm ghost" data-a="openpt" data-pid="${pid}">${_('เปิด Patient Profile','Open profile')} ${icon('chev')}</button></div>
+ ${profileCards(p).replace('<div class="prof-grid">','<div class="prof-grid fu-prof">')}${followupPanel(pid)}`}
+/* ---- alerts ---- */
+function vAlerts(){const ids=myPatients().map(p=>p.id);const f=S.alf||'all';const showC=!!S.alc;const all=allAlerts(ids);const open=all.filter(a=>!a.st.closed);
+ const list=all.filter(a=>(showC||!a.st.closed)&&(f==='all'||a.type===f));const noOwner=open.filter(a=>!a.st.owner).length;
+ const lateN=open.filter(a=>a.st.notifiedAt&&!a.st.ack&&(Date.now()-new Date(a.st.notifiedAt.replace(' ','T')).getTime())>2*36e5).length;
+ return `${noOwner||lateN?`<div class="notice warn">${icon('alert')}<div>${noOwner?`<b>${noOwner} ${_('รายการยังไม่มีผู้รับผิดชอบ','alerts have no owner')}</b>`:''}${lateN?`<br><b>${lateN} ${_('รายการแจ้งแพทย์แล้วยังไม่ได้รับการตอบรับ','alerts still waiting for the doctor')}</b>`:''}<br><span>${_('กรณีเร่งด่วน อย่าพึ่งการแจ้งเตือนในแอปเพียงช่องทางเดียว ให้โทรตามแพทย์เวรตามระบบของโรงพยาบาล','For urgent cases don’t rely on app alerts alone — call the on-call doctor through the hospital system')}</span></div></div>`:''}
+ <div class="al-filt"><div class="tp-seg"><button class="${f==='all'?'on':''}" data-a="alf" data-f="all">${_('ทั้งหมด','All')} <b>${open.length}</b></button>${Object.entries(ATYPE).map(([k,v])=>`<button class="${f===k?'on':''}" data-a="alf" data-f="${k}">${icon(v[2])} ${_(v[1],v[1])} <b>${open.filter(a=>a.type===k).length}</b></button>`).join('')}</div><label class="chk"><input type="checkbox" data-c="alc" ${showC?'checked':''}> ${_('แสดงเคสที่ปิดแล้ว','Show closed')}</label></div>
+ <div class="al-list">${list.map(a=>alertCard(a,true)).join('')||emptyCard('check',_('ไม่มีการแจ้งเตือน','No alerts'),'')}</div>`}
+/* ---- reports + export ---- */
+function coordStats(){const mine=myPatients(),ids=mine.map(p=>p.id);const m0=todayISO.slice(0,8)+'01';
+ const inM=d=>d&&d>=m0&&d<=todayISO;
+ const followed=new Set([...D.contacts.filter(c=>ids.includes(c.pid)&&inM(c.date)).map(c=>c.pid),...D.tasks.filter(t=>ids.includes(t.pid)&&t.status==='done'&&inM(t.due)).map(t=>t.pid)]);
+ const labsM=new Set(D.labs.filter(l=>ids.includes(l.patientId)&&inM(l.date)).map(l=>l.patientId));
+ const rxM=D.prescriptions.filter(r=>ids.includes(r.patientId)&&r.verifiedAt&&inM(r.verifiedAt.slice(0,10))).length;
+ const att=D.appts.filter(a=>ids.includes(a.patientId)&&inM(a.date)&&a.date<todayISO&&a.status!=='scheduled').length;
+ const miss=D.appts.filter(a=>ids.includes(a.patientId)&&a.date<todayISO&&a.status==='scheduled').length+D.tasks.filter(t=>ids.includes(t.pid)&&t.status!=='done'&&t.due<todayISO).length;
+ const open=openAlerts(ids);const contacts=D.contacts.filter(c=>ids.includes(c.pid)&&inM(c.date)).length;
+ const waitDoc=open.filter(a=>a.st.notifiedAt&&!a.st.ack).length+D.prescriptions.filter(r=>ids.includes(r.patientId)&&r.status==='pending').length;
+ return [[_('ผู้ป่วยที่ติดตามในเดือนนี้','Patients followed this month'),followed.size],[_('ผู้ป่วยที่บันทึก Lab แล้ว','Patients with labs recorded'),labsM.size],[_('รายการยาที่ตรวจทานแล้ว','Prescriptions reviewed'),rxM],[_('ผู้ป่วยที่มาตามนัด','Patients who attended'),att],[_('ขาดการติดตาม','Missed follow-ups'),miss],[_('ปัญหาที่ยังไม่ปิดเคส','Open issues'),open.length],[_('ครั้งที่ติดต่อผู้ป่วย','Patient contacts'),contacts],[_('รอแพทย์ยืนยัน','Waiting for a doctor'),waitDoc]]}
+function exportCSV(){const ids=myPatients().map(p=>p.id);const rows=[['HN','Name','Status','Days post-transplant','Next visit','Open alerts','Adherence 7d (%)','Latest Tac (ng/mL)','Contacts this month','Open tasks']];
+ myPatients().forEach(p=>{const tac=labsOf(p.id,'TAC').slice(-1)[0];const na=nextAppt(p.id);rows.push([p.hn,L(p.name),p.txDate?'Post':'Pre',p.txDate?daysBetween(p.txDate,todayISO):'',na?na.date:'',openAlerts([p.id]).length,adherence(p.id)??'',tac?tac.value:'',D.contacts.filter(c=>c.pid===p.id&&c.date.slice(0,7)===todayISO.slice(0,7)).length,openTasks([p.id]).length])});
+ rows.push([]);coordStats().forEach(([k,v])=>rows.push([k,v]));
+ const csv='﻿'+rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\r\n');
+ try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=`tubdeemeesuk-report-${todayISO}.csv`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast(_('ดาวน์โหลดไฟล์ Excel (CSV) แล้ว','Excel (CSV) file downloaded'))}catch(e){toast(_('ดาวน์โหลดไม่ได้ในหน้านี้','Download is blocked here'))}}
+function coordReport(){return `<section class="card rp-co"><div class="card-h"><h3>${icon('chart')} ${_('สรุปงานพยาบาลผู้ประสานงาน เดือนนี้','Coordinator summary this month')}</h3><div class="row no-print"><button class="btn sm" data-a="csv">${icon('download')} Excel</button><button class="btn sm" data-a="pdf">${icon('download')} PDF</button></div></div>
+ <div class="rp-grid">${coordStats().map(([k,v])=>`<div><b class="num">${v}</b><span>${k}</span></div>`).join('')}</div><p class="hint tiny">${_('ใช้สำหรับประชุมทีมปลูกถ่ายตับและประเมินคุณภาพการดูแล · ข้อมูลตัวอย่าง','For transplant team meetings and quality review · sample data')}</p></section>`}
+/* ---- roles ---- */
+function rolesCard(){const R=[['Admin',_('จัดการบัญชีและตั้งค่าระบบ','Accounts and system settings')],['Transplant Coordinator',_('จัดการข้อมูล ติดตาม Lab และทบทวนยา','Patient data, labs, medication review')],['Physician',_('ดูข้อมูล ยืนยันคำสั่งการรักษา รับทราบการแจ้งเตือน','View, confirm orders, acknowledge alerts')],['Pharmacist',_('ตรวจสอบรายการยาและปฏิกิริยาระหว่างยา','Check medicines and interactions')],['Patient',_('ดูข้อมูลตนเองและบันทึกสุขภาพ','Own data and health log')],[_('ญาติ/ผู้ดูแล','Caregiver'),_('ตามสิทธิ์ที่ผู้ป่วยอนุญาต','Only what the patient allows')]];
+ return `<section class="card"><div class="card-h"><h3>${icon('lock')} ${_('สิทธิ์ผู้ใช้งาน','User roles')}</h3></div><div class="tbl-wrap"><table><thead><tr><th>${_('บทบาท','Role')}</th><th>${_('สิทธิ์หลัก','Main rights')}</th></tr></thead><tbody>${R.map(([a,b])=>`<tr><td><b>${a}</b></td><td>${b}</td></tr>`).join('')}</tbody></table></div><p class="hint tiny">${_('ทุกการบันทึก แก้ไข และยืนยันมีชื่อผู้ใช้และเวลากำกับ ดูได้ในประวัติการใช้งาน','Every entry, correction and confirmation records who and when — see the audit log')}</p></section>`}
 function vPatients(){
  const mine=myPatients(),ids=mine.map(p=>p.id),pend=pendingFor(ids);const ap7=D.appts.filter(a=>ids.includes(a.patientId)&&a.status==='scheduled'&&a.date>=todayISO&&a.date<=dOff(7)).length;
  return `<div class="grid g4"><div class="stat"><b>${mine.length}</b><span>${_('ผู้ป่วยที่ได้รับมอบหมาย','Assigned patients')}</span></div><div class="stat ${pend.syms.length+pend.vit.length?'warn':''}"><b>${pend.syms.length+pend.vit.length}</b><span>${_('บันทึกที่รอตรวจสอบ','Entries to review')}</span></div><div class="stat ${pend.rx.length?'warn':''}"><b>${pend.rx.length}</b><span>${_('ใบสั่งยารอตรวจทาน','Prescriptions to check')}</span></div><div class="stat"><b>${ap7}</b><span>${_('นัดหมายใน 7 วัน','Appointments, next 7 days')}</span></div></div>
@@ -3353,9 +3771,9 @@ function staffOverview(p){
 }
 function vPatientDetail(){
  const p=P(S.pid);if(!p||!p.staff.includes(S.user.id)){S.view='patients';return vPatients()}
- const tabs=[['overview',_('ภาพรวม','Overview')],['journey',_('เส้นทางการรักษา','Journey')],['meds',_('ยา','Medicines')],['log',_('บันทึกสุขภาพ','Health log')],['labs',_('ผล Lab','Labs')],['appts',_('นัดหมาย','Appointments')],['family',_('ญาติ','Family')]];
+ const tabs=[['overview',_('ภาพรวม','Overview')],['journey',_('เส้นทางการรักษา','Journey')],['meds',_('ยา','Medicines')],['log',_('บันทึกสุขภาพ','Health log')],['labs',_('ผล Lab','Labs')],['appts',_('นัดหมาย','Appointments')],['fu',_('ติดตาม','Follow-up')],['family',_('ญาติ','Family')]];
  const pp=pendingFor([p.id]),pc=pp.syms.length+pp.vit.length+pp.rx.length;
- const body={journey:()=>journeyPanel(p,true),meds:()=>medsPanel(p.id),log:()=>logPanel(p.id),labs:()=>labsPanel(p.id),appts:()=>apptsPanel(p.id),family:()=>familyReadonly(p.id)}[S.tab]||(()=>staffOverview(p));
+ const body={journey:()=>journeyPanel(p,true),meds:()=>medsPanel(p.id),log:()=>logPanel(p.id),labs:()=>labsPanel(p.id),appts:()=>apptsPanel(p.id),fu:()=>followupPanel(p.id),family:()=>familyReadonly(p.id)}[S.tab]||(()=>profileCards(p)+staffOverview(p));
  return `<button class="btn sm ghost back" data-a="go" data-v="patients">${icon('back')} ${_('ผู้ป่วยทั้งหมด','All patients')}</button>
  <section class="pt-head"><div class="avatar lg">${initial(p)}</div><div><h2>${esc(L(p.name))}</h2><p class="muted">HN ${p.hn} · ${p.age} ${_('ปี','yrs')} · ${sexLabel(p.sex)}${p.txDate?` · ${_('ปลูกถ่ายเมื่อ','Transplanted')} ${fmtDate(p.txDate)}`:''}</p><div class="row">${phaseChip(p.phase)}${pc?chip('warn',icon('clipboard')+_(`รอดำเนินการ ${pc} รายการ`,`${pc} pending`)):''}</div></div></section>
  <nav class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${S.tab===k}" class="${S.tab===k?'on':''}" data-a="tab" data-t="${k}">${l}</button>`).join('')}</nav>${body()}`;
@@ -3376,7 +3794,7 @@ function vReports(){
  const lv=['emergency','contact','watch','none'].map(l=>[l,syms.filter(s=>s.level===l).length]);const maxLv=Math.max(...lv.map(x=>x[1]),1);
  const recs=[...D.vitals,...D.symptoms,...D.medLogs].filter(r=>ids.includes(r.patientId)&&r.date>=since);
  const byR=['patient','caregiver','staff'].map(r=>[r,recs.filter(x=>roleOf(x.by)===r).length]);const maxR=Math.max(...byR.map(x=>x[1]),1);
- return `<p class="muted">${_('คำนวณจากข้อมูลตัวอย่างของผู้ป่วยที่คุณได้รับมอบหมาย','Calculated from sample data for your assigned patients')} · ${mine.length} ${_('ราย','patients')}</p>
+ return coordReport()+`<p class="muted">${_('คำนวณจากข้อมูลตัวอย่างของผู้ป่วยที่คุณได้รับมอบหมาย','Calculated from sample data for your assigned patients')} · ${mine.length} ${_('ราย','patients')}</p>
  <div class="grid g2" style="align-items:start">
  <section class="card"><h3>${_('ผู้ป่วยตามช่วงการรักษา','Patients by stage')}</h3><div class="bars">${PHASES.map((ph,i)=>bar(`${ph.n}. ${L(ph.title)}`,phCount[i],maxPh,'')).join('')}</div></section>
  <section class="card"><h3>${_('การรับประทานยาตรงตามตาราง 7 วัน','Doses taken as scheduled, 7 days')}</h3><div class="bars">${mine.map(p=>{const a=adherence(p.id);return bar(L(p.name),a??0,100,a!=null&&a<90?'warn':'ok',a==null?'—':a+'%')}).join('')}</div><p class="hint">${_('สัดส่วนมื้อที่บันทึกว่ารับประทานแล้ว เทียบกับมื้อที่ถึงเวลาแล้วทั้งหมด','Share of due doses recorded as taken')}</p></section>
@@ -3385,8 +3803,8 @@ function vReports(){
  </div>`;
 }
 function vCriteria(){
- const s=D.settings;const sel=c=>`<select data-c="crit" data-id="${c.id}" id="crit-${c.id}" aria-label="${esc(L(c.name))}">${['watch','contact','emergency'].map(l=>`<option value="${l}" ${c.level===l?'selected':''}>${esc(L(LEVELS[l].label))}</option>`).join('')}</select>`;
- return `${s.criteriaConfirmed?`<div class="notice ok">${icon('check')}<span>${_('เกณฑ์ชุดนี้ยืนยันโดย','Confirmed by')} <b>${esc(nameOf(s.confirmedBy))}</b> · ${fmtDT(s.confirmedAt)}</span></div>`:`<div class="notice">${icon('alert')}<div><b>${_('ยังไม่ได้ยืนยันเกณฑ์','Criteria not confirmed')}</b><br>${_('ขณะนี้ใช้ชุดตัวอย่าง ทีมปลูกถ่ายตับต้องตรวจทานและกำหนดระดับของแต่ละอาการก่อนใช้งานจริง ผู้ป่วยจะเห็นข้อความว่าเกณฑ์เป็นตัวอย่างจนกว่าจะยืนยัน','A sample set is in use. The liver transplant team must review the level of each symptom before real use; patients see a “sample” note until then.')}</div></div>`}
+ const s=D.settings;const rolesHTML=rolesCard();const sel=c=>`<select data-c="crit" data-id="${c.id}" id="crit-${c.id}" aria-label="${esc(L(c.name))}">${['watch','contact','emergency'].map(l=>`<option value="${l}" ${c.level===l?'selected':''}>${esc(L(LEVELS[l].label))}</option>`).join('')}</select>`;
+ return rolesHTML+`${s.criteriaConfirmed?`<div class="notice ok">${icon('check')}<span>${_('เกณฑ์ชุดนี้ยืนยันโดย','Confirmed by')} <b>${esc(nameOf(s.confirmedBy))}</b> · ${fmtDT(s.confirmedAt)}</span></div>`:`<div class="notice">${icon('alert')}<div><b>${_('ยังไม่ได้ยืนยันเกณฑ์','Criteria not confirmed')}</b><br>${_('ขณะนี้ใช้ชุดตัวอย่าง ทีมปลูกถ่ายตับต้องตรวจทานและกำหนดระดับของแต่ละอาการก่อนใช้งานจริง ผู้ป่วยจะเห็นข้อความว่าเกณฑ์เป็นตัวอย่างจนกว่าจะยืนยัน','A sample set is in use. The liver transplant team must review the level of each symptom before real use; patients see a “sample” note until then.')}</div></div>`}
  <section class="card"><div class="card-h"><h3>${icon('shield')} ${_('ระดับการแจ้งเตือนของแต่ละอาการ','Alert level per symptom')}</h3>${s.criteriaConfirmed?'':`<button class="btn primary" data-a="critconfirm">${icon('check')} ${_('ยืนยันเกณฑ์ในนามทีม','Confirm for the team')}</button>`}</div>
  <div class="row">${['watch','contact','emergency'].map(l=>`<span class="row" style="gap:6px">${levelChip(l)}<small class="muted">${esc(L(LEVELS[l].msg))}</small></span>`).join('')}</div>
  <div class="tbl-wrap"><table><thead><tr><th>${_('อาการ','Symptom')}</th><th style="width:220px">${_('ระดับ','Level')}</th></tr></thead><tbody>${D.criteria.map(c=>`<tr><td>${esc(L(c.name))}<small>${esc(S.lang==='th'?c.name.en:c.name.th)}</small></td><td>${sel(c)}</td></tr>`).join('')}</tbody></table></div></section>
@@ -3402,7 +3820,7 @@ function guard(cat,fn){const pid=currentPid();if(!pid)return emptyCard('users',_
 const VIEWS={
  home:()=>S.user.role==='patient'?patientHome():caregiverHome(),
  journey:vJourney,meds:()=>guard('meds',medsPanel),log:()=>guard('health',logPanel),labs:()=>guard('labs',labsPanel),appts:()=>guard('appts',apptsPanel),
- family:vFamily,learn:vLearn,patients:vPatients,patient:vPatientDetail,review:vReview,reports:vReports,criteria:vCriteria,audit:vAudit,rxnew:vRxNew};
+ coord:vCoord,labmgmt:vLabMgmt,medrev:vMedRev,followup:vFollowup,alerts:vAlerts,family:vFamily,learn:vLearn,patients:vPatients,patient:vPatientDetail,review:vReview,reports:vReports,criteria:vCriteria,audit:vAudit,rxnew:vRxNew};
 const allowed=v=>navFor(S.user.role).some(n=>n[0]===v)||(S.user.role==='staff'&&['patient','rxnew'].includes(v));
 
 /* ---------- modals ---------- */
@@ -3412,6 +3830,11 @@ function modalHTML(){
  if(m.kind==='contact'){return shell(_('ติดต่อทีมแพทย์','Contact the care team'),`<div class="stack">${contactRow().replace('hcon2 span','hcon2 inmodal')}<div class="lockline">${icon('phone')}<span><b>${_('ทีมปลูกถ่ายตับ','Liver transplant team')}</b></span></div>${teamContact()}
   <div class="call"><a href="tel:1669">1669</a><span class="muted">${_('อาการรุนแรง หายใจลำบาก หมดสติ เลือดออกมาก โทรทันที','Severe symptoms, trouble breathing, fainting or heavy bleeding: call now')}</span></div>
   <button class="btn block" data-a="golog" data-t="sym">${icon('alert')} ${_('ประเมินอาการผิดปกติ','Check a symptom')}</button></div>`)}
+ if(m.kind==='labpanel'){const p=P(m.pid);return shell(_('กรอกผล Lab','Enter lab results')+' · '+esc(L(p.name)),`<form class="form" data-form="labpanel" data-pid="${m.pid}"><div class="fgrid2"><label class="field">${_('วันที่เจาะเลือด','Date drawn')}<input type="date" name="date" value="${todayISO}" max="${todayISO}"></label><label class="field">${_('เวลา','Time')}<input type="time" name="time" value="07:00"></label></div>
+  <div class="fgrid2"><label class="field">${_('แหล่งที่มาของผล','Source')}<select name="src"><option value="hosp">${_('นำเข้าจากระบบ รพ. (Verified)','Hospital system (verified)')}</option><option value="outside">${_('แล็บภายนอก (Draft)','Outside lab (draft)')}</option><option value="self">${_('ผู้ป่วยแจ้ง/กรอกเอง (Draft)','Patient-reported (draft)')}</option></select></label><label class="field">${_('แนบภาพหรือไฟล์ผล','Attach result')}<input type="file" name="attach" accept="image/*,.pdf"></label></div>
+  ${LM_GROUPS.map(([g,cs])=>`<fieldset class="lp-g"><legend>${g}</legend><div class="lp-grid">${cs.map(c=>{const t=LAB(c);const l=labsOf(m.pid,c).slice(-1)[0];return `<label><span>${t.name}</span><input name="lv_${c}" inputmode="decimal" placeholder="${l?l.value:''}"><small>${t.unit||'—'}${l&&(l.refLow!=null||l.refHigh!=null)?` · ${l.refLow??''}–${l.refHigh??''}`:''}</small></label>`}).join('')}</div></fieldset>`).join('')}
+  <p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${_('บันทึกผล','Save results')}</button><p class="hint tiny">${_('กรอกเฉพาะรายการที่ตรวจ · ผลจากแหล่งภายนอกจะเป็น Draft จนกว่าจะยืนยัน','Fill only what was tested · outside results stay Draft until verified')}</p></form>`,_('กรอกผล Lab','Enter lab results'),'wide')}
+ if(m.kind==='labfix'){const l=D.labs.find(x=>x.id===m.id);if(!l){S.modal=null;return''}return shell(_('แก้ไขผล','Correct a result')+' · '+LAB(l.test).name,`<p class="muted">${esc(pName(l.patientId))} · ${fmtDate(l.date)} · ${_('ค่าเดิม','Current')}: <b>${l.value} ${esc(l.unit)}</b></p><form class="form" data-form="labfix" data-id="${l.id}"><label class="field">${_('ค่าที่ถูกต้อง','Correct value')}<input name="value" inputmode="decimal"></label><label class="field">${_('เหตุผลการแก้ไข','Reason')}<input name="why" placeholder="${_('เช่น พิมพ์ผิดจากใบผล','e.g. typed wrongly from the report')}"></label><p class="ferr" role="alert"></p><button class="btn primary" type="submit">${_('บันทึกการแก้ไข','Save correction')}</button><p class="hint tiny">${_('ระบบไม่ลบค่าเดิม เก็บเป็นประวัติการแก้ไขพร้อมชื่อผู้แก้','The old value is kept in the history with who changed it')}</p></form>`)}
  if(m.kind==='ptstatus'){const opt=(id,img,th,en,sth,sen)=>`<button class="pst" data-a="login" data-id="${id}"><span class="pst-i">${img}</span><span class="pst-t"><b>${_(th,en)}</b><small>${_(sth,sen)}</small><em>${_('บัญชีทดลอง','Demo')}: ${esc(L(person(id).name))}</em></span>${icon('chev')}</button>`;
   return shell(_('ผู้ป่วย','Patient'),`<p class="muted">${_('สถานะการปลูกถ่ายตับของคุณ','Your liver transplant status')}</p><div class="pst-list">${opt('p1','<img src="media/ico-patient.webp" alt="" width="320" height="320">','ปลูกถ่ายตับแล้ว','I’ve had my transplant','ดูแลตัวเองหลังปลูกถ่าย ยากดภูมิ ผลตรวจ','Aftercare, anti-rejection medicines, labs')}${opt('p3',icoWait(),'รอปลูกถ่ายตับ','Waiting for a transplant','เตรียมตัวและตรวจประเมินก่อนปลูกถ่าย','Getting ready and pre-transplant tests')}</div><p class="hint tiny">${_('ในระบบจริง ผู้ป่วยเลือกสถานะนี้ตอนลงทะเบียน และทีมรักษาปรับให้เมื่อปลูกถ่ายแล้ว','In the real system, patients choose this when they register, and the team updates it after the transplant.')}</p>`,_('เลือกสถานะผู้ป่วย','Choose patient status'),'pst-modal')}
  if(m.kind==='lginfo'){const t=m.t||'learn';return shell(_('ตับดีมีสุข','Tub Dee Mee Suk'),`<div class="seg big lg-tabs" role="tablist">${LGTABS.map(([k,th,en])=>`<button role="tab" aria-selected="${k===t}" class="${k===t?'on':''}" data-a="lginfo" data-t="${k}">${_(th,en)}</button>`).join('')}</div><div class="lg-info">${lgInfo(t)}</div>`,_('ข้อมูลเพิ่มเติม','More information'),'wide')}
@@ -3538,6 +3961,28 @@ const fail=(f,m)=>{const e=f.querySelector('.ferr');if(e){e.textContent=m;e.scro
 const num=v=>{if(v==null||String(v).trim()==='')return null;const n=Number(String(v).replace(',','.'));return isFinite(n)?n:NaN};
 
 const ACT={
+ qf:d=>{S.qf=d.f;render()},
+ alf:d=>{S.alf=d.f;render()},
+ fuopen:d=>{S.fuPid=d.pid;go('followup')},
+ lmpt:d=>{S.lmPid=d.pid;render()},
+ mrpt:d=>{S.mrPid=d.pid;render()},
+ lmdays:d=>{S.lmDays=+d.d;render()},
+ algo:d=>{if(d.v==='patient'){S.pid=d.pid;S.tab=d.t||'overview';go('patient');return}if(d.v==='labmgmt')S.lmPid=d.pid;if(d.v==='medrev')S.mrPid=d.pid;if(d.v==='followup')S.fuPid=d.pid;go(d.v)},
+ csv:()=>exportCSV(),
+ pdf:()=>{try{window.print()}catch(e){toast(_('พิมพ์ไม่ได้ในหน้านี้','Printing is blocked here'))}},
+ labpanel:d=>{S.modal={kind:'labpanel',pid:d.pid};render()},
+ labfix:d=>{S.modal={kind:'labfix',id:d.id};render()},
+ labver:d=>{const ls=D.labs.filter(l=>l.patientId===d.pid&&l.status==='draft');ls.forEach(l=>{l.status='verified';l.verifiedBy=S.user.id;l.verifiedAt=nowStamp()});audit(`ยืนยันผล Lab ${ls.length} รายการ`,`Verified ${ls.length} lab results`,d.pid);render();toast(_('ยืนยันผลแล้ว','Results verified'))},
+ rvdone:d=>{const rx=D.prescriptions.find(r=>r.id===d.id);if(!rx)return;const st=rx.rev?.steps||{};if(![0,1,2,3].every(i=>st[i])){toast(_('ทำเครื่องหมายขั้นตอนที่ 1–4 ให้ครบก่อน','Tick steps 1–4 first'));return}
+  if(rx.enteredBy===S.user.id){toast(_('ผู้บันทึกใบสั่งยาตรวจทานเองไม่ได้ ต้องให้ผู้อื่นยืนยัน','The person who entered it can’t confirm it'));return}
+  rx.rev.steps[6]=true;rx.rev.verifier=S.user.id;ACT.rxverify({id:rx.id})},
+ esc:d=>{const k=d.k;const st=D.esc[k]||(D.esc[k]={log:[]});st.log=st.log||[];const L2=(th,en)=>st.log.push({at:nowStamp(),by:S.user.id,t:{th,en}});
+  if(d.op==='own'){st.owner=S.user.id;L2('รับเรื่อง','Took ownership')}
+  if(d.op==='notify'){if(!st.doctor){toast(_('เลือกแพทย์ที่แจ้งก่อน','Choose the doctor first'));return}st.notifiedAt=nowStamp();L2('แจ้งแพทย์ '+L(st.doctor),'Told '+L(st.doctor))}
+  if(d.op==='ack'){st.ack=true;L2('แพทย์รับทราบ','Doctor acknowledged')}
+  if(d.op==='close'){if(!st.owner)st.owner=S.user.id;st.closed=true;st.closedAt=nowStamp();L2('ปิดเคส','Closed');const sid=k.startsWith('sym|')?k.slice(4):null;const sy=sid&&D.symptoms.find(x=>x.id===sid);if(sy&&!sy.reviewed){sy.reviewed=true;sy.reviewedBy=S.user.id;sy.reviewedAt=nowStamp()}const tid=k.startsWith('fu|')?k.slice(3):null;const tk=tid&&D.tasks.find(t=>t.id===tid);if(tk)tk.status='done'}
+  if(d.op==='reopen'){st.closed=false;L2('เปิดเคสอีกครั้ง','Reopened')}
+  audit('แจ้งเตือน: '+(st.log.at(-1)?.t.th||''),'Alert: '+(st.log.at(-1)?.t.en||''),k.split('|')[1]);render()},
  ptstatus:()=>{S.modal={kind:'ptstatus'};render()},
  ptflt:d=>{S.ptFilter=d.f;render()},
  labsel:d=>{S.labSel=d.c;render()},
@@ -3619,6 +4064,24 @@ const ACT={
  critconfirm:()=>{Object.assign(D.settings,{criteriaConfirmed:true,confirmedBy:S.user.id,confirmedAt:nowStamp()});audit('ยืนยันเกณฑ์อาการเตือน','Confirmed warning criteria');render();toast(_('ยืนยันเกณฑ์แล้ว','Criteria confirmed'))},
 };
 const FORMS={
+ task:(o,fd,f)=>{const pid=f.dataset.pid;if(!o.title.trim())return fail(f,_('ระบุรายละเอียดงาน','Describe the task'));if(!o.due)return fail(f,_('เลือกวันกำหนด','Choose a due date'));
+  D.tasks.push({id:uid('t'),pid,type:o.type,title:{th:o.title.trim(),en:o.title.trim()},due:o.due,status:o.status||'todo',by:S.user.id,at:nowStamp()});audit('เพิ่มงานติดตาม '+o.title.trim(),'Added task '+o.title.trim(),pid);render();toast(_('เพิ่มงานแล้ว','Task added'))},
+ contact:(o,fd,f)=>{const pid=f.dataset.pid;if(!o.prob.trim()&&!o.sym.trim())return fail(f,_('ระบุอาการหรือปัญหาที่พบอย่างน้อย 1 ช่อง','Enter symptoms or the problem'));
+  const cg=D.consents.find(c=>c.patientId===pid&&c.active);const nm=o.who==='caregiver'?(cg?{th:L(C(cg.caregiverId).name),en:L(C(cg.caregiverId).name)}:P(pid).emerg?.name):P(pid).name;
+  D.contacts.push({id:uid('k'),pid,date:o.date||todayISO,time:o.time||nowHM(),who:o.who,whoName:nm,ch:o.ch,sym:o.sym.trim(),prob:o.prob.trim(),adv:o.adv.trim(),doc:o.doc!=='',docName:o.doc!==''?DOCS[+o.doc]:null,out:o.out.trim(),next:o.next||'',by:S.user.id});
+  if(o.next)D.tasks.push({id:uid('t'),pid,type:'call',title:{th:'โทรติดตามตามที่นัดไว้',en:'Planned follow-up call'},due:o.next,status:'todo',by:S.user.id,at:nowStamp()});
+  audit('บันทึกการติดต่อผู้ป่วย','Logged a patient contact',pid);render();toast(_('บันทึกการติดต่อแล้ว','Contact saved'))},
+ escorder:(o,fd,f)=>{const k=f.dataset.k;const st=D.esc[k]||(D.esc[k]={log:[]});st.log=st.log||[];st.order=o.order.trim();if(st.order){st.log.push({at:nowStamp(),by:S.user.id,t:{th:'บันทึกคำสั่ง: '+st.order,en:'Orders: '+st.order}});if(!st.ack&&st.notifiedAt)st.ack=true}render();toast(_('บันทึกแล้ว','Saved'))},
+ rvnote:(o,fd,f)=>{const rx=D.prescriptions.find(r=>r.id===f.dataset.id);if(!rx)return;rx.rev=rx.rev||{steps:{}};rx.rev.notes=o.notes.trim();rx.rev.sentTo=o.sentTo===''?'':L(DOCS[+o.sentTo]);rx.rev.result=o.result.trim();if(rx.rev.notes)rx.rev.steps[4]=true;if(rx.rev.sentTo){rx.rev.steps[5]=true;rx.rev.sentAt=nowStamp()}audit('บันทึกการตรวจทานยา '+rx.no,'Medication review notes '+rx.no,rx.patientId);render();toast(_('บันทึกแล้ว','Saved'))},
+ labpanel:(o,fd,f)=>{const pid=f.dataset.pid;const ent=Object.entries(o).filter(([k,v])=>k.startsWith('lv_')&&String(v).trim()!=='');if(!ent.length)return fail(f,_('กรอกผลอย่างน้อย 1 รายการ','Enter at least one result'));
+  for(const [k,v] of ent)if(isNaN(+v))return fail(f,_('ผลตรวจต้องเป็นตัวเลข','Results must be numbers'));
+  const file=fd.get('attach');const fn=file&&file.name?file.name:'';
+  const srcTxt={hosp:{th:'นำเข้าจากระบบโรงพยาบาล',en:'Imported from hospital system'},outside:{th:'แล็บภายนอก',en:'Outside laboratory'},self:{th:'ผู้ป่วยกรอกเอง',en:'Entered by patient'}}[o.src];
+  const ref=last=>last?[last.refLow,last.refHigh]:[null,null];
+  ent.forEach(([k,v])=>{const c=k.slice(3);const last=labsOf(pid,c).slice(-1)[0];const [lo,hi]=ref(last);D.labs.push({id:uid('l'),patientId:pid,test:c,value:+v,unit:LAB(c).unit,refLow:lo,refHigh:hi,date:o.date||todayISO,time:o.time||nowHM(),source:srcTxt,src2:o.src,by:S.user.id,at:nowStamp(),status:o.src==='hosp'?'verified':'draft',verifiedBy:o.src==='hosp'?S.user.id:null,verifiedAt:o.src==='hosp'?nowStamp():null,attach:fn,hist:[]})});
+  audit(`บันทึกผล Lab ${ent.length} รายการ`,`Entered ${ent.length} lab results`,pid);S.modal=null;render();toast(o.src==='hosp'?_('บันทึกผลแล้ว','Results saved'):_('บันทึกเป็น Draft แล้ว รอยืนยัน','Saved as draft — verify before use'))},
+ labfix:(o,fd,f)=>{const l=D.labs.find(x=>x.id===f.dataset.id);if(!l)return;const v=+o.value;if(o.value===''||isNaN(v))return fail(f,_('ระบุค่าที่ถูกต้อง','Enter the correct value'));if(!o.why.trim())return fail(f,_('ต้องระบุเหตุผลการแก้ไข','A reason is required'));
+  l.hist=l.hist||[];l.hist.push({at:nowStamp(),by:S.user.id,old:l.value,new:v,why:o.why.trim()});l.value=v;l.status='corrected';audit(`แก้ไขผล ${LAB(l.test).name} → ${v} (${o.why.trim()})`,`Corrected ${LAB(l.test).name} → ${v} (${o.why.trim()})`,l.patientId);S.modal=null;render();toast(_('แก้ไขแล้ว เก็บประวัติเดิมไว้','Corrected — history kept'))},
  targets:(o,fd,f)=>{const pid=f.dataset.pid;if(S.user.role!=='staff'||!canRecord(pid))return;const t={};
   for(const k of ['sys','dia','hr','temp','spo2','wt']){const a=String(o[k+'_lo']||'').trim(),b=String(o[k+'_hi']||'').trim();if(!a&&!b){t[k]=null;continue}const x=+a,y=+b;if(!a||!b||isNaN(x)||isNaN(y)||x>=y)return fail(f,_('ใส่ค่าต่ำสุดและสูงสุดให้ครบ และค่าต่ำสุดต้องน้อยกว่า','Enter both a minimum and a maximum, minimum first'));t[k]=[x,y]}
   P(pid).targets=t;audit('ปรับเป้าหมายสุขภาพรายบุคคล','Updated personal health targets',pid);render();toast(_('บันทึกเป้าหมายแล้ว','Targets saved'))},
@@ -3661,6 +4124,12 @@ const FORMS={
  team:o=>{D.settings.teamPhone=o.phone.trim();D.settings.teamHours=o.hours.trim();audit('ปรับช่องทางติดต่อทีม','Updated team contact');render();toast(_('บันทึกช่องทางติดต่อแล้ว','Contact saved'))},
 };
 const CHG={
+ taskst:el=>{const t=D.tasks.find(x=>x.id===el.dataset.id);if(!t)return;t.status=el.value;audit(`อัปเดตงานติดตาม: ${t.title.th} → ${TST[el.value][0]}`,`Task updated: ${t.title.en} → ${TST[el.value][1]}`,t.pid);render()},
+ escsev:el=>{const st=D.esc[el.dataset.k]||(D.esc[el.dataset.k]={log:[]});st.sev=el.value;render()},
+ escdoc:el=>{const st=D.esc[el.dataset.k]||(D.esc[el.dataset.k]={log:[]});st.doctor=el.value===''?null:DOCS[+el.value];render()},
+ alc:el=>{S.alc=el.checked;render()},
+ lmq:el=>{S.lmQ=el.value;render()},
+ rvstep:el=>{const rx=D.prescriptions.find(r=>r.id===el.dataset.id);if(!rx)return;rx.rev=rx.rev||{steps:{}};rx.rev.steps[el.dataset.i]=el.checked},
  rem:el=>{REM[el.dataset.k]=el.checked;saveRem();if(el.checked&&el.dataset.k==='sound')chime(1);if(el.checked&&el.dataset.k==='vib')buzz();render()},
  remlead:el=>{REM.lead=+el.value;saveRem()},
  perm:el=>{const c=D.consents.find(x=>x.id===el.dataset.cs);c.perms[el.dataset.k]=el.checked;const l=PERMS.find(p=>p[0]===el.dataset.k)[1];audit(`${el.checked?'อนุญาต':'ยกเลิกสิทธิ์'} “${l.th}” ให้ ${nameOf(c.caregiverId)}`,`${el.checked?'Allowed':'Removed'} “${l.en}” for ${L(C(c.caregiverId).name)}`,c.patientId);toast(_('อัปเดตสิทธิ์แล้ว','Access updated'))},
