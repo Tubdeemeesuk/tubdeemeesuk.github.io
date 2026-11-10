@@ -2383,6 +2383,12 @@ div.rbar{cursor:default}
 .no-x [data-a=close]:not(.btn.primary){display:none}
 .pt-addrow{margin:0 0 8px;justify-content:flex-end}
 .pe-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 0 10px}.pe-src{display:flex;gap:6px;align-items:center;font-size:.86rem;color:var(--ink-2);margin:0 0 10px}.pe-form textarea{resize:vertical}
+.howto{display:flex;flex-direction:column;gap:10px}.howto p{margin:0}
+.howto-v{display:block;width:100%;max-height:62vh;aspect-ratio:9/16;border-radius:18px;background:#0d2321;object-fit:contain}
+.howto-note{display:flex;gap:6px;align-items:center}.modal.howto-modal{max-width:460px}
+.howto-link{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 12px;padding:8px 12px 8px 8px;border:1px solid var(--line);border-radius:16px;background:var(--surface);font:inherit;color:var(--ink);text-align:left;cursor:pointer}
+.howto-link img{width:44px;height:58px;object-fit:cover;border-radius:10px;flex:0 0 44px}.howto-link span{flex:1;display:flex;flex-direction:column}.howto-link small{color:var(--ink-2);font-size:.82rem}
+.howto-link:hover{border-color:var(--brand)}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -4393,7 +4399,7 @@ document.addEventListener('toggle',e=>{const d=e.target;if(d&&d.dataset&&d.datas
 function render(){
  document.documentElement.classList.toggle('large',S.large);document.documentElement.lang=S.lang;
  const app=document.getElementById('app');
- if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus','ptauth','cgauth','pin','stauth'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
+ if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus','ptauth','cgauth','pin','stauth','howto'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
  if(!allowed(S.view))S.view=homeView();
  let body;try{body=VIEWS[S.view]()}catch(err){console.error(err);body=`<div class="card"><p>${esc(err.message)}</p></div>`}
  const vh=(S.view==='home'||S.view==='log')&&S.user.role!=='staff';const entered=S._lastView!==S.view;S._lastView=S.view;
@@ -5941,6 +5947,27 @@ FORMS.ptedit=(o,fd,f)=>{const p=P(f.dataset.pid);if(!p||S.user?.role!=='staff')r
 /* report tab: diagnosis + who entered it */
 {const _gr2=gsRecords;gsRecords=function(){const R=_gr2();R.forEach(r=>{if(r.tab!=='ผู้ป่วย')return;const p=P(r.key);if(!p)return;
  Object.assign(r.data,{'การวินิจฉัย / ข้อบ่งชี้การปลูกถ่าย':thx(p.dx),'ยากดภูมิคุ้มกันหลัก':p.isDrug||(p.tacTarget?'Tacrolimus':''),'ข้อมูลเวชระเบียนบันทึกโดย':p.profBy?nameOf(p.profBy):'','วันที่บันทึกข้อมูลเวชระเบียน':dtv(p.profAt)})});return R}}
+
+/* ================= v42 · how-to video before patient / caregiver sign-up ================= */
+const HOWTO={src:'media/howto.mp4',poster:'media/howto.jpg',len:'2:30'};
+const howSeen=()=>LS.get('sj-howto')==='1';
+function howtoModal(){const m=S.modal;const cg=m.next==='cg';
+ return mShell(_('วิธีลงทะเบียนและใช้งานแอป','How to sign up and use the app'),`<div class="howto">
+ <p class="muted">${cg?_('ดูคลิปสั้น ๆ ก่อนลงทะเบียนเป็นผู้ดูแล เพื่อให้ช่วยผู้ป่วยใช้แอปได้คล่อง','Watch this short guide before you register as a caregiver'):_('ดูคลิปสั้น ๆ ก่อนเปิดใช้งานบัญชี จะได้ใช้แอปได้ครบทุกขั้นตอน','Watch this short guide before you activate your account')}</p>
+ <video class="howto-v" src="${HOWTO.src}" poster="${HOWTO.poster}" controls playsinline preload="metadata"></video>
+ <p class="muted tiny howto-note">${icon('info')} ${_(`ความยาว ${HOWTO.len} นาที · เปิดเสียงเพื่อฟังคำอธิบาย`,`${HOWTO.len} min · turn the sound on`)}</p>
+ <button class="btn primary block" data-a="howdone">${icon('check')} ${cg?_('ไปลงทะเบียนผู้ดูแล','Go to caregiver sign-up'):(m.t==='login'?_('ไปเข้าสู่ระบบ','Go to sign-in'):_('ไปเปิดใช้งานบัญชี','Go to account activation'))}</button>
+ ${m.fromAuth?'':`<button class="btn ghost block" data-a="howdone">${_('ข้ามคลิป','Skip the video')}</button>`}</div>`,_('คลิปแนะนำ','Guide video'),'pa-modal howto-modal')}
+{const _ps=ACT.ptstatus,_cs=ACT.cgstatus;
+ ACT.ptstatus=d=>{if(!howSeen()){S.modal={kind:'howto',next:'pt',t:'reg'};render();return}_ps(d)};
+ ACT.cgstatus=d=>{if(!howSeen()){S.modal={kind:'howto',next:'cg',t:'reg'};render();return}_cs(d)}}
+ACT.howto=()=>{const m=S.modal||{};S.modal={kind:'howto',next:m.kind==='cgauth'?'cg':'pt',t:m.t||'reg',fromAuth:true};render()};
+ACT.howdone=()=>{LS.set('sj-howto','1');document.querySelector('.howto-v')?.pause();const m=S.modal||{};
+ S.modal=m.next==='cg'?{kind:'cgauth',t:m.t||'reg'}:{kind:'ptauth',t:m.t||'reg'};render();setTimeout(()=>document.querySelector('.pa-form input')?.focus(),40)};
+const howLink=()=>`<button type="button" class="howto-link" data-a="howto"><img src="${HOWTO.poster}" alt=""><span><b>${_('ดูคลิปวิธีลงทะเบียนและใช้งาน','Watch the sign-up guide')}</b><small>${_(`วิดีโอ ${HOWTO.len} นาที`,`${HOWTO.len} min video`)}</small></span>${icon('chev')}</button>`;
+{const _pa=ptAuthModal;ptAuthModal=function(){return _pa().replace('<form class="form pa-form"',howLink()+'<form class="form pa-form"')}}
+{const _ca=cgAuthModal;cgAuthModal=function(){return _ca().replace('<form class="form pa-form"',howLink()+'<form class="form pa-form"')}}
+{const _mh7=modalHTML;modalHTML=function(){if(S.modal?.kind==='howto')return howtoModal();return _mh7()}}
 
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
