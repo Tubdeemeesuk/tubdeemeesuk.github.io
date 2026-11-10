@@ -2363,6 +2363,24 @@ div.rbar{cursor:default}
 .pin-welcome span{flex:1;display:flex;flex-direction:column}.pin-welcome small{opacity:.9}
 .rpick.r4{grid-template-columns:repeat(2,minmax(0,1fr));max-width:420px;margin-inline:auto;gap:14px 18px}.rpick.r4 .rimg{width:min(100%,128px);margin-inline:auto}.rpick.r4 .rtile b{font-size:.95rem}
 @media (max-width:640px){.rpick.r4{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px}.rpick.r4 .rimg{width:min(100%,128px)}.rpick.r4 .rtile b{font-size:.9rem}}
+.live .demo,.live .side-note,.live .pa-demo{display:none!important}
+.pw-wrap{position:relative;display:block}.pw-wrap input{width:100%;padding-right:46px}
+.pw-eye{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;background:none;color:var(--ink-2);cursor:pointer;display:grid;place-items:center;border-radius:10px}
+.pw-eye:hover{background:color-mix(in srgb,var(--brand) 10%,transparent)}
+.st-head{display:flex;align-items:center;gap:12px;margin:0 0 12px}.st-head div{display:flex;flex-direction:column}.st-head small{color:var(--ink-2);font-size:.82rem}
+.st-ic{width:44px;height:44px;flex:0 0 44px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--brand) 14%,transparent);color:var(--brand)}
+.pw-note{display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--warn) 14%,transparent);font-size:.9rem;margin:0 0 10px}
+.btn.is-busy{opacity:.6;pointer-events:none}
+.tmp-box p{margin:0 0 10px}.tmp-dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0 0 10px;padding:12px 14px;border-radius:14px;background:var(--bg)}
+.tmp-dl dt{color:var(--ink-2);font-size:.88rem}.tmp-dl dd{margin:0}.tmp-dl code{font-size:1.1rem;font-weight:700;letter-spacing:.04em}
+.sa-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
+.sa-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding:12px;border:1px solid var(--line);border-radius:14px}
+.sa-main{flex:1;min-width:180px;display:flex;flex-direction:column}.sa-main small{font-size:.82rem;color:var(--ink-2)}
+.sa-act{display:flex;gap:6px;flex-wrap:wrap;width:100%;padding-left:50px}
+.pill-s{font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:99px}.pill-s.on{background:color-mix(in srgb,var(--brand) 14%,transparent);color:var(--brand)}
+.pill-s.wait{background:color-mix(in srgb,var(--warn) 18%,transparent)}.pill-s.off{background:var(--line);color:var(--ink-2)}
+.sa-note{display:flex;gap:6px;align-items:center;margin:6px 4px}
+.no-x [data-a=close]:not(.btn.primary){display:none}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3211,7 +3229,7 @@ function pendingFor(pids){return{
   syms:D.symptoms.filter(s=>pids.includes(s.patientId)&&!s.reviewed&&s.level!=='none').sort((a,b)=>LEVELS[b.level].w-LEVELS[a.level].w||byStamp(b,a)),
   vit:D.vitals.filter(v=>pids.includes(v.patientId)&&v.verified===false).sort((a,b)=>byStamp(b,a)),
   rx:D.prescriptions.filter(r=>pids.includes(r.patientId)&&r.status==='pending')}}
-const myPatients=()=>D.patients.filter(p=>p.staff.includes(S.user.id));
+const myPatients=()=>LIVE?D.patients.filter(p=>!p.archived):D.patients.filter(p=>p.staff.includes(S.user.id));
 function countdown(d){const n=daysBetween(todayISO,d);return n===0?_('วันนี้','Today'):n===1?_('พรุ่งนี้','Tomorrow'):n>1?_(`อีก ${n} วัน`,`In ${n} days`):_(`${-n} วันก่อน`,`${-n} days ago`)}
 function spark(vals,w=160,h=34){if(vals.length<2)return'';const min=Math.min(...vals),max=Math.max(...vals),r=max-min||1;const pts=vals.map((v,i)=>[i*(w-8)/(vals.length-1)+4,h-4-(v-min)/r*(h-10)]);const d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');const last=pts[pts.length-1];return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true"><path class="spark-a" d="${d} L${last[0].toFixed(1)} ${h} L${pts[0][0].toFixed(1)} ${h}Z"/><path class="spark-l" d="${d}"/><circle class="spark-d" cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="3"/></svg>`}
 function byChip(id){const r=roleOf(id);return r==='caregiver'?chip('info',icon('users')+_('ญาติบันทึก','By caregiver')):r==='staff'?chip('brand',_('บุคลากรบันทึก','By staff')):chip('',_('ผู้ป่วยบันทึก','By patient'))}
@@ -3317,6 +3335,7 @@ const cgIcon=()=>`<svg viewBox="0 0 320 321" aria-hidden="true"><defs><linearGra
  <circle cx="206" cy="78" r="15" fill="#EDB45C"/><path d="M206 100C236 110 242 150 222 184 196 166 186 128 206 100z" fill="#EDB45C"/>
  <path d="M160 132c-6-11-22-9-22 3 0 10 22 23 22 23s22-13 22-23c0-12-16-14-22-3z" fill="#fff"/><path d="M160 138c-4-7-14-6-14 2 0 6 14 15 14 15s14-9 14-15c0-8-10-9-14-2z" fill="#F2A08E"/></g>
  <text x="160" y="282" text-anchor="middle" font-family="Anuphan,'IBM Plex Sans Thai Looped',sans-serif" font-weight="700" font-size="74" fill="#fff" filter="url(#cgi-s)" font-size="50">ตับดีมีสุข</text></svg>`;
+const stTile=(r,img,th,en)=>`<button class="rtile" data-a="stauth" data-r="${r}"><span class="rimg">${img}</span><b>${_(th,en)}</b><small>${_('เข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่าน','Sign in with username and password')}</small></button>`;
 const rtile=(img,th,en,id)=>`<button class="rtile" data-a="login" data-id="${id}"><span class="rimg">${img}</span><b>${_(th,en)}</b><small>${_('บัญชีทดลอง','Demo')}: ${esc(L(person(id).name))}</small></button>`;
 function vLogin(){
  const role=(cls,ic,id,th,en,desc)=>{const per=person(id);return `<article class="role ${cls}"><span class="role-ic">${icon(ic)}</span><div class="role-t"><h3>${th}<small>${en}</small></h3><p>${desc}</p><span class="role-acc">${_('บัญชีทดลอง','Demo')}: ${esc(L(per.name))}</span></div><button class="role-go" data-a="login" data-id="${id}" aria-label="${_('เข้าใช้งาน','Sign in')}: ${th}"><span>${_('เข้าใช้งาน','Sign in')}</span>${icon('chev')}</button></article>`};
@@ -3331,8 +3350,8 @@ function vLogin(){
  ${pinWelcome()}<div class="rpick r4">
   <button class="rtile" data-a="ptstatus"><span class="rimg"><img src="media/ico-patient.webp" alt="" width="320" height="320"></span><b>${_('ผู้ป่วย','Patient')}</b><small>${_('เข้าสู่ระบบด้วยชื่อและ HN','Sign in with name and HN')}</small></button>
   <button class="rtile" data-a="cgstatus"><span class="rimg">${icoCare()}</span><b>${_('ญาติ / <span class="nw">ผู้ดูแล</span>','Caregiver')}</b><small>${_('ลงทะเบียนด้วยชื่อและ HN ผู้ป่วย','Register with the patient’s name and HN')}</small></button>
-  ${rtile('<img src="media/ico-coord.webp" alt="" width="320" height="320">','พยาบาล<br><span class="nw">ผู้ประสานงาน</span>','Nurse<br>coordinator','s1')}
-  ${rtile('<img src="media/ico-pharm.webp" alt="" width="320" height="320">','เภสัชกร','Pharmacist','s2')}
+  ${LIVE?stTile('nurse','<img src="media/ico-coord.webp" alt="" width="320" height="320">','พยาบาล<br><span class="nw">ผู้ประสานงาน</span>','Nurse<br>coordinator'):rtile('<img src="media/ico-coord.webp" alt="" width="320" height="320">','พยาบาล<br><span class="nw">ผู้ประสานงาน</span>','Nurse<br>coordinator','s1')}
+  ${LIVE?stTile('pharm','<img src="media/ico-pharm.webp" alt="" width="320" height="320">','เภสัชกร','Pharmacist'):rtile('<img src="media/ico-pharm.webp" alt="" width="320" height="320">','เภสัชกร','Pharmacist','s2')}
 </div>
 </section>
  <footer class="lg-foot2"><span>© 2569 <b>ตับดีมีสุข</b> by LT CMU</span>${installBtn('btn sm')}</footer>
@@ -4311,7 +4330,7 @@ function modalHTML(){
   <label class="field">${_('วันที่ตรวจ','Date')}<input type="date" name="date" id="lb-date" value="${todayISO}" max="${todayISO}"></label><label class="field">${_('เวลา','Time')}<input type="time" name="time" id="lb-time" value="07:00"></label>
   <input type="hidden" name="source" value="${_('พยาบาลบันทึกจากผลตรวจของโรงพยาบาล','Entered by nurse from hospital results')}"></div>
   <p class="hint">${_('ใช้ช่วงอ้างอิงตามใบรายงานของห้องปฏิบัติการที่ตรวจ ระบบเติมค่าจากผลครั้งก่อนให้ ตรวจสอบก่อนบันทึก','Use the range printed by the lab that ran the test. The previous result’s range is filled in; check it before saving.')}</p><p class="ferr" role="alert"></p><div class="row"><button class="btn primary" type="submit">${_('บันทึกผลตรวจ','Save result')}</button></div></form>`)}
- if(m.kind==='appt')return shell(_('เพิ่มนัดหมาย','Add appointment')+' · '+esc(nameOf(m.pid)),`<form class="form" data-form="appt" data-pid="${m.pid}"><div class="fgrid"><label class="field span2">${_('รายการนัด','Appointment')} *<input name="type" id="ap-type" placeholder="${_('เช่น ตรวจติดตามและเจาะเลือด','e.g. follow-up and blood test')}"></label><label class="field">${_('วันที่','Date')} *<input type="date" name="date" id="ap-date" min="${todayISO}" value="${dOff(7)}"></label><label class="field">${_('เวลา','Time')} *<input type="time" name="time" id="ap-time" value="09:00"></label><label class="field span2">${_('สถานที่','Location')}<input name="loc" id="ap-loc" value="${esc(_('คลินิกปลูกถ่ายตับ อาคาร 2 ชั้น 3 (ตัวอย่าง)','Liver transplant clinic, Bldg 2, Floor 3 (sample)'))}"></label><label class="field span2">${_('การเตรียมตัว','Preparation')}<textarea name="prep" id="ap-prep"></textarea></label></div><p class="ferr" role="alert"></p><div class="row"><button class="btn primary" type="submit">${_('บันทึกนัดหมาย','Save appointment')}</button></div></form>`);
+ if(m.kind==='appt')return shell(_('เพิ่มนัดหมาย','Add appointment')+' · '+esc(nameOf(m.pid)),`<form class="form" data-form="appt" data-pid="${m.pid}"><div class="fgrid"><label class="field span2">${_('รายการนัด','Appointment')} *<input name="type" id="ap-type" placeholder="${_('เช่น ตรวจติดตามและเจาะเลือด','e.g. follow-up and blood test')}"></label><label class="field">${_('วันที่','Date')} *<input type="date" name="date" id="ap-date" min="${todayISO}" value="${dOff(7)}"></label><label class="field">${_('เวลา','Time')} *<input type="time" name="time" id="ap-time" value="09:00"></label><label class="field span2">${_('สถานที่','Location')}<input name="loc" id="ap-loc" value="${LIVE?'':esc(_('คลินิกปลูกถ่ายตับ อาคาร 2 ชั้น 3 (ตัวอย่าง)','Liver transplant clinic, Bldg 2, Floor 3 (sample)'))}"></label><label class="field span2">${_('การเตรียมตัว','Preparation')}<textarea name="prep" id="ap-prep"></textarea></label></div><p class="ferr" role="alert"></p><div class="row"><button class="btn primary" type="submit">${_('บันทึกนัดหมาย','Save appointment')}</button></div></form>`);
  if(m.kind==='invite')return shell(_('เพิ่มญาติ','Add family member'),`<form class="form" data-form="invite"><div class="fgrid"><label class="field">${_('ชื่อ-นามสกุล','Full name')} *<input name="name" id="iv-name"></label><label class="field">${_('ความสัมพันธ์','Relationship')} *<input name="rel" id="iv-rel" placeholder="${_('เช่น บุตร','e.g. son')}"></label><label class="field span2">${_('เบอร์โทรศัพท์','Phone')}<input name="phone" id="iv-phone" inputmode="tel"></label></div>
   <div><p style="font-weight:600;margin-bottom:4px">${_('อนุญาตให้ดู','Allow access to')}</p>${PERMS.map(([k,l])=>`<label class="sw"><span>${esc(L(l))}</span><input type="checkbox" name="p_${k}" id="iv-${k}" ${['meds','appts'].includes(k)?'checked':''}></label>`).join('')}</div>
   <p class="hint">${_('ในระบบจริง ญาติจะได้รับคำเชิญและต้องยืนยันตัวตนก่อนเข้าถึงข้อมูล','In the real system, the person gets an invitation and verifies their identity first.')}</p><p class="ferr" role="alert"></p><div class="row"><button class="btn primary" type="submit">${_('เพิ่มและให้สิทธิ์','Add and allow')}</button></div></form>`);
@@ -4372,7 +4391,7 @@ document.addEventListener('toggle',e=>{const d=e.target;if(d&&d.dataset&&d.datas
 function render(){
  document.documentElement.classList.toggle('large',S.large);document.documentElement.lang=S.lang;
  const app=document.getElementById('app');
- if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus','ptauth','cgauth','pin'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
+ if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus','ptauth','cgauth','pin','stauth'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
  if(!allowed(S.view))S.view=homeView();
  let body;try{body=VIEWS[S.view]()}catch(err){console.error(err);body=`<div class="card"><p>${esc(err.message)}</p></div>`}
  const vh=(S.view==='home'||S.view==='log')&&S.user.role!=='staff';const entered=S._lastView!==S.view;S._lastView=S.view;
@@ -5154,7 +5173,7 @@ const mShell=(title,body,label,cls='')=>`<div class="overlay" data-close="modal"
 function ptAuthModal(){const t=S.modal.t||'login';const pre=S.modal.pre||{};
  const tabs=`<div class="seg big lg-tabs" role="tablist"><button role="tab" aria-selected="${t==='login'}" class="${t==='login'?'on':''}" data-a="ptauth" data-t="login">${_('เข้าสู่ระบบ','Sign in')}</button><button role="tab" aria-selected="${t==='reg'}" class="${t==='reg'?'on':''}" data-a="ptauth" data-t="reg">${_('เปิดใช้งานบัญชีครั้งแรก','Activate account')}</button></div>`;
  const nameF=`<div class="fgrid2"><label class="field">${_('ชื่อ','First name')}<input name="first" autocomplete="given-name" value="${esc(pre.first||'')}" required></label><label class="field">${_('นามสกุล','Surname')}<input name="last" autocomplete="family-name" value="${esc(pre.last||'')}" required></label></div>`;
- const demo=`<div class="pa-demo"><span>${_('บัญชีทดลอง','Demo accounts')}</span><button type="button" class="chip brand" data-a="login" data-id="p1">${esc(L(P('p1').name))} · ${_('ปลูกถ่ายแล้ว','post-transplant')}</button><button type="button" class="chip" data-a="login" data-id="p3">${esc(L(P('p3').name))} · ${_('รอปลูกถ่าย','waiting')}</button></div>`;
+ const demo=LIVE?'':`<div class="pa-demo"><span>${_('บัญชีทดลอง','Demo accounts')}</span><button type="button" class="chip brand" data-a="login" data-id="p1">${esc(L(P('p1').name))} · ${_('ปลูกถ่ายแล้ว','post-transplant')}</button><button type="button" class="chip" data-a="login" data-id="p3">${esc(L(P('p3').name))} · ${_('รอปลูกถ่าย','waiting')}</button></div>`;
  const body=t==='login'?`<form class="form pa-form" data-form="ptlogin" novalidate>${nameF}<label class="field">${_('รหัสผ่าน (HN)','Password (HN)')}<input name="hn" type="password" inputmode="text" autocomplete="current-password" placeholder="${_('เช่น 65-001234','e.g. 65-001234')}" required></label><p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${_('เข้าสู่ระบบ','Sign in')}</button><p class="hint tiny">${_('ยังไม่เคยใช้งาน? กด "เปิดใช้งานบัญชีครั้งแรก" ด้านบน','First time? Choose “Activate account” above')}</p></form>${demo}`
  :`<form class="form pa-form" data-form="ptreg" novalidate><p class="muted tiny">${_('ใช้ชื่อ นามสกุล และ HN ตามบัตรโรงพยาบาล HN จะเป็นรหัสผ่านของคุณ','Use your name and HN as on your hospital card. Your HN becomes your password.')}</p>${nameF}
   <div class="fgrid2"><label class="field">HN<input name="hn" inputmode="text" autocomplete="off" placeholder="${_('เช่น 66-002211','e.g. 66-002211')}" required></label><label class="field">${_('ยืนยัน HN อีกครั้ง','Confirm HN')}<input name="hn2" inputmode="text" autocomplete="off" required></label></div>
@@ -5440,7 +5459,7 @@ const APPREP=['เจาะเลือดก่อนทานยากดภ�
  const body=`<form class="form" data-form="appt" data-pid="${m.pid}"><div class="fgrid"><label class="field span2">${_('รายการนัด','Appointment')} *<input name="type" id="ap-type" list="ap-types" placeholder="${_('เช่น ตรวจติดตามหลังปลูกถ่าย + เจาะเลือด','e.g. follow-up and blood test')}"><datalist id="ap-types">${APTYPES.map(t=>`<option value="${t}">`).join('')}</datalist></label>
  <label class="field">${_('วันที่','Date')} *<input type="date" name="date" id="ap-date" min="${todayISO}" value="${dOff(7)}"></label><label class="field">${_('เวลา','Time')} *<input type="time" name="time" id="ap-time" value="09:00"></label>
  <label class="field">${_('แพทย์ที่นัด','Doctor')}<input name="doc" list="ap-docs" placeholder="${_('ชื่อแพทย์','Doctor’s name')}"><datalist id="ap-docs">${DOCS.slice(0,2).map(d=>`<option value="${esc(L(d))}">`).join('')}</datalist></label>
- <label class="field">${_('สถานที่','Location')}<input name="loc" id="ap-loc" value="${esc(_('คลินิกปลูกถ่ายตับ อาคาร 2 ชั้น 3 (ตัวอย่าง)','Liver transplant clinic, Bldg 2, Floor 3 (sample)'))}"></label>
+ <label class="field">${_('สถานที่','Location')}<input name="loc" id="ap-loc" value="${LIVE?'':esc(_('คลินิกปลูกถ่ายตับ อาคาร 2 ชั้น 3 (ตัวอย่าง)','Liver transplant clinic, Bldg 2, Floor 3 (sample)'))}"></label>
  <label class="field span2">${_('การเตรียมตัว','Preparation')}<textarea name="prep" id="ap-prep" rows="2"></textarea></label></div>
  <div class="mm-enc ap-prep">${APPREP.map(t=>`<button type="button" class="chip" data-prep="${esc(t)}">+ ${esc(t)}</button>`).join('')}</div>
  <label class="chk"><input type="checkbox" name="task" value="1" checked> ${_('สร้างงานโทรเตือนผู้ป่วย 1 วันก่อนนัด','Add a reminder call task for the day before')}</label>
@@ -5473,7 +5492,7 @@ const fullName=(a,b)=>normTxt(`${a} ${b}`);
 function cgAuthModal(){const t=S.modal.t||'login';
  const tabs=`<div class="seg big lg-tabs" role="tablist"><button role="tab" aria-selected="${t==='login'}" class="${t==='login'?'on':''}" data-a="cgauth" data-t="login">${_('เข้าสู่ระบบ','Sign in')}</button><button role="tab" aria-selected="${t==='reg'}" class="${t==='reg'?'on':''}" data-a="cgauth" data-t="reg">${_('ลงทะเบียนผู้ดูแล','Register')}</button></div>`;
  const nm=(a,b,pa,pb)=>`<div class="fgrid2"><label class="field">${_('ชื่อ','First name')}<input name="${a}" autocomplete="${pa}" required></label><label class="field">${_('นามสกุล','Surname')}<input name="${b}" autocomplete="${pb}" required></label></div>`;
- const demo=`<div class="pa-demo"><span>${_('บัญชีทดลอง','Demo account')}</span><button type="button" class="chip brand" data-a="login" data-id="c1">${esc(L(C('c1').name))} · ${_('ผู้ดูแลของ','caring for')} ${esc(L(P('p1').name).split(' ')[0])}</button></div>`;
+ const demo=LIVE?'':`<div class="pa-demo"><span>${_('บัญชีทดลอง','Demo account')}</span><button type="button" class="chip brand" data-a="login" data-id="c1">${esc(L(C('c1').name))} · ${_('ผู้ดูแลของ','caring for')} ${esc(L(P('p1').name).split(' ')[0])}</button></div>`;
  const body=t==='login'?`<form class="form pa-form" data-form="cglogin" novalidate><p class="muted tiny">${_('ใช้ชื่อ-นามสกุลของผู้ดูแล และรหัสผ่านคือ HN ของผู้ป่วยที่ดูแล','Use your own name. Your password is the HN of the patient you care for.')}</p>${nm('first','last','given-name','family-name')}
   <label class="field">${_('รหัสผ่าน (HN ของผู้ป่วย)','Password (patient’s HN)')}<input name="hn" type="password" autocomplete="current-password" placeholder="${_('เช่น 65-001234','e.g. 65-001234')}" required></label><p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${_('เข้าสู่ระบบ','Sign in')}</button><p class="hint tiny">${_('ยังไม่เคยใช้งาน? กด "ลงทะเบียนผู้ดูแล" ด้านบน','First time? Choose “Register” above')}</p></form>${demo}`
  :`<form class="form pa-form" data-form="cgreg" novalidate>
@@ -5557,5 +5576,131 @@ for(const k of ['ptlogin','ptreg']){const f0=FORMS[k];FORMS[k]=(o,fd,f)=>{const 
 function pinWelcome(){const v=pinGet();if(!v||!person(v.id))return'';const nm=L(person(v.id).name)||v.name;
  return `<button class="pin-welcome" data-a="pinopen">${icon('shield')}<span><b>${_('เข้าสู่ระบบด้วย PIN','Sign in with PIN')}</b><small>${esc(nm)}</small></span>${icon('chev')}</button>`}
 
-seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);loadPhotos();seedMoments();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&person(v.id)&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
+Object.assign(ICON,{copy:'M9 9h11v11H9zM5 15H4V4h11v1',steth:'M6 3v6a4 4 0 0 0 8 0V3M10 13v3a4 4 0 0 0 8 0v-2M18 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z'});
+/* ================= v38 · live mode: staff accounts with passwords, no demo accounts or sample data ================= */
+const LIVE=!/[?&#]demo\b/.test(location.search+location.hash)&&!/\/demo\//.test(location.pathname)&&!window.SJ_DEMO;
+document.documentElement.classList.toggle('live',LIVE);
+const DBKEY='sj-live-db-v1';
+let dbWarned=false,dbT=0;
+function dbSave(){if(!LIVE)return;clearTimeout(dbT);dbT=setTimeout(()=>{try{localStorage.setItem(DBKEY,JSON.stringify(D))}catch(e){if(!dbWarned){dbWarned=true;toast(_('บันทึกข้อมูลลงเครื่องไม่สำเร็จ พื้นที่อาจเต็ม','Couldn’t save data on this device — storage may be full'))}}},250)}
+function syncDocs(){DOCS.length=0;(D.settings.doctors||[]).forEach(n=>DOCS.push({th:n,en:n}))}
+function liveBoot(){
+ Object.assign(D,{staff:[],patients:[],caregivers:[],consents:[],omeds:[],pmr:{},drp:[],ddiRev:{},tdm:{},adr:[],adhAs:[],couns:[],renalAs:{},pw:{},medEdu:{},moments:[]});
+ MEDEDU.forEach(e=>D.medEdu[e.k]={pub:true});
+ try{const v=JSON.parse(localStorage.getItem(DBKEY)||'null');if(v&&typeof v==='object')Object.assign(D,v)}catch(e){}
+ D.settings=D.settings||{};D.settings.doctors=D.settings.doctors||[];syncDocs();
+ const js=JSON.stringify(D);let mx=0;for(const m of js.matchAll(/"id":"[a-z]+(\d+)"/g))mx=Math.max(mx,+m[1]);_n=Math.max(_n,mx,Math.floor((Date.now()-1.7e12)/1000));
+ let rx=0;for(const m of js.matchAll(/"no":"RX-\d+-(\d+)"/g))rx=Math.max(rx,+m[1]);rxSeq=Math.max(rx,0)}
+{const _r=render;render=function(){_r();dbSave()}}
+window.addEventListener('pagehide',()=>{if(LIVE){clearTimeout(dbT);try{localStorage.setItem(DBKEY,JSON.stringify(D))}catch(e){}}});
+/* whole team sees all patients in live mode (no fixed demo staff ids) */
+
+/* ---- passwords ---- */
+const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+const newSalt=()=>hex(crypto.getRandomValues(new Uint8Array(16)));
+async function pwHash(pw,salt,it){if(window.crypto?.subtle){const enc=new TextEncoder();const k=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveBits']);return hex(await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:enc.encode(salt),iterations:it},k,256))}return 'f'+pinHash(pw,salt)}
+async function pwMake(pw){const s=newSalt(),it=150000;return{s,it,h:await pwHash(pw,s,it)}}
+async function pwCheck(pw,rec){if(!rec)return false;return (await pwHash(pw,rec.s,rec.it))===rec.h}
+const pwWeak=p=>p.length<8||!/[A-Za-z฀-๿]/.test(p)||!/\d/.test(p);
+const tempPw=()=>{const A='abcdefghjkmnpqrstuvwxyz',N='23456789';const r=n=>crypto.getRandomValues(new Uint32Array(1))[0]%n;let s='';for(let i=0;i<4;i++)s+=A[r(A.length)];s+=A[r(A.length)].toUpperCase();for(let i=0;i<4;i++)s+=N[r(N.length)];return s};
+const normUser=u=>String(u||'').trim().toLowerCase();
+const PROF={nurse:['พยาบาลผู้ประสานงานปลูกถ่ายตับ','Liver transplant nurse coordinator'],pharm:['เภสัชกร','Pharmacist']};
+const stActive=()=>D.staff.filter(s=>s.pw&&s.active!==false);
+const meAdmin=()=>S.user?.role==='staff'&&!!ST(S.user.id)?.admin;
+const stLock={};
+function busy(f,on){const b=f.querySelector('[type=submit]');if(b){b.disabled=on;b.classList.toggle('is-busy',on)}}
+const pwField=(n,label,ac,ph='')=>`<label class="field">${label}<span class="pw-wrap"><input name="${n}" type="password" autocomplete="${ac}" ${ph?`placeholder="${ph}"`:''} required><button type="button" class="pw-eye" data-a="pweye" aria-label="${_('แสดงรหัสผ่าน','Show password')}">${icon('eye')}</button></span></label>`;
+ACT.pweye=(d,el)=>{const i=(el||document.activeElement)?.closest('.pw-wrap')?.querySelector('input');if(i)i.type=i.type==='password'?'text':'password'};
+document.addEventListener('click',e=>{const b=e.target.closest('.pw-eye');if(!b)return;const i=b.parentElement.querySelector('input');i.type=i.type==='password'?'text':'password';e.stopPropagation()},true);
+
+/* ---- staff sign-in / first-run setup ---- */
+function stAuthModal(){const r=S.modal.r||'nurse';const first=!stActive().length;
+ const head=`<div class="st-head"><span class="st-ic">${icon(r==='pharm'?'pill':'shield')}</span><div><b>${_(...PROF[r])}</b><small>${first?_('ตั้งค่าครั้งแรก','First-time setup'):_('สำหรับเจ้าหน้าที่ทีมปลูกถ่ายตับ','For transplant team staff')}</small></div></div>`;
+ const body=first?`<form class="form pa-form" data-form="stsetup" novalidate>${head}<p class="muted tiny">${_('ยังไม่มีบัญชีเจ้าหน้าที่ในระบบ บัญชีแรกนี้จะเป็น <b>ผู้ดูแลระบบ</b> ซึ่งเพิ่มบัญชีให้พยาบาลและเภสัชกรคนอื่นได้','No staff accounts yet. This first account becomes the <b>administrator</b>, who can add accounts for other nurses and pharmacists.')}</p>
+  <div class="fgrid2"><label class="field">${_('ชื่อ','First name')}<input name="first" autocomplete="given-name" required></label><label class="field">${_('นามสกุล','Surname')}<input name="last" autocomplete="family-name" required></label></div>
+  <label class="field">${_('ตำแหน่ง','Role')}<select name="prof">${Object.entries(PROF).map(([k,v])=>`<option value="${k}" ${k===r?'selected':''}>${_(...v)}</option>`).join('')}</select></label>
+  <label class="field">${_('ชื่อผู้ใช้','Username')}<input name="user" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="${_('ภาษาอังกฤษหรือตัวเลข เช่น maneerat.t','Letters or numbers, e.g. maneerat.t')}" required></label>
+  ${pwField('pw',_('ตั้งรหัสผ่าน','Password'),'new-password',_('อย่างน้อย 8 ตัว มีทั้งตัวอักษรและตัวเลข','8+ characters, letters and numbers'))}${pwField('pw2',_('ยืนยันรหัสผ่าน','Confirm password'),'new-password')}
+  <p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${_('สร้างบัญชีผู้ดูแลระบบ','Create administrator account')}</button></form>`
+ :`<form class="form pa-form" data-form="stlogin" novalidate>${head}
+  <label class="field">${_('ชื่อผู้ใช้','Username')}<input name="user" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+  ${pwField('pw',_('รหัสผ่าน','Password'),'current-password')}
+  <p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${_('เข้าสู่ระบบ','Sign in')}</button>
+  <p class="hint tiny">${_('ลืมรหัสผ่าน หรือยังไม่มีบัญชี ติดต่อผู้ดูแลระบบของทีม','Forgot your password or need an account? Ask your team administrator.')}</p></form>`;
+ return mShell(_('เข้าสู่ระบบเจ้าหน้าที่','Staff sign-in'),body,_('เจ้าหน้าที่','Staff'),'pa-modal')}
+ACT.stauth=d=>{S.modal={kind:'stauth',r:d.r||'nurse'};render();setTimeout(()=>document.querySelector('.pa-form input')?.focus(),40)};
+function stEnter(s){s.lastLogin=nowStamp();S.modal=null;ACT.login({id:s.id});audit('เจ้าหน้าที่เข้าสู่ระบบ','Staff signed in',null);if(s.mustChange){S.modal={kind:'pwchange',forced:true};render()}}
+Object.assign(FORMS,{
+ stsetup:async(o,fd,f)=>{if(stActive().length)return fail(f,_('มีบัญชีผู้ดูแลระบบแล้ว','An administrator already exists'));const v=k=>String(o[k]||'').trim();const u=normUser(o.user);
+  if(!v('first')||!v('last'))return fail(f,_('กรอกชื่อและนามสกุล','Enter your first name and surname'));
+  if(!/^[a-z0-9._-]{3,30}$/.test(u))return fail(f,_('ชื่อผู้ใช้ใช้ได้เฉพาะ a–z ตัวเลข . _ - ความยาว 3–30 ตัว','Username: a–z, numbers, . _ - (3–30 characters)'));
+  if(pwWeak(o.pw))return fail(f,_('รหัสผ่านต้องยาวอย่างน้อย 8 ตัว และมีทั้งตัวอักษรและตัวเลข','Password needs 8+ characters with letters and numbers'));
+  if(o.pw!==o.pw2)return fail(f,_('รหัสผ่านทั้งสองช่องไม่ตรงกัน','The two passwords don’t match'));
+  busy(f,true);const name=`${v('first')} ${v('last')}`;const prof=o.prof==='pharm'?'pharm':'nurse';
+  const s={id:uid('s'),name:{th:name,en:name},title:{th:PROF[prof][0],en:PROF[prof][1]},prof,user:u,pw:await pwMake(o.pw),admin:true,active:true,mustChange:false,at:nowStamp()};
+  D.staff.push(s);stEnter(s);toast(_('สร้างบัญชีผู้ดูแลระบบแล้ว เพิ่มบัญชีเจ้าหน้าที่คนอื่นได้ที่ "บัญชีเจ้าหน้าที่"','Administrator created — add other staff in “Staff accounts”'))},
+ stlogin:async(o,fd,f)=>{const u=normUser(o.user);const L0=stLock[u]||(stLock[u]={n:0,until:0});
+  if(Date.now()<L0.until)return fail(f,_(`ใส่รหัสผิดหลายครั้ง โปรดรอ ${Math.ceil((L0.until-Date.now())/60000)} นาที`,`Too many tries — wait ${Math.ceil((L0.until-Date.now())/60000)} min`));
+  if(!u||!o.pw)return fail(f,_('กรอกชื่อผู้ใช้และรหัสผ่าน','Enter your username and password'));
+  busy(f,true);const s=D.staff.find(x=>x.user===u&&x.pw);const ok=s&&s.active!==false&&await pwCheck(o.pw,s.pw);busy(f,false);
+  if(!ok){L0.n++;if(L0.n>=5){L0.until=Date.now()+5*60e3;L0.n=0}return fail(f,s&&s.active===false?_('บัญชีนี้ถูกปิดใช้งาน ติดต่อผู้ดูแลระบบ','This account is turned off — contact the administrator'):_('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง','Username or password is incorrect'))}
+  L0.n=0;stEnter(s)},
+ pwchange:async(o,fd,f)=>{const s=ST(S.user?.id);if(!s)return;const forced=S.modal?.forced;
+  if(!forced){busy(f,true);const ok=await pwCheck(o.cur||'',s.pw);busy(f,false);if(!ok)return fail(f,_('รหัสผ่านปัจจุบันไม่ถูกต้อง','Current password is incorrect'))}
+  if(pwWeak(o.pw))return fail(f,_('รหัสผ่านใหม่ต้องยาวอย่างน้อย 8 ตัว และมีทั้งตัวอักษรและตัวเลข','New password needs 8+ characters with letters and numbers'));
+  if(o.pw!==o.pw2)return fail(f,_('รหัสผ่านทั้งสองช่องไม่ตรงกัน','The two passwords don’t match'));
+  busy(f,true);if(await pwCheck(o.pw,s.pw)){busy(f,false);return fail(f,_('ตั้งรหัสใหม่ที่ไม่ซ้ำกับรหัสเดิม','Choose a password different from the current one'))}
+  s.pw=await pwMake(o.pw);s.mustChange=false;s.pwAt=nowStamp();S.modal=null;audit('เปลี่ยนรหัสผ่าน','Changed password',null);render();toast(_('เปลี่ยนรหัสผ่านแล้ว','Password changed'))},
+ stadd:async(o,fd,f)=>{if(!meAdmin())return;const v=k=>String(o[k]||'').trim();const u=normUser(o.user);
+  if(!v('first')||!v('last'))return fail(f,_('กรอกชื่อและนามสกุล','Enter first name and surname'));
+  if(!/^[a-z0-9._-]{3,30}$/.test(u))return fail(f,_('ชื่อผู้ใช้ใช้ได้เฉพาะ a–z ตัวเลข . _ - ความยาว 3–30 ตัว','Username: a–z, numbers, . _ - (3–30 characters)'));
+  if(D.staff.some(x=>x.user===u))return fail(f,_('ชื่อผู้ใช้นี้มีแล้ว','That username is taken'));
+  busy(f,true);const name=`${v('first')} ${v('last')}`,prof=o.prof==='pharm'?'pharm':'nurse',tmp=tempPw();
+  const s={id:uid('s'),name:{th:name,en:name},title:{th:PROF[prof][0],en:PROF[prof][1]},prof,user:u,pw:await pwMake(tmp),admin:!!o.admin,active:true,mustChange:true,at:nowStamp(),by:S.user.id};
+  D.staff.push(s);audit(`เพิ่มบัญชีเจ้าหน้าที่ ${name} (${PROF[prof][0]})`,`Added staff account ${name}`,null);S.modal={kind:'tempshow',id:s.id,pw:tmp,isNew:true};render()},
+ docs:(o,fd,f)=>{if(!meAdmin())return;D.settings.doctors=String(o.docs||'').split('\n').map(x=>x.trim()).filter(Boolean).slice(0,60);syncDocs();audit('แก้ไขรายชื่อแพทย์ในทีม','Updated team doctor list',null);render();toast(_('บันทึกรายชื่อแพทย์แล้ว','Doctor list saved'))}});
+function pwChangeModal(){const forced=S.modal.forced;return mShell(_('เปลี่ยนรหัสผ่าน','Change password'),`<form class="form pa-form" data-form="pwchange" novalidate>
+ ${forced?`<p class="pw-note">${icon('shield')} ${_('คุณเข้าสู่ระบบด้วยรหัสผ่านชั่วคราว โปรดตั้งรหัสผ่านใหม่ของคุณเองก่อนใช้งาน','You signed in with a temporary password. Please set your own password to continue.')}</p>`:pwField('cur',_('รหัสผ่านปัจจุบัน','Current password'),'current-password')}
+ ${pwField('pw',_('รหัสผ่านใหม่','New password'),'new-password',_('อย่างน้อย 8 ตัว มีทั้งตัวอักษรและตัวเลข','8+ characters, letters and numbers'))}${pwField('pw2',_('ยืนยันรหัสผ่านใหม่','Confirm new password'),'new-password')}
+ <p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${_('บันทึกรหัสผ่านใหม่','Save new password')}</button>${forced?`<button type="button" class="btn ghost block" data-a="logout">${_('ออกจากระบบ','Sign out')}</button>`:''}</form>`,_('รหัสผ่าน','Password'),'pa-modal'+(forced?' no-x':''))}
+function tempShowModal(){const m=S.modal,s=ST(m.id);return mShell(m.isNew?_('สร้างบัญชีแล้ว','Account created'):_('รีเซ็ตรหัสผ่านแล้ว','Password reset'),`<div class="tmp-box">
+ <p>${_('แจ้งข้อมูลนี้ให้','Give these to')} <b>${esc(L(s.name))}</b> ${_('ทางช่องทางที่ปลอดภัย (บอกด้วยตนเองหรือข้อความส่วนตัว) เมื่อเข้าสู่ระบบครั้งแรก ระบบจะให้ตั้งรหัสผ่านใหม่','privately (in person or a direct message). They’ll set a new password at first sign-in.')}</p>
+ <dl class="tmp-dl"><dt>${_('ชื่อผู้ใช้','Username')}</dt><dd><code>${esc(s.user)}</code></dd><dt>${_('รหัสผ่านชั่วคราว','Temporary password')}</dt><dd><code id="tmp-pw">${esc(m.pw)}</code></dd></dl>
+ <p class="muted tiny">${icon('lock')} ${_('รหัสนี้จะแสดงเพียงครั้งเดียว ระบบไม่เก็บรหัสผ่านไว้ในรูปที่อ่านได้','Shown only once — passwords are never stored in readable form')}</p>
+ <div class="row"><button class="btn" data-a="tmpcopy">${icon('copy')} ${_('คัดลอก','Copy')}</button><button class="btn primary" data-a="close">${_('เสร็จแล้ว','Done')}</button></div></div>`,_('รหัสผ่านชั่วคราว','Temporary password'),'pa-modal')}
+ACT.tmpcopy=()=>{const m=S.modal,s=ST(m.id);const t=`ตับดีมีสุข · ชื่อผู้ใช้: ${s.user} · รหัสผ่านชั่วคราว: ${m.pw}`;navigator.clipboard?.writeText(t).then(()=>toast(_('คัดลอกแล้ว','Copied')),()=>toast(_('คัดลอกไม่ได้ โปรดจดด้วยตนเอง','Couldn’t copy — please note it down')))};
+ACT.pwchange=()=>{S.moreOpen=false;S.modal={kind:'pwchange'};render()};
+ACT.streset=async d=>{if(!meAdmin())return;const s=ST(d.id);if(!s)return;const tmp=tempPw();s.pw=await pwMake(tmp);s.mustChange=true;audit(`รีเซ็ตรหัสผ่านของ ${L(s.name)}`,`Reset password for ${L(s.name)}`,null);S.modal={kind:'tempshow',id:s.id,pw:tmp};render()};
+ACT.sttoggle=d=>{if(!meAdmin()||d.id===S.user.id)return;const s=ST(d.id);if(!s)return;s.active=s.active===false;audit(`${s.active?'เปิด':'ปิด'}ใช้งานบัญชี ${L(s.name)}`,`${s.active?'Enabled':'Disabled'} ${L(s.name)}`,null);render()};
+ACT.stadmin=d=>{if(!meAdmin()||d.id===S.user.id)return;const s=ST(d.id);if(!s)return;s.admin=!s.admin;audit(`${s.admin?'ตั้ง':'ยกเลิก'}สิทธิ์ผู้ดูแลระบบ ${L(s.name)}`,`${s.admin?'Granted':'Removed'} admin for ${L(s.name)}`,null);render()};
+{const _mh4=modalHTML;modalHTML=function(){const k=S.modal?.kind;if(k==='stauth')return stAuthModal();if(k==='pwchange')return pwChangeModal();if(k==='tempshow')return tempShowModal();return _mh4()}}
+/* forced password change cannot be dismissed */
+document.addEventListener('click',e=>{if(S.modal?.kind==='pwchange'&&S.modal.forced&&(e.target.closest('[data-close]')===e.target||e.target.closest('[data-a=close]'))){e.stopPropagation();e.preventDefault()}},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.modal?.kind==='pwchange'&&S.modal.forced){e.stopPropagation();e.preventDefault()}},true);
+
+/* ---- staff accounts page (administrators) ---- */
+function vStaffAcc(){if(!meAdmin())return `<section class="card"><p>${_('เฉพาะผู้ดูแลระบบ','Administrators only')}</p></section>`;
+ const rows=D.staff.filter(s=>s.pw).map(s=>{const me=s.id===S.user.id;const st=s.active===false?`<span class="pill-s off">${_('ปิดใช้งาน','Off')}</span>`:s.mustChange?`<span class="pill-s wait">${_('รอตั้งรหัสใหม่','Awaiting new password')}</span>`:`<span class="pill-s on">${_('ใช้งาน','Active')}</span>`;
+  return `<li class="sa-row"><span class="fu-av">${esc(L(s.name).slice(0,1))}</span><span class="sa-main"><b>${esc(L(s.name))}${me?` <small>(${_('คุณ','you')})</small>`:''}</b><small>${esc(L(s.title))} · <code>${esc(s.user)}</code>${s.admin?` · ${_('ผู้ดูแลระบบ','Admin')}`:''}</small><small class="muted">${s.lastLogin?_('เข้าใช้ล่าสุด ','Last sign-in ')+fmtDate(s.lastLogin.slice(0,10),{day:'numeric',month:'short'})+' '+s.lastLogin.slice(11,16):_('ยังไม่เคยเข้าใช้','Never signed in')}</small></span>${st}
+  ${me?'':`<span class="sa-act"><button class="btn sm" data-a="streset" data-id="${s.id}">${_('รีเซ็ตรหัสผ่าน','Reset password')}</button><button class="btn sm ghost" data-a="sttoggle" data-id="${s.id}">${s.active===false?_('เปิดใช้งาน','Turn on'):_('ปิดใช้งาน','Turn off')}</button><button class="btn sm ghost" data-a="stadmin" data-id="${s.id}">${s.admin?_('ยกเลิกผู้ดูแลระบบ','Remove admin'):_('ตั้งเป็นผู้ดูแลระบบ','Make admin')}</button></span>`}</li>`}).join('');
+ const add=`<form class="form" data-form="stadd" novalidate><div class="fgrid2"><label class="field">${_('ชื่อ','First name')}<input name="first" required></label><label class="field">${_('นามสกุล','Surname')}<input name="last" required></label></div>
+  <div class="fgrid2"><label class="field">${_('ตำแหน่ง','Role')}<select name="prof">${Object.entries(PROF).map(([k,v])=>`<option value="${k}">${_(...v)}</option>`).join('')}</select></label><label class="field">${_('ชื่อผู้ใช้','Username')}<input name="user" autocapitalize="none" spellcheck="false" placeholder="${_('เช่น somsri.k','e.g. somsri.k')}" required></label></div>
+  <label class="check"><input type="checkbox" name="admin" value="1"><span>${_('ให้สิทธิ์ผู้ดูแลระบบ (เพิ่ม/ปิดบัญชีเจ้าหน้าที่ได้)','Administrator (can add or turn off staff accounts)')}</span></label>
+  <p class="ferr" role="alert"></p><button class="btn primary" type="submit">${icon('plus')} ${_('สร้างบัญชีและรหัสผ่านชั่วคราว','Create account with a temporary password')}</button></form>`;
+ const docs=`<form class="form" data-form="docs"><label class="field">${_('รายชื่อแพทย์ในทีม (บรรทัดละ 1 ชื่อ)','Team doctors (one per line)')}<textarea name="docs" rows="4" placeholder="${_('เช่น นพ.ชื่อ นามสกุล','e.g. Dr Firstname Surname')}">${esc((D.settings.doctors||[]).join('\n'))}</textarea></label><p class="hint tiny">${_('ใช้ในช่องเลือกแพทย์ เช่น การแจ้งแพทย์และการลงนัดหมาย','Used where you pick a doctor, e.g. escalations and appointments')}</p><button class="btn" type="submit">${icon('check')} ${_('บันทึกรายชื่อแพทย์','Save doctor list')}</button></form>`;
+ return `<section class="card"><h2>${icon('users')} ${_('บัญชีเจ้าหน้าที่','Staff accounts')}</h2><ul class="sa-list">${rows}</ul></section>
+ <section class="card">${fold('stadd',`<h3>${icon('plus')} ${_('เพิ่มบัญชีเจ้าหน้าที่','Add a staff account')}</h3>`,add,false)}</section>
+ <section class="card">${fold('stdocs',`<h3>${icon('steth')} ${_('รายชื่อแพทย์ในทีม','Team doctors')}</h3>`,docs,!(D.settings.doctors||[]).length)}</section>
+ <p class="muted tiny sa-note">${icon('lock')} ${_('รหัสผ่านถูกเข้ารหัสแบบทางเดียว (PBKDF2) ผู้ดูแลระบบไม่เห็นรหัสผ่านของใคร เมื่อลืมให้รีเซ็ตเป็นรหัสชั่วคราวแทน','Passwords are one-way hashed (PBKDF2). Admins can’t see anyone’s password — reset to a temporary one instead.')}</p>`}
+VIEWS.staffacc=vStaffAcc;TITLES.staffacc=['บัญชีเจ้าหน้าที่','Staff accounts'];
+NAVG.nurse[NAVG.nurse.length-1][1].push('staffacc');NAVG.pharm[NAVG.pharm.length-1][1].push('staffacc');
+{const _nf6=navFor;navFor=function(r){const l=_nf6(r);if(r==='staff'&&meAdmin()&&!l.some(x=>x[0]==='staffacc'))l.push(['staffacc','users']);return l}}
+/* profile sheet for staff: change password; real sign-out label */
+{const _ms2=moreSheet;moreSheet=function(){let h=_ms2();if(!h||!S.user)return h;if(LIVE)h=h.replace(/<p class="side-note">[\s\S]*?<\/p>/,'').replace(_('เปลี่ยนบัญชีทดลอง','Switch demo account'),_('ออกจากระบบ','Sign out'));
+ if(LIVE&&S.user.role==='staff')h=h.replace('<button class="btn block" data-a="logout">',`<div class="row sheet-row pin-row"><span class="muted">${icon('lock')} ${_('รหัสผ่าน','Password')}</span><button class="btn sm" data-a="pwchange">${_('เปลี่ยนรหัสผ่าน','Change')}</button></div><button class="btn block" data-a="logout">`);return h}}
+/* idle sign-out for staff (30 min) */
+let lastAct=Date.now();['pointerdown','keydown'].forEach(t=>document.addEventListener(t,()=>{lastAct=Date.now()},true));
+setInterval(()=>{if(LIVE&&S.user?.role==='staff'&&Date.now()-lastAct>30*60e3){ACT.logout();toast(_('ออกจากระบบอัตโนมัติ เพราะไม่ได้ใช้งาน 30 นาที','Signed out after 30 minutes of no activity'))}},60e3);
+
+if(LIVE)liveBoot();else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&person(v.id)&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
