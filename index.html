@@ -1920,6 +1920,7 @@ div.rbar{cursor:default}
 }
 @media (max-width:640px){.lm-tbl th:nth-child(7),.lm-tbl td:nth-child(7){display:none}.lm-tbl tbody th small{display:none}}
 .tchart{max-width:760px;margin-inline:auto;max-height:340px}
+@media (max-width:640px) and (max-height:900px){.home2:has(.ts-alert) .hlib{display:none}}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3008,7 +3009,7 @@ function todayCard(pid,cg){const c=cg?consentOf(S.user.id,pid):null;const okH=!c
   :t?`<div class="ts-med ${late?'late':''}"><span class="ts-k num">${t}</span><span class="ts-t"><small>${late?_('เลยเวลาแล้ว','Past due'):_('ยามื้อถัดไป','Next dose')}</small><b>${g.map(x=>esc(x.item.name)+(L(x.item.dose)?' '+esc(L(x.item.dose)):'')).join(' · ')}</b></span>${rec?`<button class="btn sm primary" data-a="dosegrp" data-time="${t}">${icon('check')} ${_('ทานแล้ว','Taken')}</button>`:''}</div>`
   :`<div class="ts-med ok"><span class="ts-k">${icon('check')}</span><span class="ts-t"><b>${_('ทานยาครบทุกมื้อแล้ววันนี้','All doses taken today')}</b></span></div>`;
  const due=okH&&miss.length&&nowHM()>='10:00';
- const alert=due?`<button class="ts-alert" data-a="golog" data-t="${miss.every(([k])=>k==='sym')?'sym':'daily'}">${icon('bell')}<span>${_('ยังไม่ได้บันทึก','Not recorded yet')}: <b>${miss.map(([k,th,en])=>_(th,en)).join(', ')}</b></span><em>${_('บันทึกเลย','Record')}</em></button>`:'';
+ const alert=due?`<button class="ts-alert" data-a="golog" data-t="${miss.every(([k])=>k==='sym')?'sym':'daily'}">${icon('bell')}<span>${_('ยังไม่ได้บันทึกวันนี้','Not recorded today')} <b>${miss.length} ${_('รายการ','items')}</b></span><em>${_('บันทึกเลย','Record')}</em></button>`:'';
  const pill=(lab,a,b,full)=>`<span class="ts-pill ${full?'full':''}">${lab} <b class="num">${a}/${b}</b></span>`;
  return `<section class="dlog tsum"><div class="dlog-h"><h3>${_('สรุปวันนี้','Today')}</h3><span class="ts-pills">${okH?pill(_('สุขภาพ','Health'),hd,HREQ.length,hd===HREQ.length):''}${okM&&sl.length?pill(_('ยา','Meds'),dn,sl.length,dn===sl.length):''}</span></div>
  <div class="dlog-g">${HREQ.map(it).join('')}</div>${alert}${med?`<div class="ts-medw">${med}<button class="ts-all" data-a="go" data-v="meds" aria-label="${_('ดูยาทั้งหมด','All medicines')}">${icon('chev')}</button></div>`:''}</section>`}
@@ -3744,7 +3745,14 @@ function exportCSV(){const ids=myPatients().map(p=>p.id);const rows=[['HN','Name
  myPatients().forEach(p=>{const tac=labsOf(p.id,'TAC').slice(-1)[0];const na=nextAppt(p.id);rows.push([p.hn,L(p.name),p.txDate?'Post':'Pre',p.txDate?daysBetween(p.txDate,todayISO):'',na?na.date:'',openAlerts([p.id]).length,adherence(p.id)??'',tac?tac.value:'',D.contacts.filter(c=>c.pid===p.id&&c.date.slice(0,7)===todayISO.slice(0,7)).length,openTasks([p.id]).length])});
  rows.push([]);coordStats().forEach(([k,v])=>rows.push([k,v]));
  const csv='﻿'+rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\r\n');
- try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=`tubdeemeesuk-report-${todayISO}.csv`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast(_('ดาวน์โหลดไฟล์ Excel (CSV) แล้ว','Excel (CSV) file downloaded'))}catch(e){toast(_('ดาวน์โหลดไม่ได้ในหน้านี้','Download is blocked here'))}}
+ saveFile(`tubdeemeesuk-report-${todayISO}.csv`,csv,'text/csv;charset=utf-8',_('บันทึกไฟล์ Excel (CSV) แล้ว','Excel (CSV) file saved'))}
+async function saveFile(name,data,type,okMsg){
+ if(inFrame&&window.claude&&window.claude.use){try{const dl=await window.claude.use('downloads');if(dl){await dl.save({filename:name,data});toast(okMsg);return}}catch(e){if(e&&e.code==='declined')return;toast(_('บันทึกไฟล์ไม่ได้ในหน้านี้','Saving isn’t available here'));return}}
+ try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},800);toast(okMsg)}catch(e){toast(_('บันทึกไฟล์ไม่ได้ในหน้านี้','Saving isn’t available here'))}}
+function exportPDF(){if(!inFrame){try{window.print();return}catch(e){}}
+ const st=coordStats();const rows=myPatients().map(p=>{const tac=labsOf(p.id,'TAC').slice(-1)[0];const na=nextAppt(p.id);return `<tr><td>${p.hn}</td><td>${esc(L(p.name))}</td><td>${p.txDate?'Post':'Pre'}</td><td>${p.txDate?daysBetween(p.txDate,todayISO):''}</td><td>${na?fmtDate(na.date):''}</td><td>${openAlerts([p.id]).length}</td><td>${adherence(p.id)??''}</td><td>${tac?tac.value:''}</td></tr>`}).join('');
+ const html=`<!doctype html><html lang="th"><head><meta charset="utf-8"><title>${_('รายงานพยาบาลผู้ประสานงาน','Coordinator report')} ${todayISO}</title><style>body{font-family:system-ui,sans-serif;margin:24px;color:#1f2e2d}h1{font-size:20px}table{border-collapse:collapse;width:100%;font-size:13px;margin-top:12px}td,th{border:1px solid #ccc;padding:6px;text-align:left}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.g div{border:1px solid #ccc;border-radius:8px;padding:8px}.g b{font-size:20px;display:block}@media print{button{display:none}}</style></head><body><button onclick="print()">${_('พิมพ์ / บันทึกเป็น PDF','Print / save as PDF')}</button><h1>${_('ตับดีมีสุข · สรุปงานพยาบาลผู้ประสานงาน','Tub Dee Mee Suk · Coordinator summary')}</h1><p>${fmtDate(todayISO)} · ${esc(L(person(S.user.id).name))} · ${_('ข้อมูลตัวอย่าง','Sample data')}</p><div class="g">${st.map(([k,v])=>`<div><b>${v}</b>${k}</div>`).join('')}</div><table><thead><tr><th>HN</th><th>${_('ชื่อ','Name')}</th><th>${_('สถานะ','Status')}</th><th>${_('วันหลังปลูกถ่าย','Days post-tx')}</th><th>${_('นัดถัดไป','Next visit')}</th><th>${_('แจ้งเตือนค้าง','Open alerts')}</th><th>${_('กินยา 7 วัน %','Adherence %')}</th><th>Tac</th></tr></thead><tbody>${rows}</tbody></table></body></html>`;
+ saveFile(`tubdeemeesuk-report-${todayISO}.html`,html,'text/html',_('บันทึกรายงานแล้ว เปิดไฟล์แล้วกด "พิมพ์ / บันทึกเป็น PDF"','Report saved — open it and choose Print / save as PDF'))}
 function coordReport(){return `<section class="card rp-co"><div class="card-h"><h3>${icon('chart')} ${_('สรุปงานพยาบาลผู้ประสานงาน เดือนนี้','Coordinator summary this month')}</h3><div class="row no-print"><button class="btn sm" data-a="csv">${icon('download')} Excel</button><button class="btn sm" data-a="pdf">${icon('download')} PDF</button></div></div>
  <div class="rp-grid">${coordStats().map(([k,v])=>`<div><b class="num">${v}</b><span>${k}</span></div>`).join('')}</div><p class="hint tiny">${_('ใช้สำหรับประชุมทีมปลูกถ่ายตับและประเมินคุณภาพการดูแล · ข้อมูลตัวอย่าง','For transplant team meetings and quality review · sample data')}</p></section>`}
 /* ---- roles ---- */
@@ -3969,7 +3977,7 @@ const ACT={
  lmdays:d=>{S.lmDays=+d.d;render()},
  algo:d=>{if(d.v==='patient'){S.pid=d.pid;S.tab=d.t||'overview';go('patient');return}if(d.v==='labmgmt')S.lmPid=d.pid;if(d.v==='medrev')S.mrPid=d.pid;if(d.v==='followup')S.fuPid=d.pid;go(d.v)},
  csv:()=>exportCSV(),
- pdf:()=>{try{window.print()}catch(e){toast(_('พิมพ์ไม่ได้ในหน้านี้','Printing is blocked here'))}},
+ pdf:()=>exportPDF(),
  labpanel:d=>{S.modal={kind:'labpanel',pid:d.pid};render()},
  labfix:d=>{S.modal={kind:'labfix',id:d.id};render()},
  labver:d=>{const ls=D.labs.filter(l=>l.patientId===d.pid&&l.status==='draft');ls.forEach(l=>{l.status='verified';l.verifiedBy=S.user.id;l.verifiedAt=nowStamp()});audit(`ยืนยันผล Lab ${ls.length} รายการ`,`Verified ${ls.length} lab results`,d.pid);render();toast(_('ยืนยันผลแล้ว','Results verified'))},
