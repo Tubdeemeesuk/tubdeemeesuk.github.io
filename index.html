@@ -2075,6 +2075,78 @@ div.rbar{cursor:default}
 .tab-av{width:26px;height:26px;border-radius:50%;overflow:hidden;display:block;box-shadow:0 0 0 2px var(--brand-soft)}.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .avatar:has(img){display:grid!important;overflow:hidden;padding:0}.pt-head>.avatar{flex:none}
 .avatar.lg{min-height:0;height:60px;background:var(--grad-brand)}
+/* v30 clean staff UI */
+.staff-ui .sidebar{background:var(--surface);border-right:1px solid var(--line)}
+.staff-ui .sidebar .lanna,.staff-ui .tagline,.staff-ui .hs-side{display:none}
+.staff-ui .nav{gap:1px}
+.staff-ui .nav-i{min-height:42px;font-size:.92rem}
+.nav-g{margin:14px 14px 4px;font-size:.7rem;font-weight:600;letter-spacing:.04em;color:var(--ink-2);opacity:.75;text-transform:uppercase}
+.side-note{display:flex;gap:6px;align-items:flex-start;margin:10px 4px 0;font-size:.7rem;line-height:1.4;color:var(--ink-2);opacity:.85}
+.side-note .ic{width:14px;height:14px;flex:none;margin-top:1px}
+.modal .side-note{margin:4px 0 10px}
+.staff-ui .card{box-shadow:none;border:1px solid color-mix(in srgb,var(--line) 85%,transparent);border-radius:16px}
+.staff-ui .card-h h3{font-size:1rem}
+.staff-ui .card-h h3 .ic{color:var(--ink-2)}
+.staff-ui .fq-list .lnk,.staff-ui .ph-drp .lnk{text-decoration:none;color:var(--ink-2)}
+.staff-ui .content{max-width:1080px}
+/* home */
+.sh{display:flex;flex-direction:column;gap:14px;max-width:880px}
+.sh-head h2{margin:0;font-family:var(--f-display);font-size:1.45rem;color:var(--ink);line-height:1.25}
+.sh-head p{margin:4px 0 0;color:var(--ink-2);font-size:.86rem}
+.sh-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.sh-stat{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px 14px 12px;border-radius:16px;border:1px solid color-mix(in srgb,var(--line) 85%,transparent);background:var(--surface);cursor:pointer;text-align:left;font:inherit;color:var(--ink);transition:border-color .15s,transform .15s}
+.sh-stat:hover{border-color:var(--brand);transform:translateY(-1px)}
+.sh-stat b{font-family:var(--f-display);font-size:1.7rem;line-height:1.1;color:var(--ink-2)}
+.sh-stat span{font-size:.8rem;color:var(--ink-2);line-height:1.3}
+.sh-stat.danger b{color:var(--danger)}.sh-stat.warn b{color:var(--warn)}.sh-stat.info b{color:var(--info)}
+.sh-note{display:flex;align-items:center;gap:10px;width:100%;padding:11px 14px;border-radius:14px;border:0;background:var(--danger-soft);color:var(--danger);font:inherit;font-size:.88rem;font-weight:600;cursor:pointer;text-align:left}
+.sh-note span{flex:1}.sh-note .ic{width:18px;height:18px;flex:none}
+.sh-list{padding:6px 0 4px}
+.sh-lh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 16px 8px}
+.sh-lh h3{margin:0;font-family:var(--f-display);font-size:1rem}
+.sh-seg{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+.sh-seg::-webkit-scrollbar{display:none}
+.sh-seg button{flex:none;border:0;background:none;padding:5px 10px;border-radius:999px;font:inherit;font-size:.78rem;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.sh-seg button.on{background:var(--brand-soft);color:var(--brand-2);font-weight:600}
+.sh-seg b{font-weight:600;opacity:.8}
+.sq{list-style:none;margin:0;padding:0}
+.sq li+li{border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+.sq-row{display:flex;align-items:center;gap:12px;width:100%;padding:11px 16px;border:0;background:none;font:inherit;color:var(--ink);text-align:left;cursor:pointer}
+.sq-row:hover{background:var(--surface-2)}
+.sq-dot{flex:none;width:8px;height:8px;border-radius:50%;background:var(--line)}
+.sq-dot.danger{background:var(--danger)}.sq-dot.warn{background:var(--warn)}.sq-dot.info{background:var(--info)}.sq-dot.ok{background:var(--ok)}
+.sq-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.sq-t b{font-weight:600;font-size:.92rem;line-height:1.35}
+.sq-t small{font-size:.76rem;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sq-m{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right;max-width:40%}
+.sq-m small{font-size:.72rem;color:var(--ink-2)}
+.due{font-style:normal;font-size:.8rem;font-weight:600;color:var(--ink-2)}
+.due.today{color:var(--warn)}.due.over{color:var(--danger)}
+.sq-empty{padding:16px;color:var(--ink-2);font-size:.88rem}
+.sq-step{display:block;width:72px;height:5px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.sq-step i{display:block;height:100%;width:var(--p);background:var(--brand)}
+.sh-more{display:block;width:100%;border:0;border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent);background:none;padding:11px;font:inherit;font-size:.84rem;font-weight:600;color:var(--brand-2);cursor:pointer}
+.lst-ok{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)}
+.lst-ok .ic{width:13px;height:13px}
+@media (max-width:640px){
+ .sh{gap:12px}
+ .sh-head h2{font-size:1.25rem}
+ .sh-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .sh-stat{padding:11px 12px 10px}.sh-stat b{font-size:1.45rem}
+ .sh-lh{padding:10px 12px 6px}.sq-row{padding:10px 12px;gap:10px}
+ .sq-t b{font-size:.88rem}
+ .staff-ui .tabbar .tab span{white-space:nowrap}
+}
+.staff-ui .sidebar{min-height:100vh}
+.sh-tip{display:flex;gap:8px;align-items:flex-start;margin:0;padding:10px 12px;border-radius:12px;background:var(--warn-soft);color:var(--warn);font-size:.82rem;line-height:1.45}
+.sh-tip .ic{width:16px;height:16px;flex:none;margin-top:2px}
+.sq li.sel{background:var(--surface-2)}
+.sq li.sel>.sq-row{background:none}
+.al-x{padding:0 12px 12px}
+.al-x .al-card{margin:0;box-shadow:none;border:1px solid var(--line);background:var(--surface)}
+.al-x .al-h{display:none}
+.al-no{color:var(--danger)!important;font-weight:600}
+.chk.tiny{font-size:.78rem;color:var(--ink-2);display:flex;align-items:center;gap:6px}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3829,7 +3901,7 @@ function vLabMgmt(){const mine=myPatients();const pid=mine.some(p=>p.id===S.lmPi
  const row=c=>{const h=labsOf(pid,c);const l=h[h.length-1];const t=LAB(c);if(!l)return'';if(q&&!(t.name+' '+c).toLowerCase().includes(q))return'';const f=flagOf(l);
   const tg=c==='TAC'&&p.tacTarget?`${p.tacTarget[0]}–${p.tacTarget[1]}`:l.refLow==null&&l.refHigh==null?'—':l.refHigh==null?`≥ ${l.refLow}`:l.refLow==null||l.refLow===0?`≤ ${l.refHigh}`:`${l.refLow}–${l.refHigh}`;
   const off=c==='TAC'&&p.tacTarget?(l.value<p.tacTarget[0]?'L':l.value>p.tacTarget[1]?'H':'N'):f;
-  return `<tr class="${off==='H'||off==='L'?'off':''}"><th scope="row">${t.name}<small>${esc(L(t.p))}</small></th><td class="num">${tg}<small>${esc(l.unit)}</small></td><td><span class="lres ${off==='H'||off==='L'?'off':''} num">${l.value}</span></td><td>${off==='H'?'<b class="up">↑</b>':off==='L'?'<b class="up">↓</b>':'<b class="okk">✓</b>'}</td><td class="num">${fmtDate(l.date,{day:'numeric',month:'short'})}<small>${l.time||''}</small></td><td>${chip(LSTAT[l.status||'verified'][1],LSTAT[l.status||'verified'][0])}<small>${_(...(SRC2[l.src2||'hosp']))}</small></td><td>${spark(h.map(x=>x.value),90,24)}</td><td><button class="btn sm ghost" data-a="labfix" data-id="${l.id}" aria-label="${_('แก้ไข','Correct')}">${icon('edit')}</button></td></tr>`};
+  return `<tr class="${off==='H'||off==='L'?'off':''}"><th scope="row">${t.name}<small>${esc(L(t.p))}</small></th><td class="num">${tg}<small>${esc(l.unit)}</small></td><td><span class="lres ${off==='H'||off==='L'?'off':''} num">${l.value}</span></td><td>${off==='H'?'<b class="up">↑</b>':off==='L'?'<b class="up">↓</b>':'<b class="okk">✓</b>'}</td><td class="num">${fmtDate(l.date,{day:'numeric',month:'short'})}<small>${l.time||''}</small></td><td>${(l.status||'verified')==='verified'&&(l.src2||'hosp')==='hosp'?`<span class="lst-ok" title="Verified · ${_(...SRC2.hosp)}">${icon('check')}</span>`:`${chip(LSTAT[l.status||'verified'][1],LSTAT[l.status||'verified'][0])}<small>${_(...(SRC2[l.src2||'hosp']))}</small>`}</td><td>${spark(h.map(x=>x.value),90,24)}</td><td><button class="btn sm ghost" data-a="labfix" data-id="${l.id}" aria-label="${_('แก้ไข','Correct')}">${icon('edit')}</button></td></tr>`};
  return `${ptPicker(pid,'lmpt',id=>labAlerts(id).length?` · <em class="dotw">${labAlerts(id).length}</em>`:'')}
  <div class="lm-act"><button class="btn primary" data-a="labpanel" data-pid="${pid}">${icon('plus')} ${_('กรอกผล Lab','Enter lab results')}</button>${drafts.length?`<button class="btn" data-a="labver" data-pid="${pid}">${icon('check')} ${_(`ยืนยันผล Draft ${drafts.length} รายการ`,`Verify ${drafts.length} drafts`)}</button>`:''}</div>
  ${al.length?`<section class="card lm-al"><div class="card-h"><h3>${icon('alert')} ${_('ผลที่เข้าเกณฑ์เฝ้าระวัง','Results meeting watch criteria')}</h3></div>${al.map(a=>`<div class="lm-al-r sev-${a.sev}">${chip(SEVL[a.sev][2],_(SEVL[a.sev][0],SEVL[a.sev][1]))}<b>${esc(a.title)}</b><span class="muted">${esc(a.sub)} · ${fmtDate(a.date,{day:'numeric',month:'short'})}</span></div>`).join('')}<p class="hint tiny">${_('ค่าผิดปกติเป็นสัญญาณให้ตรวจสอบ ไม่ใช่การวินิจฉัยภาวะแทรกซ้อน','Abnormal values are a prompt to check, not a diagnosis')}</p></section>`:''}
@@ -3875,7 +3947,7 @@ function followupPanel(pid){const p=P(pid);const ts=tasksOf(pid).sort((a,b)=>(a.
 function vFollowup(){const mine=myPatients();const pid=mine.some(p=>p.id===S.fuPid)?S.fuPid:(mine.find(p=>openTasks([p.id]).some(t=>t.due<=todayISO))||mine[0]).id;S.fuPid=pid;const p=P(pid);
  return `${ptPicker(pid,'fuopen',id=>{const n=openTasks([id]).filter(t=>t.due<=todayISO).length;return n?` · <em class="dotw">${n}</em>`:''})}
  <div class="fu-head"><h2>${esc(L(p.name))} <small>HN ${p.hn}</small></h2><button class="btn sm ghost" data-a="openpt" data-pid="${pid}">${_('เปิด Patient Profile','Open profile')} ${icon('chev')}</button></div>
- ${profileCards(p).replace('<div class="prof-grid">','<div class="prof-grid fu-prof">')}${followupPanel(pid)}`}
+ ${followupPanel(pid)}${fold('fuprof-'+pid,`<h3>${icon('users')} ${_('ข้อมูลผู้ป่วยโดยย่อ','Patient summary')}</h3>`,profileCards(p).replace('<div class="prof-grid">','<div class="prof-grid fu-prof">'),false)}`}
 /* ---- alerts ---- */
 function vAlerts(){const ids=myPatients().map(p=>p.id);const f=S.alf||'all';const showC=!!S.alc;const all=allAlerts(ids);const open=all.filter(a=>!a.st.closed);
  const list=all.filter(a=>(showC||!a.st.closed)&&(f==='all'||a.type===f));const noOwner=open.filter(a=>!a.st.owner).length;
@@ -4089,7 +4161,7 @@ function render(){
  if(!allowed(S.view))S.view=homeView();
  let body;try{body=VIEWS[S.view]()}catch(err){console.error(err);body=`<div class="card"><p>${esc(err.message)}</p></div>`}
  const vh=(S.view==='home'||S.view==='log')&&S.user.role!=='staff';const entered=S._lastView!==S.view;S._lastView=S.view;
- app.innerHTML=`<div class="shell">${sidebar()}<div class="main">${topbar()}<main class="content ${vh?(S.view==='home'?'v-home':'v-log'):''} ${entered?'enter':''}" id="main">${vh?'':demoStrip()}${body}</main></div>${tabbar()}</div>${moreSheet()}${modalHTML()}`;
+ app.innerHTML=`<div class="shell ${S.user.role==='staff'?'staff-ui':''}">${sidebar()}<div class="main">${topbar()}<main class="content ${vh?(S.view==='home'?'v-home':'v-log'):''} ${entered?'enter':''}" id="main">${vh||S.user.role==='staff'?'':demoStrip()}${body}</main></div>${tabbar()}</div>${moreSheet()}${modalHTML()}`;
  popModal(app);carInit();document.title=S.modal?.kind==='remind'?'⏰ '+_('ถึงเวลารับประทานยา','Medicine time')+' '+S.modal.time:BASE_TITLE;
  const fm=app.querySelector('.modal input,.modal textarea,.modal select');if(S.modal&&fm&&S.modal.kind!=='symres')fm.focus();
  const vp=document.getElementById('vplayer');
@@ -4407,7 +4479,7 @@ function seedHealth(){const seen={};const sl=[7,6.5,6,7.5,7,6,6.5],am=[10,10,15,
 /* ================= v28 · Pharmacist portal (Pharmacy Care Center) ================= */
 Object.assign(ICON,{swap:'M7 4L3 8l4 4M3 8h13M17 12l4 4-4 4M21 16H8',chat:'M4 5h16v11H10l-6 4z'});
 const isPh=()=>!!S.user&&ST(S.user.id)?.prof==='pharm';
-Object.assign(TITLES,{pharm:['หน้าหลัก','Home'],pmr:['ตรวจสอบรายการยา','Medication Review'],pmon:['ติดตามระดับยา','Drug Monitoring'],pddi:['ปฏิกิริยาระหว่างยา','Drug Interaction'],pren:['ปรับยาตามไตและตับ','Renal & Hepatic Dosing'],padr:['อาการไม่พึงประสงค์จากยา','ADR Monitoring'],pcouns:['ให้คำปรึกษาเรื่องยา','Medication Counseling'],preports:['รายงานเภสัชกรรม','Pharmacy Reports']});
+Object.assign(TITLES,{pharm:['หน้าหลัก','Home'],pmr:['ตรวจสอบรายการยา','Medication Review'],pmon:['ติดตามระดับยา','Drug Monitoring'],pddi:['ปฏิกิริยาระหว่างยา','Drug Interaction'],pren:['ปรับยาตามไตและตับ','Renal & Hepatic Dosing'],padr:['อาการไม่พึงประสงค์','ADR Monitoring'],pcouns:['ให้คำปรึกษาเรื่องยา','Medication Counseling'],preports:['รายงานเภสัชกรรม','Pharmacy Reports']});
 {const _nf=navFor;navFor=function(r){if(r==='staff'&&isPh())return[['pharm','home'],['patients','users'],['pmr','pill'],['pmon','pulse'],['pddi','swap'],['pren','flask'],['padr','shield'],['pcouns','chat'],['preports','chart'],['learn','book'],['audit','list']];return _nf(r)}}
 {const _rc=reviewCount;reviewCount=function(){return isPh()?0:_rc()}}
 {const _bc=bellCount;bellCount=function(){return isPh()?phWork(myPatients().map(p=>p.id)).filter(w=>w.pri==='high').length:_bc()}}
@@ -4798,6 +4870,64 @@ CHG.avatar=async el=>{const f=el.files&&el.files[0];el.value='';if(!f)return;con
  try{p.photo=await shrinkImage(f);try{localStorage.setItem(PHOTO_KEY(p.id),p.photo)}catch(e){}audit('เปลี่ยนรูปโปรไฟล์','Changed profile photo',p.id);render();toast(_('อัปเดตรูปโปรไฟล์แล้ว','Profile photo updated'))}
  catch(e){toast(_('เปิดรูปนี้ไม่ได้ ลองเลือกรูปอื่น (JPG หรือ PNG)','Couldn’t open that photo — try a JPG or PNG'))}};
 ACT.avrm=()=>{const p=P(S.user.id);if(!p)return;delete p.photo;try{localStorage.removeItem(PHOTO_KEY(p.id))}catch(e){}audit('ลบรูปโปรไฟล์','Removed profile photo',p.id);render();toast(_('ลบรูปโปรไฟล์แล้ว','Photo removed'))};
+
+/* ================= v30 · clean staff UI ================= */
+const staffFirst=x=>L(x.name).replace(/^(นพ\.|พญ\.|ภก\.|ภญ\.)/,"").split(" ")[0];
+Object.assign(TABL,{coord:['หน้าหลัก','Home'],patients:['ผู้ป่วย','Patients'],followup:['ติดตาม','Follow-up'],alerts:['แจ้งเตือน','Alerts'],pharm:['หน้าหลัก','Home'],pmr:['ตรวจยา','Review'],pmon:['ระดับยา','Levels'],pddi:['ปฏิกิริยายา','Interactions']});
+const NAVG={nurse:[['',['coord','alerts','followup']],['ผู้ป่วย|Patients',['patients','labmgmt','medrev','review']],['อื่น ๆ|More',['reports','criteria','learn','audit']]],
+ pharm:[['',['pharm']],['งานเภสัชกรรม|Pharmacy work',['pmr','pmon','pddi','pren','padr','pcouns']],['อื่น ๆ|More',['patients','preports','learn','audit']]]};
+const navGroups=()=>NAVG[isPh()?'pharm':'nurse'];
+{const _nf2=navFor;navFor=function(r){const l=_nf2(r);if(r!=='staff')return l;const ord=navGroups().flatMap(g=>g[1]);return ord.map(k=>l.find(x=>x[0]===k)).filter(Boolean).concat(l.filter(x=>!ord.includes(x[0])))}}
+const demoNote=()=>`<p class="side-note">${icon('info')}<span>${_('ต้นแบบสำหรับทดลอง · ข้อมูลสมมติ รีเฟรชแล้วกลับค่าเริ่มต้น','Prototype · fictional data, resets on reload')}</span></p>`;
+{const _sb=sidebar;sidebar=function(){if(S.user.role!=='staff')return _sb();const l=navFor('staff');
+ return `<aside class="sidebar"><div class="brand">${logo()}</div><nav class="nav" aria-label="${_('เมนูหลัก','Main menu')}">${navGroups().map(([h,ks])=>{const items=ks.map(k=>l.find(x=>x[0]===k)).filter(Boolean);if(!items.length)return'';const [th,en]=h.split('|');return `${h?`<p class="nav-g">${_(th,en)}</p>`:''}${items.map(i=>navBtn(i)).join('')}`}).join('')}</nav><div class="side-foot">${userCard()}${demoNote()}</div></aside>`}}
+{const _ms=moreSheet;moreSheet=function(){const h=_ms();return S.user.role==='staff'&&h?h.replace('<button class="btn block" data-a="logout">',demoNote()+'<button class="btn block" data-a="logout">'):h}}
+/* shared home pieces */
+const shHead=(hello,sub)=>`<header class="sh-head"><h2>${hello}</h2><p>${sub}</p></header>`;
+const shStat=(v,lab,go,tone)=>`<button class="sh-stat ${v?tone:''}" data-a="go" data-v="${go}"><b class="num">${v}</b><span>${lab}</span></button>`;
+const dueShort=d=>{const n=daysBetween(todayISO,d);return n<0?`<em class="due over">${_(`เลย ${-n} วัน`,`${-n}d late`)}</em>`:n===0?`<em class="due today">${_('วันนี้','Today')}</em>`:n===1?`<em class="due">${_('พรุ่งนี้','Tomorrow')}</em>`:`<em class="due">${fmtDate(d,{day:'numeric',month:'short'})}</em>`};
+const shRow=(tone,act,title,who,right)=>`<li><button class="sq-row" ${act}><i class="sq-dot ${tone}"></i><span class="sq-t"><b>${title}</b><small>${who}</small></span><span class="sq-m">${right}</span></button></li>`;
+const shSeg=(items,cur,a)=>`<div class="sh-seg" role="tablist">${items.map(([k,lab,n])=>`<button role="tab" aria-selected="${cur===k}" class="${cur===k?'on':''}" data-a="${a}" data-f="${k}">${lab}${n!=null?` <b class="num">${n}</b>`:''}</button>`).join('')}</div>`;
+const LIM=6;
+VIEWS.coord=function(){const me=person(S.user.id);const mine=myPatients(),ids=mine.map(p=>p.id);const al=openAlerts(ids);
+ const pre=mine.filter(p=>!isPost(p)).length,post=mine.length-pre;
+ const labPts=new Set(al.filter(a=>a.type==='lab').map(a=>a.pid)),medPts=new Set(al.filter(a=>a.type==='med').map(a=>a.pid));
+ const ot=openTasks(ids);const today=ot.filter(t=>t.due<=todayISO);const appToday=D.appts.filter(a=>ids.includes(a.patientId)&&a.date===todayISO).length;
+ const urgentPts=new Set([...al.filter(a=>a.sev==='high').map(a=>a.pid),...ot.filter(t=>t.status==='urgent').map(t=>t.pid)]);
+ const noOwner=al.filter(a=>!a.st.owner).length;
+ const flt=S.qf||'all';const q=D.tasks.filter(t=>ids.includes(t.pid)).filter(t=>flt==='all'?t.status!=='done':tgrp(t.status)===flt).sort((a,b)=>TST[a.status][3]-TST[b.status][3]||a.due.localeCompare(b.due));
+ const cnt=g=>D.tasks.filter(t=>ids.includes(t.pid)&&tgrp(t.status)===g).length;const show=S.qAll?q:q.slice(0,LIM);
+ const tone={urgent:'danger',todo:'warn',wait:'info',done:'ok'};
+ return `<div class="sh">${shHead(`${_('สวัสดีค่ะ','Hello,')} ${esc(staffFirst(me))}`,`${fmtDate(todayISO,{weekday:'long',day:'numeric',month:'long'})} · ${_(`ผู้ป่วยในความดูแล ${mine.length} ราย (ก่อนปลูกถ่าย ${pre} · หลังปลูกถ่าย ${post})`,`${mine.length} patients (${pre} pre · ${post} post-transplant)`)}`)}
+ <div class="sh-stats">${shStat(urgentPts.size,_('ต้องติดตามเร่งด่วน','Urgent'),'alerts','danger')}${shStat(labPts.size,_('รอตรวจ Lab','Labs to check'),'labmgmt','warn')}${shStat(medPts.size,_('รอตรวจทานยา','Medicines to review'),'medrev','warn')}${shStat(today.length+appToday,_('นัด / ติดตามวันนี้','Follow-ups today'),'followup','info')}</div>
+ ${noOwner?`<button class="sh-note" data-a="go" data-v="alerts">${icon('bell')}<span>${_(`แจ้งเตือน ${noOwner} รายการ ยังไม่มีผู้รับผิดชอบ`,`${noOwner} alerts have no owner yet`)}</span>${icon('chev')}</button>`:''}
+ <section class="card sh-list"><div class="sh-lh"><h3>${_('คิวติดตามผู้ป่วย','Follow-up queue')}</h3>${shSeg([['all',_('ทั้งหมด','All'),null],...TGRP.map(([k,th,en])=>[k,_(th,en),cnt(k)])],flt,'qf')}</div>
+ <ul class="sq">${show.map(t=>shRow(tone[tgrp(t.status)],`data-a="fuopen" data-pid="${t.pid}"`,esc(L(t.title)),`${esc(pName(t.pid))} · HN ${P(t.pid).hn}`,`${dueShort(t.due)}<small>${_(TST[t.status][0],TST[t.status][1])}</small>`)).join('')||`<li class="sq-empty">${_('ไม่มีรายการ','Nothing here')}</li>`}</ul>
+ ${q.length>LIM?`<button class="sh-more" data-a="qall">${S.qAll?_('แสดงน้อยลง','Show less'):_(`ดูทั้งหมด ${q.length} รายการ`,`Show all ${q.length}`)}</button>`:''}</section></div>`};
+VIEWS.pharm=function(){const me=ST(S.user.id);const mine=myPatients(),ids=mine.map(p=>p.id);const W=phWork(ids);const k=phKpi(ids);
+ const f=S.pwf||'all';const list=W.filter(w=>f==='all'||w.pri===f);const show=S.pwAll?list:list.slice(0,LIM);
+ const tone={high:'danger',med:'warn',low:'info'};
+ const tacs=ids.flatMap(id=>{const l=labsOf(id,'TAC').filter(x=>x.status!=='draft').slice(-1)[0];const t=l?tdmOf(l):{};return l&&l.date>=dOff(-14)&&twfStep(l)<6&&!(t.assess&&!t.rec)?[[id,l]]:[]});
+ return `<div class="sh">${shHead(`${_('สวัสดีครับ','Hello,')} ${esc(staffFirst(me))}`,`${fmtDate(todayISO,{weekday:'long',day:'numeric',month:'long'})} · ${_(`ผู้ป่วยในความดูแล ${k.all} ราย · ปัญหาด้านยาค้าง ${k.drp} ราย`,`${k.all} patients · ${k.drp} with open medication problems`)}`)}
+ <div class="sh-stats">${shStat(k.rev,_('รอตรวจสอบรายการยา','Medication review'),'pmr','warn')}${shStat(k.ddi,_('รอตรวจ Interaction','Interactions'),'pddi','warn')}${shStat(k.tac,_('รอติดตามระดับ Tac','Tac levels'),'pmon','warn')}${shStat(k.cou,_('รอให้คำปรึกษา','Counseling due'),'pcouns','info')}</div>
+ <section class="card sh-list"><div class="sh-lh"><h3>${_('งานวันนี้','Worklist')}</h3>${shSeg([['all',_('ทั้งหมด','All'),W.length],...Object.entries(PRI).map(([k2,v])=>[k2,_(v[0],v[1]),W.filter(w=>w.pri===k2).length])],f,'pwf')}</div>
+ <ul class="sq">${show.map(w=>shRow(tone[w.pri],`data-a="phgo" data-v="${w.go}" data-pid="${w.pid}"`,esc(w.title),`${esc(pName(w.pid))}${w.sub?' · '+esc(w.sub):''}`,`${dueShort(w.due)}${w.owner?`<small>${esc(nameOf(w.owner).split(' ')[0])}</small>`:''}`)).join('')||`<li class="sq-empty">${_('ไม่มีงานค้าง','Nothing pending')}</li>`}</ul>
+ ${list.length>LIM?`<button class="sh-more" data-a="pwall">${S.pwAll?_('แสดงน้อยลง','Show less'):_(`ดูทั้งหมด ${list.length} รายการ`,`Show all ${list.length}`)}</button>`:''}</section>
+ ${tacs.length?`<section class="card sh-list"><div class="sh-lh"><h3>${_('ระดับยา Tacrolimus ที่กำลังดำเนินการ','Tacrolimus levels in progress')}</h3><span class="muted tiny">${_('พยาบาล → เภสัชกร → แพทย์ → พยาบาล','Nurse → pharmacist → doctor → nurse')}</span></div><ul class="sq">${tacs.map(([id,l])=>{const st=twfStep(l);return shRow(st<=2?'warn':'info',`data-a="phgo" data-v="pmon" data-pid="${id}"`,`Tac ${l.value} ng/mL · ${_(...TACST[tacState(id,l)].slice(0,2))}`,esc(pName(id))+' · '+d2(l.date),`<span class="sq-step"><i style="--p:${st/6*100}%"></i></span><small>${_('ขั้นต่อไป','Next')}: ${_(...TWF[st])}</small>`)}).join('')}</ul></section>`:''}</div>`};
+Object.assign(ACT,{qall:()=>{S.qAll=!S.qAll;render()},pwall:()=>{S.pwAll=!S.pwAll;render()}});
+
+/* v30 · compact alert list */
+vAlerts=function(){const ids=myPatients().map(p=>p.id);const f=S.alf||'all';const showC=!!S.alc;const all=allAlerts(ids);const open=all.filter(a=>!a.st.closed);
+ const list=all.filter(a=>(showC||!a.st.closed)&&(f==='all'||a.type===f));const noOwner=open.filter(a=>!a.st.owner).length;
+ const tone={high:'danger',med:'warn',low:'info'};const STEPL=[['พบปัญหา','Found'],['มีผู้รับผิดชอบ','Owned'],['แจ้งแพทย์แล้ว','Doctor told'],['แพทย์รับทราบ','Acknowledged'],['ได้รับคำสั่ง','Orders in'],['ปิดเคส','Closed']];
+ const row=a=>{const sel=S.alSel===a.key;const st=a.st;const step=escStep(st);const t=ATYPE[a.type];
+  const right=`<em class="due">${fmtDate(a.date,{day:'numeric',month:'short'})}</em><small class="${!st.owner&&!st.closed?'al-no':''}">${st.closed?_('ปิดแล้ว','Closed'):!st.owner?_('ยังไม่มีผู้รับ','No owner'):_(...STEPL[Math.min(step,6)-1])}</small>`;
+  return `<li class="${sel?'sel':''}"><button class="sq-row" data-a="alsel" data-k="${esc(a.key)}" aria-expanded="${sel}"><i class="sq-dot ${st.closed?'ok':tone[a.sev]}"></i><span class="sq-t"><b>${esc(a.title)}</b><small>${t[1]} · ${esc(pName(a.pid))}${a.sub?' · '+esc(a.sub):''}</small></span><span class="sq-m">${right}</span></button>${sel?`<div class="al-x">${alertCard(a,true)}</div>`:''}</li>`};
+ return `<div class="sh">${noOwner?`<p class="sh-tip">${icon('alert')}<span>${_(`${noOwner} รายการยังไม่มีผู้รับผิดชอบ · กรณีเร่งด่วนให้โทรตามแพทย์เวรตามระบบของโรงพยาบาล อย่าพึ่งแอปช่องทางเดียว`,`${noOwner} alerts have no owner · for urgent cases call the on-call doctor, don’t rely on the app alone`)}</span></p>`:''}
+ <section class="card sh-list"><div class="sh-lh">${shSeg([['all',_('ทั้งหมด','All'),open.length],...Object.entries(ATYPE).map(([k,v])=>[k,v[1],open.filter(a=>a.type===k).length])],f,'alf')}<label class="chk tiny"><input type="checkbox" data-c="alc" ${showC?'checked':''}> ${_('แสดงเคสที่ปิดแล้ว','Show closed')}</label></div>
+ <ul class="sq">${list.map(row).join('')||`<li class="sq-empty">${_('ไม่มีการแจ้งเตือน','No alerts')}</li>`}</ul></section>
+ <p class="hint tiny">${_('แตะรายการเพื่อรับเรื่อง แจ้งแพทย์ บันทึกคำสั่ง และปิดเคส','Tap an alert to take it, notify a doctor, log orders and close it')}</p></div>`};
+ACT.alsel=d=>{S.alSel=S.alSel===d.k?null:d.k;render()};VIEWS.alerts=vAlerts;
 
 seed();seedHealth();seedPharm();loadPhotos();render();
 </script>
