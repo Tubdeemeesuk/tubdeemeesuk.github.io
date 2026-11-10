@@ -2389,6 +2389,12 @@ div.rbar{cursor:default}
 .howto-link{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 12px;padding:8px 12px 8px 8px;border:1px solid var(--line);border-radius:16px;background:var(--surface);font:inherit;color:var(--ink);text-align:left;cursor:pointer}
 .howto-link img{width:44px;height:58px;object-fit:cover;border-radius:10px;flex:0 0 44px}.howto-link span{flex:1;display:flex;flex-direction:column}.howto-link small{color:var(--ink-2);font-size:.82rem}
 .howto-link:hover{border-color:var(--brand)}
+.rxp-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1.5px dashed color-mix(in srgb,var(--brand) 45%,transparent)}.rxp-cta p{margin:2px 0 0}
+.rxp-wait{border-left:4px solid var(--warn)}.rxp-rej{border-left:4px solid var(--danger)}
+.rxd{list-style:none;margin:6px 0;padding:0;display:grid;gap:4px}.rxd li{padding:6px 10px;border-radius:10px;background:var(--bg);font-size:.9rem}
+.rxd-add b{color:var(--brand)}.rxd-chg b{color:#b26b00}.rxd-del b{color:var(--danger)}
+.rxp-head{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:4px 0 8px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--warn) 12%,transparent);font-size:.9rem}
+.rxp-diff{margin:0 0 8px}.pt-tips{margin:8px 0 0;padding-left:20px;color:var(--ink-2);font-size:.9rem}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3372,7 +3378,7 @@ function medsToday(pid,{button=true}={}){const slots=slotsOn(pid,todayISO);const
  return `<section class="card"><div class="card-h"><h3>${icon('pill')} ${_('ยาวันนี้','Today’s medicines')}</h3><span class="muted num">${_(`รับประทานแล้ว ${done}/${slots.length}`,`${done} of ${slots.length} taken`)}</span></div>
  ${S.user.role!=='staff'&&slots.length?`<button class="link-btn" style="align-self:flex-start;margin-top:-8px" data-a="go" data-v="meds" data-anchor="remcard">${icon('bell')} ${REM.on?_('แจ้งเตือนยาเปิดอยู่','Reminders on'):_('แจ้งเตือนยาปิดอยู่','Reminders off')}${REM.on&&REM.sound?' · '+_('มีเสียง','sound'):''}${REM.on&&REM.vib&&canVibrate()?' · '+_('สั่น','vibrate'):''}</button>`:''}
  <div class="progress" role="img" aria-label="${done}/${slots.length}"><i style="width:${slots.length?done/slots.length*100:0}%"></i></div>
- ${!slots.length?`<p class="muted">${_('ยังไม่มีตารางยาที่ใช้งาน','No current medicine schedule')}</p>`:next?`<div class="next-dose"><span class="time">${next.time}</span><div><b>${esc(next.item.name)}</b><br><span class="muted">${esc(L(next.item.dose))} · ${esc(L(next.item.form))}</span></div></div>`:`<p class="row" style="color:var(--ok)">${icon('check')} ${_('บันทึกครบทุกมื้อของวันนี้แล้ว','All of today’s doses are recorded')}</p>`}
+ ${!slots.length?`<p class="muted">${_('ยังไม่มีตารางยาที่ใช้งาน','No current medicine schedule')}</p>`:next?`<div class="next-dose"><span class="time">${next.time}</span><div><b>${esc(next.item.name)}</b><br><span class="muted">${esc(L(next.item.dose))}${formTail(next.item)}</span></div></div>`:`<p class="row" style="color:var(--ok)">${icon('check')} ${_('บันทึกครบทุกมื้อของวันนี้แล้ว','All of today’s doses are recorded')}</p>`}
  ${button?`<button class="btn primary" data-a="go" data-v="meds">${_('ดูและบันทึกการรับประทานยา','Open medicines')}</button>`:''}</section>`}
 function apptCardSmall(pid){const a=nextAppt(pid);return `<section class="card"><div class="card-h"><h3>${icon('calendar')} ${_('นัดหมายครั้งถัดไป','Next appointment')}</h3>${a?chip('brand',countdown(a.date)):''}</div>
  ${a?`<div><b>${esc(L(a.type))}</b><p class="muted">${fmtLong(a.date)} · ${a.time}</p><p class="muted">${icon('pin')} ${esc(L(a.loc))}</p></div>`:`<p class="muted">${_('ไม่มีนัดหมายที่กำลังจะมาถึง','No upcoming appointments')}</p>`}
@@ -3596,7 +3602,7 @@ function doseRow(pid,s,rec){
  let act;
  if(st&&!editing)act=`${doseChip(st)}${roleOf(s.log.by)!=='patient'?byChip(s.log.by):''}${rec?`<button class="btn sm ghost" data-a="doseedit" data-k="${key}">${_('เปลี่ยน','Change')}</button>`:''}`;
  else act=rec?btns:(due?chip('warn',_('เลยเวลา ยังไม่บันทึก','Overdue, not recorded')):chip('',_('ยังไม่บันทึก','Not recorded')));
- return `<li class="dose"><span class="time">${s.time}</span><div class="dose-info"><b>${esc(s.item.name)}</b><span>${esc(L(s.item.dose))}${s.item.form?' · '+esc(L(s.item.form)):''}</span>${s.item.note?`<small>${esc(L(s.item.note))}</small>`:''}${due&&rec?`<small style="color:var(--warn);font-weight:600">${_('เลยเวลาแล้ว','Past due')}</small>`:''}</div><div class="dose-act">${act}</div></li>`;
+ return `<li class="dose"><span class="time">${s.time}</span><div class="dose-info"><b>${esc(s.item.name)}</b><span>${esc(L(s.item.dose))}${formTail(s.item)}</span>${s.item.note?`<small>${esc(L(s.item.note))}</small>`:''}${due&&rec?`<small style="color:var(--warn);font-weight:600">${_('เลยเวลาแล้ว','Past due')}</small>`:''}</div><div class="dose-act">${act}</div></li>`;
 }
 function weekStrip(pid){return `<div class="week">${[6,5,4,3,2,1,0].map(k=>{const d=dOff(-k),st=dayStatus(pid,d);const inner=st==='full'?icon('check'):st==='partial'?'!':st==='today'?'·':st==='empty'?'?':'–';return `<div class="wd ${st}" title="${fmtDate(d)}"><i>${inner}</i><span>${parseISO(d).toLocaleDateString(loc(),{weekday:'short'})}</span></div>`}).join('')}</div>
  <p class="hint">${_('✓ ครบทุกมื้อ · ! มีมื้อที่ลืมหรือรับประทานไม่ได้ · ? ยังไม่บันทึก · – ไม่มีตารางยา','✓ all doses · ! a dose missed or not taken · ? not recorded · – no schedule')}</p>`}
@@ -4317,7 +4323,7 @@ function modalHTML(){
  if(m.kind==='remind'){const pid=m.pid,rec=canRecord(pid)&&!m.test;const items=m.keys.map(([iid,rid])=>D.prescriptions.find(r=>r.id===rid)?.items.find(i=>i.id===iid)).filter(Boolean);
   const who=S.user.role==='caregiver'?_(` ของคุณ${esc(firstName(P(pid)))}`,` for ${esc(firstName(P(pid)))}`):'';
   return shell(_('ถึงเวลารับประทานยา','Time for your medicines')+who,`<div class="remind"><span class="ring">${icon('bell')}</span><b class="num">${m.time}</b><span class="muted">${m.test?_('ทดลองแจ้งเตือน','Test reminder'):_(`${items.length} รายการ`,`${items.length} item${items.length>1?'s':''}`)}</span></div>
-  <ul class="rem-list">${items.map(it=>`<li><span class="bub c-green">${icon('pill')}</span><div><b>${esc(it.name)}</b><span>${esc(L(it.dose))} · ${esc(L(it.form))}${L(it.note)?' · '+esc(L(it.note)):''}</span></div></li>`).join('')}</ul>
+  <ul class="rem-list">${items.map(it=>`<li><span class="bub c-green">${icon('pill')}</span><div><b>${esc(it.name)}</b><span>${esc(L(it.dose))}${formTail(it)}${L(it.note)?' · '+esc(L(it.note)):''}</span></div></li>`).join('')}</ul>
   <div class="stack">${rec?`<button class="btn primary block" data-a="remtaken">${icon('check')} ${_('รับประทานแล้ว','I’ve taken them')}</button>`:''}${m.test?`<button class="btn primary block" data-a="close">${_('ปิดการทดลอง','Close test')}</button>`:`<button class="btn block" data-a="remsnooze">${icon('clock')} ${_('เตือนอีกครั้งใน 10 นาที','Remind me in 10 min')}</button>`}</div>
   <p class="hint">${_('อย่าเพิ่มหรือลดขนาดยาเอง ถ้าลืมรับประทานยากดภูมิคุ้มกัน ให้ติดต่อทีมรักษา','Don’t change doses yourself. If you miss an anti-rejection dose, contact your care team.')}</p>`,_('แจ้งเตือนยา','Medicine reminder'),'remind-m')}
  if(m.kind==='quick'){const pid=currentPid();const it=(ic,cl,act,h,d)=>`<button ${Object.entries(act).map(([k,v])=>`data-${k}="${v}"`).join(' ')}><span class="bub ${cl}">${icon(ic)}</span><div><b>${h}</b><span>${d}</span></div>${icon('chev','chev')}</button>`;
@@ -5717,8 +5723,8 @@ const APIMODE=LIVE&&!!API.url;
 if(APIMODE){_n=1e12+Math.floor(Math.random()*8e12)}
 const MAPC=['esc','pmr','ddiRev','tdm','renalAs','pw','medEdu'];
 const ARRC=['staff','patients','caregivers','consents','prescriptions','medLogs','vitals','symptoms','labs','appts','notifs','audit','tasks','contacts','omeds','drp','adr','adhAs','couns','moments','education','criteria'];
-const PT_W=['patients','caregivers','consents','medLogs','vitals','symptoms','appts','notifs','moments','audit','omeds','contacts'];
-const CG_W={vitals:'record',symptoms:'record',medLogs:'record',notifs:'',audit:'',contacts:''};
+const PT_W=['patients','caregivers','consents','prescriptions','medLogs','vitals','symptoms','appts','notifs','moments','audit','omeds','contacts'];
+const CG_W={vitals:'record',symptoms:'record',medLogs:'record',prescriptions:'record',notifs:'',audit:'',contacts:''};
 function apiEmpty(){ARRC.forEach(c=>{D[c]=[]});MAPC.forEach(c=>{D[c]={}});MEDEDU.forEach(e=>D.medEdu[e.k]={pub:true});D.criteria=SYMPTOMS.map(([id,level,th,en])=>({id,level,name:{th,en}}));D.settings={teamPhone:'',teamHours:'',criteriaConfirmed:false,doctors:[]};syncDocs();API.since={};API.base={}}
 async function api(action,p={}){const ac=new AbortController();const t=setTimeout(()=>ac.abort(),45000);
  try{const r=await fetch(API.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,token:API.tok,...p}),redirect:'follow',signal:ac.signal});const j=await r.json();
@@ -5968,6 +5974,73 @@ const howLink=()=>`<button type="button" class="howto-link" data-a="howto"><img 
 {const _pa=ptAuthModal;ptAuthModal=function(){return _pa().replace('<form class="form pa-form"',howLink()+'<form class="form pa-form"')}}
 {const _ca=cgAuthModal;cgAuthModal=function(){return _ca().replace('<form class="form pa-form"',howLink()+'<form class="form pa-form"')}}
 {const _mh7=modalHTML;modalHTML=function(){if(S.modal?.kind==='howto')return howtoModal();return _mh7()}}
+
+function formTail(it){const f=L(it?.form||''),d=L(it?.dose||'');return f&&!d.includes(f)?' · '+esc(f):''}
+/* ================= v43 · patients propose their medicine list; a nurse confirms ================= */
+const rxToDraft=rx=>(rx?.items||[]).map(it=>({name:it.name,form:L(it.form),dose:L(it.dose),times:(it.times||[]).join(', '),start:it.start||todayISO,end:it.end||'',note:L(it.note),qty:it.qty||'',strength:it.strength||'',meal:it.meal||''}));
+const ptProposal=pid=>D.prescriptions.filter(r=>r.patientId===pid&&r.source==='patient'&&r.status==='pending').sort((a,b)=>b.enteredAt.localeCompare(a.enteredAt))[0];
+const lastRejected=pid=>D.prescriptions.filter(r=>r.patientId===pid&&r.source==='patient'&&r.status==='rejected'&&!r.seenReject&&r.rejectedAt>=dOff(-14)).sort((a,b)=>b.rejectedAt.localeCompare(a.rejectedAt))[0];
+function rxDiff(pid,rx){const cur=activeRx(pid);const key=i=>String(i.name||'').trim().toLowerCase();const old=new Map((cur?.items||[]).map(i=>[key(i),i]));const nw=new Map(rx.items.map(i=>[key(i),i]));const out=[];
+ nw.forEach((i,k)=>{const o=old.get(k);if(!o)out.push(['add',i.name,`${L(i.dose)} · ${i.times.join(', ')}`]);else if(L(o.dose)!==L(i.dose)||o.times.join()!==i.times.join()||L(o.note)!==L(i.note))out.push(['chg',i.name,`${L(o.dose)} · ${o.times.join(', ')} → ${L(i.dose)} · ${i.times.join(', ')}`])});
+ old.forEach((i,k)=>{if(!nw.has(k))out.push(['del',i.name,_('ไม่ได้ใช้แล้ว','no longer taking')])});return out}
+const diffHTML=d=>d.length?`<ul class="rxd">${d.map(([t,n,x])=>`<li class="rxd-${t}"><b>${{add:_('เพิ่ม','Added'),chg:_('เปลี่ยน','Changed'),del:_('หยุด','Stopped')}[t]}</b> ${esc(n)} <span class="muted">${esc(x)}</span></li>`).join('')}</ul>`:`<p class="muted">${_('ไม่มีการเปลี่ยนแปลงจากตารางยาเดิม','No change from the current schedule')}</p>`;
+/* patient-facing form (reuses the medicine rows the nurse uses) */
+function vRxPt(){const pid=S.pid;const p=P(pid);if(!p||S.user?.role==='staff'||!canRecord(pid)){S.rxptOn=false;return VIEWS.meds()}
+ if(!S.rxDraft){const pr=ptProposal(pid);S.rxDraft={doctor:L(pr?.doctor||activeRx(pid)?.doctor||''),date:todayISO,verify:true,items:pr?rxToDraft(pr):(activeRx(pid)?rxToDraft(activeRx(pid)):[blankItem()])};if(!S.rxDraft.items.length)S.rxDraft.items=[blankItem()]}
+ const dr=S.rxDraft;
+ return `<button class="btn sm ghost back" data-a="rxptback">${icon('back')} ${_('ยาของฉัน','My medicines')}</button>
+ <section class="card"><p class="eyebrow">${_('แจ้งรายการยาที่ใช้จริง','Tell the team what you take')}</p><h2>${_('เพิ่มหรือแก้ไขรายการยาของฉัน','Add or edit my medicines')}</h2>
+ <div class="lockline">${icon('lock')}<span>${_('รายการที่ส่งจะยังไม่ใช้เป็นตารางยา จนกว่าพยาบาลตรวจสอบและยืนยัน · ห้ามเพิ่มหรือลดขนาดยากดภูมิคุ้มกันเอง ถ้าแพทย์ปรับยาให้แจ้งที่นี่','Nothing changes in your schedule until a nurse checks and confirms it · never change your anti-rejection medicine yourself; if the doctor changed it, tell us here')}</span></div>
+ <ul class="pt-tips"><li>${_('เพิ่มยาที่ทานอยู่แต่ยังไม่มีในแอป เช่น ยาจากคลินิกอื่น วิตามิน สมุนไพร','Add medicines you take that aren’t listed, e.g. from another clinic, vitamins, herbs')}</li><li>${_('แก้จำนวนเม็ดหรือเวลา ถ้าแพทย์เพิ่งเปลี่ยน','Change tablets or times if the doctor just changed them')}</li><li>${_('กด “นำออก” ถ้าแพทย์ให้หยุดยานั้นแล้ว','Tap “Remove” if the doctor stopped it')}</li></ul></section>
+ <form class="form" data-form="rx" novalidate>
+ <section class="card"><div class="fgrid"><label class="field">${_('แพทย์ผู้สั่ง / แหล่งที่ได้ยา (ถ้าทราบ)','Prescriber or where you got it (if known)')}<input name="doctor" id="rx-doctor" value="${esc(dr.doctor||'')}" placeholder="${_('เช่น นพ.… / คลินิกใกล้บ้าน / ซื้อเอง','e.g. Dr … / local clinic / bought myself')}"></label>
+ <label class="field">${_('บอกพยาบาลว่าเปลี่ยนอะไร','What changed?')}<input name="pnote" value="${esc(dr.pnote||'')}" placeholder="${_('เช่น หมอนัดวันที่ 5 ลด Tacrolimus เหลือ 1 เม็ด','e.g. doctor reduced Tacrolimus to 1 tablet on the 5th')}"></label></div></section>
+ ${dr.items.map((it,i)=>rxRow(it,i,dr.items.length)).join('')}
+ <div class="row"><button type="button" class="btn" data-a="rxadd">${icon('plus')} ${_('เพิ่มยาอีกรายการ','Add another medicine')}</button></div>
+ <p class="ferr" role="alert"></p><div class="row"><button class="btn primary" type="submit">${icon('check')} ${_('ส่งให้พยาบาลตรวจสอบ','Send to the nurse to check')}</button><button type="button" class="btn ghost" data-a="rxptback">${_('ยกเลิก','Cancel')}</button></div></form>`}
+{const _vm=VIEWS.meds;VIEWS.meds=()=>S.rxptOn&&S.user?.role!=='staff'?vRxPt():_vm()}
+{const _ag=ACT.go;ACT.go=d=>{S.rxptOn=false;_ag(d)}}
+ACT.rxpt=()=>{S.rxDraft=null;S.rxptOn=true;go('meds')};
+ACT.rxptback=()=>{S.rxDraft=null;S.rxptOn=false;go('meds')};
+{const _rxf=FORMS.rx;FORMS.rx=(o,fd,f)=>{
+ if(S.user?.role==='staff'){const from=S.rxFromPt;const n0=D.prescriptions.length;_rxf(o,fd,f);if(from&&D.prescriptions.length>n0){const pr=D.prescriptions.find(r=>r.id===from);if(pr&&pr.status==='pending'){pr.status='merged';pr.reviewedBy=S.user.id;pr.reviewedAt=nowStamp();pr.mergedInto=D.prescriptions[D.prescriptions.length-1].id;notify(pr.patientId,'พยาบาลตรวจสอบรายการยาที่คุณแจ้งแล้ว และปรับตารางยาให้','A nurse checked the medicines you sent and updated your schedule.')}S.rxFromPt=null}return}
+ const pid=S.pid;if(!canRecord(pid))return;const dr=collectRx();dr.pnote=o.pnote||'';S.rxDraft=dr;
+ const items=dr.items.filter(it=>it.name.trim()||String(it.qty).trim()||it.strength.trim()||it.times);
+ if(!items.length)return fail(f,_('เพิ่มยาอย่างน้อย 1 รายการ','Add at least one medicine'));
+ for(let i=0;i<items.length;i++){const it=items[i];if(!it.name.trim())return fail(f,_(`รายการที่ ${i+1}: ระบุชื่อยา`,`Item ${i+1}: enter the medicine`));
+  if(!String(it.qty).trim()&&!it.strength.trim())return fail(f,_(`รายการที่ ${i+1}: ระบุจำนวนที่ทานต่อครั้ง`,`Item ${i+1}: enter how much each time`));
+  if(String(it.qty).trim()&&!(+it.qty>0))return fail(f,_(`รายการที่ ${i+1}: จำนวนต่อครั้งต้องเป็นตัวเลข`,`Item ${i+1}: amount must be a number`));
+  if(!parseTimes(it.times))return fail(f,_(`รายการที่ ${i+1}: เลือกช่วงเวลาที่ทานอย่างน้อย 1 ช่วง`,`Item ${i+1}: choose at least one time`))}
+ D.prescriptions.filter(r=>r.patientId===pid&&r.source==='patient'&&r.status==='pending').forEach(r=>{r.status='withdrawn';r.withdrawnAt=nowStamp()});
+ const rx={id:uid('rx'),no:rxNo(),patientId:pid,doctor:dr.doctor.trim(),date:todayISO,enteredBy:S.user.id,enteredAt:nowStamp(),status:'pending',source:'patient',pnote:dr.pnote.trim(),
+  items:items.map(it=>({id:uid('i'),name:it.name.trim(),form:it.form||'',dose:it.dose,times:parseTimes(it.times),start:it.start||todayISO,end:it.end||'',note:rxNoteOf(it),qty:it.qty||'',strength:(it.strength||'').trim(),meal:it.meal||''}))};
+ D.prescriptions.push(rx);audit(`แจ้งปรับรายการยา ${rx.items.length} รายการ รอพยาบาลยืนยัน`,`Sent a medicine list (${rx.items.length}) for nurse confirmation`,pid);
+ S.rxDraft=null;S.rxptOn=false;go('meds');toast(_('ส่งให้พยาบาลตรวจสอบแล้ว ตารางยาจะเปลี่ยนเมื่อพยาบาลยืนยัน','Sent — your schedule changes once a nurse confirms'))}}
+ACT.rxwithdraw=d=>{const r=D.prescriptions.find(x=>x.id===d.id);if(!r||r.status!=='pending'||r.source!=='patient')return;r.status='withdrawn';r.withdrawnAt=nowStamp();audit('ยกเลิกคำขอปรับรายการยา','Withdrew a medicine-list request',r.patientId);render();toast(_('ยกเลิกคำขอแล้ว','Request withdrawn'))};
+ACT.rxrejok=d=>{const r=D.prescriptions.find(x=>x.id===d.id);if(r){r.seenReject=true;render()}};
+/* staff: edit before confirming, or decline with a reason */
+ACT.rxfrompt=d=>{const r=D.prescriptions.find(x=>x.id===d.id);if(!r)return;S.pid=r.patientId;S.rxFromPt=r.id;S.rxFrom=null;S.rxDraft={doctor:L(r.doctor)||'',date:todayISO,verify:false,items:rxToDraft(r)};go('rxnew');toast(_('ตรวจและแก้ไขรายการตามเวชระเบียน แล้วกดบันทึก','Check and correct against the record, then save'))};
+ACT.rxrejask=d=>{S.modal={kind:'rxrej',id:d.id};render()};
+FORMS.rxrej=(o,fd,f)=>{const r=D.prescriptions.find(x=>x.id===f.dataset.id);const why=String(o.reason||'').trim();if(why.length<3)return fail(f,_('ระบุเหตุผลให้ผู้ป่วยทราบ','Give the patient a reason'));
+ Object.assign(r,{status:'rejected',rejectReason:why,rejectedBy:S.user.id,rejectedAt:nowStamp()});audit(`ไม่ยืนยันรายการยาที่ผู้ป่วยแจ้ง: ${why}`,`Declined patient medicine list: ${why}`,r.patientId);
+ notify(r.patientId,`พยาบาลยังไม่ยืนยันรายการยาที่คุณแจ้ง: ${why}`,`A nurse didn’t confirm your medicine list: ${why}`);S.modal=null;render();toast(_('แจ้งผู้ป่วยแล้ว','Patient notified'))};
+{const _mh8=modalHTML;modalHTML=function(){const m=S.modal;if(m?.kind!=='rxrej')return _mh8();
+ return mShell(_('ไม่ยืนยันรายการยา','Decline medicine list'),`<form class="form pa-form" data-form="rxrej" data-id="${m.id}"><label class="field">${_('เหตุผล (ผู้ป่วยจะเห็นข้อความนี้)','Reason (the patient sees this)')}<textarea name="reason" rows="3" placeholder="${_('เช่น ไม่ตรงกับใบสั่งแพทย์ล่าสุด พยาบาลจะโทรสอบถามอีกครั้ง','e.g. doesn’t match the latest prescription — we’ll call you')}"></textarea></label><p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${_('ส่งให้ผู้ป่วย','Send to patient')}</button></form>`,_('ไม่ยืนยัน','Decline'),'pa-modal')}}
+{const _rc=rxCard;rxCard=function(rx,staff){let h=_rc(rx,staff);if(rx.source!=='patient')return h;
+ h=h.replace(`${_('แพทย์ผู้สั่ง','Prescriber')}: </p>`,`${_('แพทย์ผู้สั่ง','Prescriber')}: ${_('ไม่ได้ระบุ','not given')}</p>`);
+ const head=`<div class="rxp-head">${icon('user')} <b>${_('ผู้ป่วยแจ้งรายการยาเอง','Sent by the patient')}</b>${rx.pnote?` · “${esc(rx.pnote)}”`:''}</div>${staff&&rx.status==='pending'?`<div class="rxp-diff"><p class="eyebrow">${_('เทียบกับตารางยาปัจจุบัน','Compared with the current schedule')}</p>${diffHTML(rxDiff(rx.patientId,rx))}</div>`:''}`;
+ h=h.replace('<div class="tbl-wrap">',head+'<div class="tbl-wrap">');
+ if(staff&&rx.status==='pending'&&canRecord(rx.patientId)){h=h.replace(/<button class="btn sm ghost" data-a="rxcancelask"[^]*?<\/button>/,'');
+  h=h.replace(`${_('ตรวจทานถูกต้อง เผยแพร่ให้ผู้ป่วย','Checked, publish to patient')}</button>`,`${_('ตรงกับเวชระเบียน ยืนยันใช้รายการนี้','Matches the record — confirm')}</button><button class="btn sm" data-a="rxfrompt" data-id="${rx.id}">${icon('edit')} ${_('แก้ไขก่อนยืนยัน','Edit before confirming')}</button><button class="btn sm ghost" data-a="rxrejask" data-id="${rx.id}">${icon('x')} ${_('ไม่ยืนยัน','Decline')}</button>`)}
+ return h}}
+/* patient meds page: propose button, pending request, declined note */
+{const _mp=medsPanel;medsPanel=function(pid){let h=_mp(pid);if(S.user?.role==='staff')return h;const rec=canRecord(pid);const pr=ptProposal(pid),rj=lastRejected(pid);let top='';
+ if(rj)top+=`<section class="card rxp-rej"><h3>${icon('alert')} ${_('พยาบาลยังไม่ยืนยันรายการยาที่คุณแจ้ง','A nurse didn’t confirm your list')}</h3><p>${esc(rj.rejectReason)}</p><p class="muted tiny">${esc(nameOf(rj.rejectedBy))} · ${fmtDT(rj.rejectedAt)}</p><div class="row"><button class="btn sm" data-a="rxrejok" data-id="${rj.id}">${icon('check')} ${_('รับทราบ','OK')}</button></div></section>`;
+ if(pr)top+=`<section class="card rxp-wait"><div class="card-h"><h3>${icon('clock')} ${_('รอพยาบาลยืนยันรายการยาที่คุณแจ้ง','Waiting for a nurse to confirm')}</h3><span class="muted tiny">${_('ส่งเมื่อ','Sent')} ${fmtDT(pr.enteredAt)}</span></div>
+  <p class="muted">${_('ระหว่างนี้ทานยาตามตารางเดิมด้านล่าง จนกว่าพยาบาลยืนยัน','Keep following the schedule below until it’s confirmed')}</p>${diffHTML(rxDiff(pid,pr))}
+  ${rec?`<div class="row"><button class="btn sm" data-a="rxpt">${icon('edit')} ${_('แก้ไขคำขอ','Edit request')}</button><button class="btn sm ghost" data-a="rxwithdraw" data-id="${pr.id}">${icon('x')} ${_('ยกเลิกคำขอ','Withdraw')}</button></div>`:''}</section>`;
+ else if(rec)top+=`<section class="card rxp-cta"><div><b>${_('ยาไม่ตรงกับที่ทานจริง หรือมียาอื่นที่ต้องทาน?','Schedule not right, or taking something else?')}</b><p class="muted">${_('เพิ่ม ลด หรือแก้วิธีทานยาได้เอง แล้วพยาบาลจะตรวจสอบและยืนยันให้','Add, remove or change medicines yourself — a nurse checks and confirms')}</p></div><button class="btn primary" data-a="rxpt">${icon('plus')} ${_('เพิ่มหรือแก้ไขรายการยา','Add or edit medicines')}</button></section>`;
+ return top+h}}
 
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
