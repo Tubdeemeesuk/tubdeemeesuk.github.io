@@ -5863,5 +5863,25 @@ ACT.gsall2=()=>{GS.url=API.url;GS.token=API.tok;ACT.gsall()};
 
 if(APIMODE){GS.on=false}
 
+/* ================= v40 · readable report tabs for patient-entered data ================= */
+{const _gr=gsRecords;gsRecords=function(){const R=_gr();const add=(tab,keyCol,key,data)=>R.push({tab,keyCol,key:String(key),data});
+ const lk=(arr,k,i=1)=>{const x=arr.find(a=>a[0]===k);return x?x[i]:(k??'')};const by=id=>id?(person(id)?thv(person(id).name):id):'';
+ const who=id=>{const r=id?roleOf(id):'';return r==='patient'?'ผู้ป่วย':r==='caregiver'?'ญาติ/ผู้ดูแล':r==='staff'?'เจ้าหน้าที่':''};
+ D.vitals.forEach(v=>add('บันทึกสุขภาพ','รหัสบันทึก',v.id,{'รหัสบันทึก':v.id,'รหัสผู้ป่วย':v.patientId,'HN':ptHN(v.patientId),'ชื่อผู้ป่วย':ptNm(v.patientId),'วันที่':v.date,'เวลา':v.time||'',
+  'ความดันตัวบน (mmHg)':v.sys??'','ความดันตัวล่าง (mmHg)':v.dia??'','ชีพจร (ครั้ง/นาที)':v.hr??'','อุณหภูมิ (°C)':v.temp??'','SpO2 (%)':v.spo2??'','น้ำหนัก (กก.)':v.wt??'',
+  'สีปัสสาวะ':v.urine?lk(URINE,v.urine):'','อุจจาระ':v.stool?lk(STOOL,v.stool):'','การขับถ่าย':v.sfreq?lk(SFREQ,v.sfreq):'',
+  'ออกกำลังกาย (นาที)':v.actMin??'','ประเภทกิจกรรม':(Array.isArray(v.act)?v.act:[]).map(a=>lk(ACTT,a)).join(', '),'ความเหนื่อยล้า':v.fatigue!=null&&FATIG[v.fatigue]?FATIG[v.fatigue][0]:'',
+  'ชั่วโมงนอน':v.sleepH??'','ความเครียด':v.stress!=null&&STRESS[v.stress]?STRESS[v.stress][0]:'','ดื่มน้ำ (มล.)':v.water??'','หมายเหตุ':thv(v.note),'ผู้บันทึก':by(v.by),'บันทึกโดย':who(v.by)}));
+ D.symptoms.forEach(s=>add('อาการที่แจ้ง','รหัสบันทึก',s.id,{'รหัสบันทึก':s.id,'รหัสผู้ป่วย':s.patientId,'HN':ptHN(s.patientId),'ชื่อผู้ป่วย':ptNm(s.patientId),'วันที่':s.date,'เวลา':s.time||'',
+  'อาการ':(s.syms||[]).map(id=>thv(D.criteria.find(c=>c.id===id)?.name)||id).join(', '),'ระดับ':{urgent:'ฉุกเฉิน',emergency:'ฉุกเฉิน',red:'ฉุกเฉิน',contact:'ควรติดต่อทีม',watch:'เฝ้าดูอาการ',none:'ไม่มีอาการผิดปกติ'}[s.level]||s.level||'','หมายเหตุ':thv(s.note),'ผู้บันทึก':by(s.by),'บันทึกโดย':who(s.by),'ทีมรับทราบ':s.reviewed?'ใช่':'ยัง','ผู้รับทราบ':by(s.reviewedBy),'เวลารับทราบ':dtv(s.reviewedAt)}));
+ const itemOf=(rid,iid)=>D.prescriptions.find(r=>r.id===rid)?.items.find(i=>i.id===iid);
+ D.medLogs.forEach(m=>{const it=itemOf(m.rxId,m.itemId);add('การรับประทานยา','รหัสบันทึก',m.id,{'รหัสบันทึก':m.id,'รหัสผู้ป่วย':m.patientId,'HN':ptHN(m.patientId),'ชื่อผู้ป่วย':ptNm(m.patientId),'วันที่':m.date,'เวลานัดทานยา':m.time||'',
+  'ชื่อยา':it?thv(it.name):'','ขนาดยา':it?thv(it.dose):'','สถานะ':{taken:'ทานแล้ว',missed:'ลืมทาน',unable:'ทานไม่ได้',skipped:'ทานไม่ได้',late:'ทานช้า'}[m.status]||m.status||'','เวลาที่กด':dtv(m.at),'ผู้บันทึก':by(m.by),'บันทึกโดย':who(m.by),'เลขที่ใบสั่งยา':D.prescriptions.find(r=>r.id===m.rxId)?.no||''})});
+ D.appts.forEach(a=>add('นัดหมาย','รหัสนัด',a.id,{'รหัสนัด':a.id,'รหัสผู้ป่วย':a.patientId,'HN':ptHN(a.patientId),'ชื่อผู้ป่วย':ptNm(a.patientId),'วันที่นัด':a.date,'เวลา':a.time||'','รายการนัด':thv(a.type),'สถานที่':thv(a.loc),'การเตรียมตัว':thv(a.prep),
+  'สถานะ':{scheduled:'นัดไว้',done:'มาตามนัดแล้ว',missed:'ไม่มาตามนัด',cancelled:'ยกเลิก'}[a.status]||a.status||'','ผู้ป่วยยืนยัน':a.confirmed?'ยืนยันแล้ว':'ยังไม่ยืนยัน','ผู้ลงนัด':by(a.by)}));
+ D.consents.forEach(c=>{const g=C(c.caregiverId);add('ญาติและผู้ดูแล','รหัสความยินยอม',c.id,{'รหัสความยินยอม':c.id,'รหัสผู้ป่วย':c.patientId,'HN':ptHN(c.patientId),'ชื่อผู้ป่วย':ptNm(c.patientId),'ชื่อผู้ดูแล':g?thv(g.name):'','เบอร์โทรผู้ดูแล':g?.phone||'','ความเกี่ยวข้อง':thv(c.relation),
+  'สถานะ':c.active?'ใช้งาน':'ยกเลิกแล้ว','ตั้งแต่':c.since||'','ดูข้อมูลสุขภาพ':c.perms?.health?'ได้':'ไม่ได้','ดูตารางยา':c.perms?.meds?'ได้':'ไม่ได้','ดูผลแล็บ':c.perms?.labs?'ได้':'ไม่ได้','ดูนัดหมาย':c.perms?.appts?'ได้':'ไม่ได้','บันทึกแทนผู้ป่วย':c.perms?.record?'ได้':'ไม่ได้','ลงทะเบียนเอง':c.selfReg?'ใช่':''})});
+ return R}}
+
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
