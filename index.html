@@ -2301,6 +2301,9 @@ div.rbar{cursor:default}
 .jm-sh{display:grid;color:var(--ink-2)}.jm-sh .ic{width:13px;height:13px}
 .jm-card.ms{padding-left:10px}
 .mm-prev img{max-height:200px}
+.gs-st .gs-row{display:flex;gap:12px;align-items:center}
+.gs-row>div{display:flex;flex-direction:column;gap:2px}.gs-row small{color:var(--ink-2);font-size:.8rem}
+.gs-dot{width:12px;height:12px;border-radius:50%;background:var(--line);flex:none}.gs-dot.ok{background:var(--ok);box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 20%,transparent)}.gs-dot.err{background:var(--danger)}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -5248,5 +5251,75 @@ function seedMoments(){D.moments=D.moments||[];const p=P('p1');const A=(o)=>D.mo
  A({type:'note',text:'ขอบคุณผู้ให้ที่ทำให้ฉันได้เริ่มต้นใหม่',date:dAdd(p.txDate,7),ph:2});
  A({type:'win',text:'กินยาครบทุกมื้อ 3 วันติด',date:dOff(-2),ph:3,share:true})}
 
-seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);loadPhotos();seedMoments();loadMoments();render();
+/* ================= v33 · Google Sheets sync (Apps Script web app) ================= */
+const GS_DEFAULT={url:'',token:''}; /* ใส่ URL/รหัสของทีมที่นี่ ถ้าต้องการให้ทุกเครื่องส่งข้อมูลได้ทันที */
+const GS_KEY='sj-gsync';
+let GS={...GS_DEFAULT,on:false,last:null,err:null,queue:[]};
+try{Object.assign(GS,JSON.parse(localStorage.getItem(GS_KEY)||'{}'))}catch(e){}
+if(GS_DEFAULT.url&&!GS.url){GS.url=GS_DEFAULT.url;GS.token=GS_DEFAULT.token;GS.on=true}
+const gsSave=()=>{try{localStorage.setItem(GS_KEY,JSON.stringify(GS))}catch(e){}};
+const thv=x=>x==null?'':typeof x==='object'?(x.th??''):x;
+const ptHN=pid=>P(pid)?.hn||'';const ptNm=pid=>P(pid)?thv(P(pid).name):'';
+const dtv=s=>s?String(s).replace(' ','T').slice(0,16):'';
+/* one function per tab — headers match the Excel workbook */
+function gsRecords(){const R=[];const add=(tab,keyCol,key,data)=>R.push({tab,keyCol,key:String(key),data});
+ const PHL=PHASES.map(p=>p.n+'. '+p.title.th);
+ D.patients.forEach(p=>{const n=thv(p.name).split(' ');add('ผู้ป่วย','รหัสผู้ป่วย',p.id,{'รหัสผู้ป่วย':p.id,'HN':p.hn,'ชื่อ':n[0],'นามสกุล':n.slice(1).join(' '),'อายุ':p.age??'','เพศ':{M:'ชาย',F:'หญิง'}[p.sex]||'','สถานะ':p.txDate?'Post-transplant':'Pre-transplant','ช่วงการรักษา':PHL[p.phase-1]||'','วันปลูกถ่าย':p.txDate||'','วันจำหน่าย':p.discharge||'','แพทย์ผู้ดูแล':thv(p.doctor),'เบอร์ติดต่อ':p.phone||'','ผู้ติดต่อฉุกเฉิน':thv(p.emerg?.name),'เบอร์ฉุกเฉิน':p.emerg?.phone||'','โรคร่วม':(p.comorb||[]).join(', '),'ภาวะแทรกซ้อน':(p.complic||[]).join(', '),'เป้า Tac ต่ำสุด (ng/mL)':p.tacTarget?.[0]??'','เป้า Tac สูงสุด (ng/mL)':p.tacTarget?.[1]??'','ผู้กำหนดเป้า Tac / เหตุผล':thv(p.tacTargetBy),'ทีมผู้ดูแล':(p.staff||[]).map(nameOf).join(', '),'บัญชีในแอป':p.activated?(p.selfReg&&!p.regOk?'ลงทะเบียนเอง รอพยาบาลยืนยัน':'เปิดใช้งานแล้ว'):'ยังไม่เปิดใช้งาน'})});
+ const LS={draft:'Draft',verified:'Verified',corrected:'Corrected'};
+ D.labs.forEach(l=>{const fl=l.refHigh!=null&&l.value>l.refHigh?'สูง':l.refLow!=null&&l.value<l.refLow?'ต่ำ':'ปกติ';add('ผลLab','รหัสผล',l.id,{'รหัสผล':l.id,'รหัสผู้ป่วย':l.patientId,'HN':ptHN(l.patientId),'ชื่อผู้ป่วย':ptNm(l.patientId),'วันที่ตรวจ':l.date,'เวลา':l.time||'','รหัสตรวจ':l.test,'รายการตรวจ':LAB(l.test).name,'ค่า':l.value,'หน่วย':l.unit,'ค่าอ้างอิงต่ำ':l.refLow??'','ค่าอ้างอิงสูง':l.refHigh??'','เทียบช่วงอ้างอิง':fl,'สถานะ':LS[l.status||'verified'],'แหล่งที่มา':thv(l.source),'ผู้บันทึก':nameOf(l.by)||'','ผู้ยืนยัน':l.verifiedBy?nameOf(l.verifiedBy):''})});
+ D.prescriptions.forEach(rx=>rx.items.forEach(it=>add('ใบสั่งยา','รหัสรายการยา',rx.no+'|'+it.id,{'รหัสรายการยา':rx.no+'|'+it.id,'เลขที่ใบสั่งยา':rx.no,'รหัสผู้ป่วย':rx.patientId,'HN':ptHN(rx.patientId),'วันที่สั่ง':rx.date,'แพทย์ผู้สั่ง':thv(rx.doctor),'สถานะ':rx.status,'ชื่อยา':it.name,'รูปแบบ':thv(it.form),'ขนาด':doseTxt(it),'เวลารับประทาน':it.times.join(', '),'ครั้ง/วัน':it.times.length,'เริ่มใช้':it.start||'','หยุดใช้':it.end||'','วิธีใช้ / หมายเหตุ':thv(it.note),'ข้อบ่งใช้ / เหตุผลที่ปรับ':thv(it.why),'ผู้บันทึก':rx.enteredBy?nameOf(rx.enteredBy):'','ผู้ตรวจทาน':rx.verifiedBy?nameOf(rx.verifiedBy):''})));
+ D.tasks.forEach(t=>add('งานติดตาม','รหัสงาน',t.id,{'รหัสงาน':t.id,'รหัสผู้ป่วย':t.pid,'HN':ptHN(t.pid),'ชื่อผู้ป่วย':ptNm(t.pid),'งาน':thv(t.title),'ประเภท':TTYPE[t.type]?.[0]||t.type,'กำหนด':t.due,'สถานะ':TST[t.status]?.[0]||t.status,'ผู้รับผิดชอบ':t.by?nameOf(t.by):'','หมายเหตุ':thv(t.note)}));
+ const CH={phone:'โทรศัพท์',line:'LINE',visit:'มาพบที่ รพ.',home:'เยี่ยมบ้าน'};
+ D.contacts.forEach(c=>add('บันทึกการติดต่อ','รหัส',c.id,{'รหัส':c.id,'รหัสผู้ป่วย':c.pid,'HN':ptHN(c.pid),'วันที่':c.date,'เวลา':c.time,'ผู้ติดต่อ':thv(c.whoName),'ช่องทาง':CH[c.ch]||c.ch||'','อาการ':thv(c.sym),'ปัญหา':thv(c.prob),'คำแนะนำ':thv(c.adv),'ประสานแพทย์':c.doc?'ใช่':'ไม่ใช่','แพทย์':thv(c.docName),'ผลการดำเนินการ':thv(c.out),'ติดตามครั้งต่อไป':c.next||'','ผู้บันทึก':c.by?nameOf(c.by):''}));
+ const AT={lab:'Lab',med:'Medicines',sym:'Symptoms',fu:'Follow-up'},SV={high:'สูง',med:'ปานกลาง',low:'ต่ำ'};
+ try{allAlerts(D.patients.map(p=>p.id)).forEach(a=>{const s=a.st||{};const ackAt=s.ack?(s.log||[]).find(x=>/รับทราบ/.test(thv(x.t)))?.at||s.notifiedAt:'';
+  add('แจ้งเตือน','รหัสแจ้งเตือน',a.key,{'รหัสแจ้งเตือน':a.key,'รหัสผู้ป่วย':a.pid,'HN':ptHN(a.pid),'ประเภท':AT[a.type]||a.type,'เรื่อง':a.title,'รายละเอียด':a.sub||'','ความรุนแรง':SV[s.sev||a.sev]||'','วันที่พบ':a.date,'ผู้รับผิดชอบ':s.owner?nameOf(s.owner):'','แพทย์ที่แจ้ง':thv(s.doctor),'แจ้งแพทย์เมื่อ':dtv(s.notifiedAt),'แพทย์รับทราบเมื่อ':dtv(ackAt),'คำสั่งการรักษา':thv(s.order),'ปิดเคสแล้ว':s.closed?'ใช่':'ไม่ใช่','สถานะ':s.closed?'ปิดแล้ว':s.order?'ได้รับคำสั่ง':s.ack?'แพทย์รับทราบ':s.notifiedAt?'แจ้งแพทย์แล้ว':s.owner?'มีผู้รับผิดชอบ':'ยังไม่มีผู้รับผิดชอบ'})})}catch(e){}
+ if(D.pmr)Object.entries(D.pmr).forEach(([pid,v])=>(v.hist||[]).forEach(h=>add('ทบทวนรายการยา','รหัสการทบทวน',pid+'|'+h.at,{'รหัสการทบทวน':pid+'|'+h.at,'รหัสผู้ป่วย':pid,'HN':ptHN(pid),'ชื่อผู้ป่วย':ptNm(pid),'วันเวลาที่ตรวจสอบ':dtv(h.at),'สถานะ':PMRST[h.status]?.[0]||h.status,'สรุปผล':h.note||'','เภสัชกร':nameOf(h.by)||''})));
+ (D.drp||[]).forEach(x=>add('ปัญหาด้านยา','รหัส',x.id,{'รหัส':x.id,'รหัสผู้ป่วย':x.pid,'HN':ptHN(x.pid),'ประเภทปัญหา':DRPT[x.type]?.[0]||x.type,'ปัญหาที่พบ':thv(x.desc),'ข้อเสนอแนะ':thv(x.rec),'เสนอแนะแพทย์':thv(x.doc),'สถานะ':DRPST[x.status]?.[0]||x.status,'วันที่บันทึก':dtv(x.at),'เภสัชกร':nameOf(x.by)||''}));
+ D.labs.filter(l=>l.test==='TAC'&&l.status!=='draft').forEach(l=>{const t=(D.tdm||{})[l.id]||{};const s=tacState(l.patientId,l);
+  add('ระดับยาTac','รหัสผล',l.id,{'รหัสผล':l.id,'รหัสผู้ป่วย':l.patientId,'HN':ptHN(l.patientId),'วันที่เจาะ':l.date,'เวลาเจาะ':l.time||'','ระดับ Tac (ng/mL)':l.value,'ยาครั้งล่าสุด (วันที่)':t.last?.date||'','ยาครั้งล่าสุด (เวลา)':t.last?.time||'','ยาครั้งถัดไป':t.next||'','เป็น trough':t.trough==null?'':t.trough?'ใช่':'ไม่ใช่','ขนาดยาขณะนั้น':t.dose||'','เป้าต่ำสุด':P(l.patientId).tacTarget?.[0]??'','เป้าสูงสุด':P(l.patientId).tacTarget?.[1]??'','ข้อมูลครบ':tdmComplete(l,t)?'ครบ':'ไม่ครบ','ผลเทียบเป้า':{inc:'ยังไม่แปลผล',nt:'ไม่ใช่ trough',low:'ต่ำกว่าเป้า',high:'สูงกว่าเป้า',in:'อยู่ในเป้า'}[s],'การประเมินของเภสัชกร':thv(t.assess),'ข้อเสนอแนะต่อแพทย์':thv(t.rec),'ส่งถึงแพทย์':thv(t.doc),'คำสั่งแพทย์':thv(t.order),'เภสัชกร':t.by?nameOf(t.by):''})});
+ Object.entries(D.ddiRev||{}).forEach(([k,v])=>{const [,pid,a,b]=k.split('|');const d=phDDI(pid).find(x=>x.key===k);add('DrugInteraction','รหัสคู่ยา',k,{'รหัสคู่ยา':k,'รหัสผู้ป่วย':pid,'HN':ptHN(pid),'ยา A':d?d.a.name:a,'ยา B':d?d.b.name:b,'ระดับ':d?DSEV[d.r[2]][0]:'','สถานะ':'ตรวจสอบแล้ว','การประเมิน / การจัดการ':thv(v.note),'วันเวลาที่ตรวจ':dtv(v.at),'เภสัชกร':nameOf(v.by)||''})});
+ (D.adr||[]).forEach(a=>add('ADR','รหัส',a.id,{'รหัส':a.id,'รหัสผู้ป่วย':a.pid,'HN':ptHN(a.pid),'ยาที่สงสัย':a.drug,'อาการ':thv(a.sym),'วันที่เริ่มเกิด':a.onset||'','ความรุนแรง':ADRSEV[a.sev]?.[0]||a.sev,'ความสัมพันธ์ (WHO-UMC)':CAUS[a.caus]?.[1]||a.caus,'การจัดการ':thv(a.mgmt),'นัดติดตาม':a.follow||'','สถานะ':ADRST[a.status]?.[0]||a.status,'วันที่บันทึก':dtv(a.at),'เภสัชกร':nameOf(a.by)||''}));
+ const WHO={patient:'ผู้ป่วย',caregiver:'ญาติ/ผู้ดูแล',both:'ผู้ป่วยและญาติ'};
+ (D.couns||[]).forEach(c=>add('ให้คำปรึกษา','รหัส',c.id,{'รหัส':c.id,'รหัสผู้ป่วย':c.pid,'HN':ptHN(c.pid),'วันเวลา':dtv(c.at),'ผู้รับคำปรึกษา':WHO[c.who]||c.who,'จำนวนหัวข้อ':c.topics.length,'หัวข้อที่ให้คำปรึกษา':c.topics.map(k=>MEDEDU.find(e=>e.k===k)?.t[0]||k).join(' · '),'หมายเหตุ':thv(c.note),'เภสัชกร':nameOf(c.by)||''}));
+ (D.adhAs||[]).forEach(a=>{const o={'รหัส':a.id,'รหัสผู้ป่วย':a.pid,'HN':ptHN(a.pid),'วันเวลา':dtv(a.at)};ADHQ.forEach((q,i)=>o[q[0]]=a.ans['q'+i]==='yes'?'ใช่':'ไม่ใช่');o['ปัญหาที่พบ (ข้อ)']=Object.values(a.ans).filter(v=>v==='yes').length;o['ปัญหาและแนวทางแก้ไข']=a.note||'';o['เภสัชกร']=nameOf(a.by)||'';add('ประเมินการใช้ยา','รหัส',a.id,o)});
+ const SRCT={pharmacy:'ร้านยา / ซื้อเอง',other:'สถานพยาบาลอื่น',herb:'สมุนไพร / อาหารเสริม'};
+ (D.omeds||[]).forEach(o=>add('ยาจากแหล่งอื่น','รหัส',o.id,{'รหัส':o.id,'รหัสผู้ป่วย':o.pid,'HN':ptHN(o.pid),'ชื่อยา / ผลิตภัณฑ์':o.name,'ขนาด':o.dose||'','ความถี่':thv(o.freq),'แหล่งที่มา':SRCT[o.src]||o.src,'เริ่มใช้':o.since||'','หมายเหตุ':thv(o.note)+(o.stopped?` (หยุดใช้ ${o.stopped})`:''),'ผู้บันทึก':o.by?nameOf(o.by):''}));
+ return R}
+const gsSig=r=>r.tab+'|'+r.key;
+let gsSnap=null,gsTimer=null,gsBusy=false;
+function gsBaseline(){gsSnap=new Map(gsRecords().map(r=>[gsSig(r),JSON.stringify(r.data)]))}
+function gsDiff(){const now=gsRecords();const ch=[];const m=new Map();now.forEach(r=>{const k=gsSig(r),v=JSON.stringify(r.data);m.set(k,v);if(!gsSnap||gsSnap.get(k)!==v)ch.push(r)});gsSnap=m;return ch}
+async function gsPost(payload){const res=await fetch(GS.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({token:GS.token,...payload}),redirect:'follow'});const j=await res.json();if(!j.ok)throw new Error(j.error||'error');return j}
+async function gsFlush(){if(gsBusy||!GS.on||!GS.url)return;const ch=gsDiff();const all=[...GS.queue.filter(q=>!ch.some(c=>gsSig(c)===gsSig(q))),...ch];if(!all.length)return;gsBusy=true;
+ try{for(let i=0;i<all.length;i+=200){await gsPost({records:all.slice(i,i+200)})}GS.queue=[];GS.last=nowStamp();GS.err=null;GS.sent=(GS.sent||0)+all.length}
+ catch(e){GS.queue=all.slice(-2000);GS.err=String(e.message||e)}finally{gsBusy=false;gsSave();if(S.view==='gsync')render()}}
+const gsSchedule=()=>{if(!GS.on||!GS.url)return;clearTimeout(gsTimer);gsTimer=setTimeout(gsFlush,1500)};
+['submit','change'].forEach(ev=>document.addEventListener(ev,()=>setTimeout(gsSchedule,50)));
+document.addEventListener('click',e=>{if(e.target.closest('[data-a]'))setTimeout(gsSchedule,50)});
+window.addEventListener('online',gsSchedule);
+/* settings page */
+function vGsync(){const pend=gsSnap?gsRecords().filter(r=>gsSnap.get(gsSig(r))!==JSON.stringify(r.data)).length:0;
+ return `<div class="sh"><header class="sh-head"><h2>${_('เชื่อมกับ Google Sheets','Google Sheets sync')}</h2><p>${_('ส่งข้อมูลที่พยาบาลและเภสัชกรบันทึกในแอป ไปเก็บใน Google Sheet ของทีมโดยอัตโนมัติ','Automatically copy what nurses and pharmacists record into the team’s Google Sheet')}</p></header>
+ <section class="card gs-st"><div class="gs-row"><span class="gs-dot ${GS.on&&GS.url?(GS.err?'err':'ok'):''}"></span><div><b>${!GS.url?_('ยังไม่ได้เชื่อมต่อ','Not connected'):!GS.on?_('ปิดการส่งข้อมูลอยู่','Sync is off'):GS.err?_('ส่งไม่สำเร็จ จะลองใหม่อัตโนมัติ','Couldn’t send — will retry'):_('เชื่อมต่อแล้ว · ส่งอัตโนมัติ','Connected · syncing automatically')}</b><small>${GS.last?_('ส่งล่าสุด','Last sent')+' '+fmtDT(GS.last):_('ยังไม่เคยส่ง','Nothing sent yet')}${GS.queue.length?' · '+_(`รอส่ง ${GS.queue.length} รายการ`,`${GS.queue.length} waiting`):''}${GS.err?' · '+esc(GS.err):''}</small></div></div></section>
+ <form class="card form" data-form="gsset"><h3>${_('ตั้งค่า','Settings')}</h3>
+  <label class="field">${_('URL ของ Web app (จาก Apps Script)','Web app URL (from Apps Script)')}<input name="url" type="url" inputmode="url" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(GS.url)}"></label>
+  <label class="field">${_('รหัสลับของทีม (TOKEN)','Team secret (TOKEN)')}<input name="token" type="password" autocomplete="off" value="${esc(GS.token)}"></label>
+  <label class="chk"><input type="checkbox" name="on" value="1" ${GS.on?'checked':''}> ${_('ส่งข้อมูลอัตโนมัติทุกครั้งที่บันทึก','Send automatically after each save')}</label>
+  <p class="ferr" role="alert"></p><div class="row"><button class="btn primary" type="submit">${_('บันทึกการตั้งค่า','Save settings')}</button><button class="btn" type="button" data-a="gstest">${_('ทดสอบการเชื่อมต่อ','Test connection')}</button></div></form>
+ <section class="card"><h3>${_('ส่งข้อมูลทั้งหมด','Send everything')}</h3><p class="muted">${_('ใช้ครั้งแรกหลังเชื่อมต่อ หรือเมื่ออยากให้ชีตตรงกับแอป ระบบจะอัปเดตแถวเดิมตามรหัส ไม่สร้างแถวซ้ำ','Use once after connecting, or to bring the sheet up to date. Rows are updated by ID, never duplicated.')}${pend?' · '+_(`มีรายการที่ยังไม่ได้ส่ง ${pend} รายการ`,`${pend} not sent yet`):''}</p><button class="btn" data-a="gsall" ${GS.url?'':'disabled'}>${icon('send')} ${_(`ส่งทั้งหมด ${gsRecords().length} รายการ`,`Send all ${gsRecords().length} records`)}</button></section>
+ <p class="sh-tip">${icon('lock')}<span>${_('ข้อมูลสุขภาพเป็นข้อมูลส่วนบุคคลอ่อนไหว ใช้ Google Sheet ใน Drive ที่โรงพยาบาลอนุมัติ ให้สิทธิ์เฉพาะทีม และเก็บรหัสลับไว้กับทีมเท่านั้น','Health data is sensitive personal data — use a hospital-approved Drive, share with the team only, and keep the secret within the team')}</span></p></div>`}
+Object.assign(TITLES,{gsync:['เชื่อม Google Sheets','Google Sheets']});VIEWS.gsync=vGsync;
+NAVG.nurse[2][1].push('gsync');NAVG.pharm[2][1].push('gsync');
+{const _nf4=navFor;navFor=function(r){const l=_nf4(r);if(r==='staff'&&!l.some(x=>x[0]==='gsync'))l.push(['gsync','grid']);return l}}
+FORMS.gsset=(o,fd,f)=>{const url=String(o.url||'').trim();if(url&&!/^https:\/\/script\.google(usercontent)?\.com\//.test(url))return fail(f,_('URL ต้องขึ้นต้นด้วย https://script.google.com/','The URL must start with https://script.google.com/'));
+ GS.url=url;GS.token=String(o.token||'').trim();GS.on=!!o.on&&!!url;GS.err=null;gsSave();audit('ตั้งค่าเชื่อม Google Sheets','Changed Google Sheets sync',null);render();toast(_('บันทึกแล้ว','Saved'))};
+Object.assign(ACT,{
+ gstest:async()=>{const f=document.querySelector('[data-form=gsset]');const url=f?.url.value.trim(),tok=f?.token.value.trim();if(!url)return toast(_('ใส่ URL ก่อน','Enter the URL first'));const o={...GS};GS.url=url;GS.token=tok;
+  try{const j=await gsPost({ping:1});toast(_(`เชื่อมต่อสำเร็จ · ${j.sheet||''}`,`Connected · ${j.sheet||''}`))}catch(e){toast(_('เชื่อมต่อไม่ได้: ','Couldn’t connect: ')+(e.message||e))}finally{GS.url=o.url;GS.token=o.token}},
+ gsall:async()=>{if(!GS.url)return;toast(_('กำลังส่งข้อมูลทั้งหมด…','Sending everything…'));const all=gsRecords();
+  try{for(let i=0;i<all.length;i+=200)await gsPost({records:all.slice(i,i+200)});gsBaseline();GS.queue=[];GS.last=nowStamp();GS.err=null;GS.sent=(GS.sent||0)+all.length;gsSave();render();toast(_(`ส่งแล้ว ${all.length} รายการ`,`Sent ${all.length} records`))}
+  catch(e){GS.err=String(e.message||e);gsSave();render();toast(_('ส่งไม่สำเร็จ: ','Failed: ')+GS.err)}}});
+
+seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);loadPhotos();seedMoments();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();
 </script>
