@@ -5182,7 +5182,7 @@ function ptAuthModal(){const t=S.modal.t||'login';const pre=S.modal.pre||{};
   <label class="field pa-tx">${_('วันที่ปลูกถ่ายตับ (ถ้าจำได้)','Transplant date (if you know it)')}<input type="date" name="tx" max="${todayISO}"></label></fieldset>
   <label class="chk pa-ok"><input type="checkbox" name="consent" value="1"><span>${_('ยินยอมให้ทีมรักษาเข้าถึงข้อมูลสุขภาพที่บันทึกในแอปนี้ เพื่อใช้ในการดูแลรักษา','I agree the care team can see the health information I record in this app, for my care')}</span></label>
   <p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${_('เปิดใช้งานบัญชี','Activate account')}</button>
-  <p class="hint tiny">${_('ถ้ามีข้อมูลในโรงพยาบาลแล้ว ระบบจะใช้ข้อมูลจากโรงพยาบาล · ถ้ายังไม่พบ พยาบาลผู้ประสานงานจะตรวจสอบและยืนยันบัญชีให้','If the hospital already has your record we use it · if not, a coordinator nurse will check and confirm your account')}</p></form>`;
+  </form>`;
  return mShell(_('ผู้ป่วย','Patient'),tabs+body,_('บัญชีผู้ป่วย','Patient account'),'pa-modal')}
 {const _mh=modalHTML;modalHTML=function(){return S.modal?.kind==='ptauth'?ptAuthModal():_mh()}}
 ACT.regok=d=>{const p=P(d.pid);if(!p)return;p.regOk=true;audit('พยาบาลยืนยันข้อมูลผู้ป่วยลงทะเบียนใหม่','Nurse confirmed self-registered patient',p.id);render();toast(_('ยืนยันแล้ว','Confirmed'))};
