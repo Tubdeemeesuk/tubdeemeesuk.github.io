@@ -3358,7 +3358,7 @@ function medHome(pid,cg){if(cg&&!consentOf(S.user.id,pid).perms.meds)return'';co
  return `<section class="card hmed"><div class="hm-h"><h3>${icon('pill')} ${_('ทานยาวันนี้','Today’s medicines')}</h3><span class="hm-c num">${dn}/${sl.length}</span><button class="link-btn" data-a="go" data-v="meds">${_('ดูทั้งหมด','All')} ${icon('chev')}</button></div>
  <div class="hm-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${_('ทานยาแล้ว','Taken')} ${pct}%"><i style="width:${pct}%"></i></div>${next}</section>`}
 /* ---------- v25 · home: recovery bar, Today Summary, LINE OA, missing-data alerts ---------- */
-const LINE_OA=''; /* ใส่ LINE OA ID ของทีม เช่น '@tubdeemeesuk' เมื่อสร้างบัญชีแล้ว */
+const LINE_OA='@901hcacw'; /* ใส่ LINE OA ID ของทีม เช่น '@tubdeemeesuk' เมื่อสร้างบัญชีแล้ว */
 const lineUrl=()=>LINE_OA?'https://line.me/R/ti/p/'+encodeURIComponent(LINE_OA):'';
 const CHAT_IC=`<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="6" fill="#06C755"/><path d="M12 5.2c-4.2 0-7.4 2.6-7.4 5.8 0 2.9 2.6 5.3 6.1 5.7.3.1.5.3.4.7l-.2 1.3c0 .3.3.5.6.3 2.3-1.4 4.9-3.4 6.4-5.3.9-1 1.5-2.1 1.5-3.4 0-3.2-3.3-5.8-7.4-5.1z" fill="#fff"/></svg>`;
 const FOLLOW=[[0,30,'เดือนที่ 1','Month 1','1ด.','M1','ตรวจและเจาะเลือดทุกสัปดาห์','Weekly check-ups and blood tests'],
@@ -3395,7 +3395,7 @@ function todayCard(pid,cg){const c=cg?consentOf(S.user.id,pid):null;const okH=!c
  return `<section class="dlog tsum"><div class="dlog-h"><h3>${_('สรุปวันนี้','Today')}</h3><span class="ts-pills">${okH?pill(_('สุขภาพ','Health'),hd,HREQ.length,hd===HREQ.length):''}${okM&&sl.length?pill(_('ยา','Meds'),dn,sl.length,dn===sl.length):''}</span></div>
  <div class="dlog-g">${HREQ.map(it).join('')}</div>${alert}${med?`<div class="ts-medw">${med}<button class="ts-all" data-a="go" data-v="meds" aria-label="${_('ดูยาทั้งหมด','All medicines')}">${icon('chev')}</button></div>`:''}</section>`}
 function contactRow(){const u=lineUrl();
- return `<div class="hcon2 span">${u?`<a class="hc-line" href="${u}" target="_blank" rel="noopener">${CHAT_IC}<span><b>${_('แชทกับทีมปลูกถ่ายตับ','Chat with the transplant team')}</b><small>LINE OA</small></span></a>`:`<button class="hc-line" data-a="lineoa">${CHAT_IC}<span><b>${_('แชทกับทีมปลูกถ่ายตับ','Chat with the transplant team')}</b><small>LINE OA · ${_('เร็ว ๆ นี้','coming soon')}</small></span></button>`}<button class="hc-call" data-a="contact" aria-label="${_('โทรหาทีม','Call the team')}">${icon('phone')}<span>${_('โทร','Call')}</span></button></div>`}
+ return `<div class="hcon2 span">${u?`<a class="hc-line" href="${u}" target="_blank" rel="noopener">${CHAT_IC}<span><b>${_('แชทกับทีมปลูกถ่ายตับ','Chat with the transplant team')}</b><small>LINE OA · ${LINE_OA}</small></span></a>`:`<button class="hc-line" data-a="lineoa">${CHAT_IC}<span><b>${_('แชทกับทีมปลูกถ่ายตับ','Chat with the transplant team')}</b><small>LINE OA · ${_('เร็ว ๆ นี้','coming soon')}</small></span></button>`}<button class="hc-call" data-a="contact" aria-label="${_('โทรหาทีม','Call the team')}">${icon('phone')}<span>${_('โทร','Call')}</span></button></div>`}
 const MISS_T=['10:00','19:00'];
 function missCheck(){const u=S.user;if(!u||u.role==='staff')return;const pid=currentPid();if(!pid||!canView('health',pid))return;
  const now=nowHM();const slot=[...MISS_T].reverse().find(t=>now>=t);if(!slot)return;const key=`sj-miss|${u.id}|${todayISO}|${slot}`;
