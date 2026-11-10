@@ -5605,7 +5605,7 @@ async function pwCheck(pw,rec){if(!rec)return false;return (await pwHash(pw,rec.
 const pwWeak=p=>p.length<8||!/[A-Za-z฀-๿]/.test(p)||!/\d/.test(p);
 const tempPw=()=>{const A='abcdefghjkmnpqrstuvwxyz',N='23456789';const r=n=>crypto.getRandomValues(new Uint32Array(1))[0]%n;let s='';for(let i=0;i<4;i++)s+=A[r(A.length)];s+=A[r(A.length)].toUpperCase();for(let i=0;i<4;i++)s+=N[r(N.length)];return s};
 const normUser=u=>String(u||'').trim().toLowerCase();
-const PROF={nurse:['พยาบาลผู้ประสานงานปลูกถ่ายตับ','Liver transplant nurse coordinator'],pharm:['เภสัชกร','Pharmacist']};
+const PROF={nurse:['พยาบาลผู้ประสานงานปลูกถ่ายตับ','Liver transplant nurse coordinator'],pharm:['เภสัชกร','Pharmacist'],dev:['ผู้พัฒนาแอปพลิเคชัน','App developer']};
 const stActive=()=>D.staff.filter(s=>s.pw&&s.active!==false);
 const meAdmin=()=>S.user?.role==='staff'&&!!ST(S.user.id)?.admin;
 const stLock={};
@@ -5637,7 +5637,7 @@ Object.assign(FORMS,{
   if(!/^[a-z0-9._-]{3,30}$/.test(u))return fail(f,_('ชื่อผู้ใช้ใช้ได้เฉพาะ a–z ตัวเลข . _ - ความยาว 3–30 ตัว','Username: a–z, numbers, . _ - (3–30 characters)'));
   if(pwWeak(o.pw))return fail(f,_('รหัสผ่านต้องยาวอย่างน้อย 8 ตัว และมีทั้งตัวอักษรและตัวเลข','Password needs 8+ characters with letters and numbers'));
   if(o.pw!==o.pw2)return fail(f,_('รหัสผ่านทั้งสองช่องไม่ตรงกัน','The two passwords don’t match'));
-  busy(f,true);const name=`${v('first')} ${v('last')}`;const prof=o.prof==='pharm'?'pharm':'nurse';
+  busy(f,true);const name=`${v('first')} ${v('last')}`;const prof=(PROF[o.prof]?o.prof:'nurse');
   const s={id:uid('s'),name:{th:name,en:name},title:{th:PROF[prof][0],en:PROF[prof][1]},prof,user:u,pw:await pwMake(o.pw),admin:true,active:true,mustChange:false,at:nowStamp()};
   D.staff.push(s);stEnter(s);toast(_('สร้างบัญชีผู้ดูแลระบบแล้ว เพิ่มบัญชีเจ้าหน้าที่คนอื่นได้ที่ "บัญชีเจ้าหน้าที่"','Administrator created — add other staff in “Staff accounts”'))},
  stlogin:async(o,fd,f)=>{const u=normUser(o.user);const L0=stLock[u]||(stLock[u]={n:0,until:0});
@@ -5656,7 +5656,7 @@ Object.assign(FORMS,{
   if(!v('first')||!v('last'))return fail(f,_('กรอกชื่อและนามสกุล','Enter first name and surname'));
   if(!/^[a-z0-9._-]{3,30}$/.test(u))return fail(f,_('ชื่อผู้ใช้ใช้ได้เฉพาะ a–z ตัวเลข . _ - ความยาว 3–30 ตัว','Username: a–z, numbers, . _ - (3–30 characters)'));
   if(D.staff.some(x=>x.user===u))return fail(f,_('ชื่อผู้ใช้นี้มีแล้ว','That username is taken'));
-  busy(f,true);const name=`${v('first')} ${v('last')}`,prof=o.prof==='pharm'?'pharm':'nurse',tmp=tempPw();
+  busy(f,true);const name=`${v('first')} ${v('last')}`,prof=(PROF[o.prof]?o.prof:'nurse'),tmp=tempPw();
   const s={id:uid('s'),name:{th:name,en:name},title:{th:PROF[prof][0],en:PROF[prof][1]},prof,user:u,pw:await pwMake(tmp),admin:!!o.admin,active:true,mustChange:true,at:nowStamp(),by:S.user.id};
   D.staff.push(s);audit(`เพิ่มบัญชีเจ้าหน้าที่ ${name} (${PROF[prof][0]})`,`Added staff account ${name}`,null);S.modal={kind:'tempshow',id:s.id,pw:tmp,isNew:true};render()},
  docs:(o,fd,f)=>{if(!meAdmin())return;D.settings.doctors=String(o.docs||'').split('\n').map(x=>x.trim()).filter(Boolean).slice(0,60);syncDocs();audit('แก้ไขรายชื่อแพทย์ในทีม','Updated team doctor list',null);render();toast(_('บันทึกรายชื่อแพทย์แล้ว','Doctor list saved'))}});
