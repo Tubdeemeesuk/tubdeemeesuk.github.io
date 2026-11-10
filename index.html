@@ -2147,6 +2147,40 @@ div.rbar{cursor:default}
 .al-x .al-h{display:none}
 .al-no{color:var(--danger)!important;font-weight:600}
 .chk.tiny{font-size:.78rem;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+.sh-stats.sm{gap:8px}
+.sh-stats.sm .sh-stat{padding:9px 12px;cursor:default;flex-direction:row;align-items:baseline;gap:8px}
+.sh-stats.sm .sh-stat:hover{transform:none;border-color:color-mix(in srgb,var(--line) 85%,transparent)}
+.sh-stats.sm .sh-stat b{font-size:1.25rem}
+.sh-stats.sm .sh-stat span{font-size:.76rem}
+.pt-search{display:flex;align-items:center;gap:8px;margin:12px 0;padding:0 12px;border:1px solid var(--line);border-radius:14px;background:var(--surface);min-height:46px}
+.pt-search:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+.pt-search input{flex:1;border:0;background:none;font:inherit;font-size:.95rem;color:var(--ink);outline:none;min-width:0;padding:10px 0}
+.ps-ic{display:grid;color:var(--ink-2)}.ps-ic .ic{width:18px;height:18px}
+.ps-n{font-size:.76rem;color:var(--ink-2);white-space:nowrap}
+.pt-page.searching .nboard{display:none}
+.pt-page .pt-list [hidden]{display:none!important}
+.pt-none{color:var(--ink-2);padding:12px 4px}
+.pa-modal .lg-tabs{margin-bottom:12px}
+.pa-form{display:flex;flex-direction:column;gap:10px}
+.pa-demo{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:.78rem;color:var(--ink-2)}
+.pa-demo .chip{cursor:pointer;border:0;font:inherit;font-size:.78rem}
+.pa-st{border:0;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pa-st legend{font-size:.86rem;color:var(--ink-2);margin-bottom:6px;padding:0}
+.pst-r{position:relative;cursor:pointer}
+.pst-r input{position:absolute;opacity:0;width:1px;height:1px}
+.pst-r span{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2);height:100%}
+.pst-r small{font-size:.74rem;color:var(--ink-2)}
+.pst-r:has(input:checked) span{border-color:var(--brand);background:var(--brand-soft);box-shadow:0 0 0 1px var(--brand)}
+.pst-r:has(input:focus-visible) span{outline:3px solid var(--brand);outline-offset:2px}
+.pa-tx{display:none;grid-column:1/-1}
+.pa-st:has(input[value=post]:checked) .pa-tx{display:flex}
+.pa-ok{display:flex;gap:8px;align-items:flex-start;font-size:.84rem;line-height:1.45}
+.pa-ok input{margin-top:3px;accent-color:var(--brand)}
+@media (max-width:640px){.sh-stats.sm{grid-template-columns:repeat(2,minmax(0,1fr))}.sh-stats.sm .sh-stat{flex-direction:column;gap:0}}
+.pa-form .fgrid2{padding:0;gap:10px}
+.reg-tip>div{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}
+.reg-r{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;color:var(--ink)}
+@media (max-width:640px){.sh-stats.sm{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.sh-stats.sm .sh-stat{padding:8px 8px 7px;border-radius:12px}.sh-stats.sm .sh-stat b{font-size:1.1rem}.sh-stats.sm .sh-stat span{font-size:.64rem;line-height:1.25}}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3114,7 +3148,7 @@ function vLogin(){
  <div class="lg-notice">${icon('alert')}<div><span class="nt-l"><b>${_('โปรดทราบ','Please note')}:</b> ${_('นี่คือรูปแบบจำลองสำหรับการทดลอง ข้อมูลทั้งหมดเป็นข้อมูลสมมติ ห้ามกรอกข้อมูลผู้ป่วยจริง','This is a prototype for testing. All data is fictional; don’t enter real patient data.')}</span><span class="nt-s"><b>${_('ต้นแบบทดลอง','Prototype')}</b> · ${_('ข้อมูลสมมติ ห้ามกรอกข้อมูลผู้ป่วยจริง','fictional data only')}</span></div></div>
  <section class="lg-roles" aria-labelledby="lg-rh"><h2 id="lg-rh">${_('เลือกผู้ใช้งาน','Who is using Tub Dee Mee Suk?')}</h2>
  <div class="rpick r4">
-  <button class="rtile" data-a="ptstatus"><span class="rimg"><img src="media/ico-patient.webp" alt="" width="320" height="320"></span><b>${_('ผู้ป่วย','Patient')}</b><small>${_('ก่อนหรือหลังปลูกถ่าย','Before or after transplant')}</small></button>
+  <button class="rtile" data-a="ptstatus"><span class="rimg"><img src="media/ico-patient.webp" alt="" width="320" height="320"></span><b>${_('ผู้ป่วย','Patient')}</b><small>${_('เข้าสู่ระบบด้วยชื่อและ HN','Sign in with name and HN')}</small></button>
   ${rtile(icoCare(),'ญาติ / <span class="nw">ผู้ดูแล</span>','Caregiver','c1')}
   ${rtile('<img src="media/ico-coord.webp" alt="" width="320" height="320">','พยาบาล<br><span class="nw">ผู้ประสานงาน</span>','Nurse<br>coordinator','s1')}
   ${rtile('<img src="media/ico-pharm.webp" alt="" width="320" height="320">','เภสัชกร','Pharmacist','s2')}
@@ -3989,7 +4023,7 @@ function vPatients(){
  ${nurseBoard(mine)}
  <h2 class="sec-h">${_('รายชื่อผู้ป่วย','Patients')}</h2>
  <div class="pt-list">${mine.map(p=>{const pp=pendingFor([p.id]);const top=pp.syms[0];const adh=adherence(p.id);const lv=vitalsOf(p.id).at(-1);const days=p.txDate?daysBetween(p.txDate,todayISO):null;
-  return `<button class="pt" data-a="openpt" data-pid="${p.id}"><div><b>${esc(L(p.name))}</b><small>HN ${p.hn} · ${p.age} ${_('ปี','yrs')}</small></div><div>${phaseChip(p.phase)}<small>${days!==null?_(`วันที่ ${days} หลังปลูกถ่าย`,`Day ${days} post-transplant`):_('ยังไม่ผ่าตัด','Not yet transplanted')}</small></div><div><small>${_('ทานยา 7 วัน','7-day doses')}</small><b class="num">${adh==null?'—':adh+'%'}</b></div><div>${top?levelChip(top.level):pp.vit.length?chip('warn',_('ญาติบันทึก รอตรวจ','Caregiver entry to check')):chip('ok',icon('check')+_('ไม่มีรายการค้าง','Nothing pending'))}<small>${lv?_('บันทึกล่าสุด ','Last log ')+fmtDate(lv.date,{day:'numeric',month:'short'}):_('ยังไม่มีบันทึก','No logs')}</small></div>${icon('chev','chev')}</button>`}).join('')}</div>`;
+  return `<button class="pt" data-a="openpt" data-pid="${p.id}"><div><b>${esc(L(p.name))}</b><small>HN ${p.hn} · ${p.age??'—'} ${_('ปี','yrs')}</small></div><div>${phaseChip(p.phase)}<small>${days!==null?_(`วันที่ ${days} หลังปลูกถ่าย`,`Day ${days} post-transplant`):_('ยังไม่ผ่าตัด','Not yet transplanted')}</small></div><div><small>${_('ทานยา 7 วัน','7-day doses')}</small><b class="num">${adh==null?'—':adh+'%'}</b></div><div>${top?levelChip(top.level):pp.vit.length?chip('warn',_('ญาติบันทึก รอตรวจ','Caregiver entry to check')):chip('ok',icon('check')+_('ไม่มีรายการค้าง','Nothing pending'))}<small>${lv?_('บันทึกล่าสุด ','Last log ')+fmtDate(lv.date,{day:'numeric',month:'short'}):_('ยังไม่มีบันทึก','No logs')}</small></div>${icon('chev','chev')}</button>`}).join('')}</div>`;
 }
 function staffOverview(p){
  const vs=vitalsOf(p.id),v=vs.at(-1),adh=adherence(p.id),rx=activeRx(p.id),pp=pendingFor([p.id]);
@@ -4008,7 +4042,7 @@ function vPatientDetail(){
  const pp=pendingFor([p.id]),pc=pp.syms.length+pp.vit.length+pp.rx.length;
  const body={journey:()=>journeyPanel(p,true),meds:()=>medsPanel(p.id),log:()=>logPanel(p.id),labs:()=>labsPanel(p.id),appts:()=>apptsPanel(p.id),fu:()=>followupPanel(p.id),family:()=>familyReadonly(p.id)}[S.tab]||(()=>profileCards(p)+staffOverview(p));
  return `<button class="btn sm ghost back" data-a="go" data-v="patients">${icon('back')} ${_('ผู้ป่วยทั้งหมด','All patients')}</button>
- <section class="pt-head"><div class="avatar lg">${initial(p)}</div><div><h2>${esc(L(p.name))}</h2><p class="muted">HN ${p.hn} · ${p.age} ${_('ปี','yrs')} · ${sexLabel(p.sex)}${p.txDate?` · ${_('ปลูกถ่ายเมื่อ','Transplanted')} ${fmtDate(p.txDate)}`:''}</p><div class="row">${phaseChip(p.phase)}${pc?chip('warn',icon('clipboard')+_(`รอดำเนินการ ${pc} รายการ`,`${pc} pending`)):''}</div></div></section>
+ <section class="pt-head"><div class="avatar lg">${initial(p)}</div><div><h2>${esc(L(p.name))}</h2><p class="muted">HN ${p.hn} · ${p.age??'—'} ${_('ปี','yrs')} · ${sexLabel(p.sex)}${p.txDate?` · ${_('ปลูกถ่ายเมื่อ','Transplanted')} ${fmtDate(p.txDate)}`:''}</p><div class="row">${phaseChip(p.phase)}${pc?chip('warn',icon('clipboard')+_(`รอดำเนินการ ${pc} รายการ`,`${pc} pending`)):''}</div></div></section>
  <nav class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${S.tab===k}" class="${S.tab===k?'on':''}" data-a="tab" data-t="${k}">${l}</button>`).join('')}</nav>${body()}`;
 }
 function vReview(){
@@ -4157,7 +4191,7 @@ document.addEventListener('toggle',e=>{const d=e.target;if(d&&d.dataset&&d.datas
 function render(){
  document.documentElement.classList.toggle('large',S.large);document.documentElement.lang=S.lang;
  const app=document.getElementById('app');
- if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
+ if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus','ptauth'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
  if(!allowed(S.view))S.view=homeView();
  let body;try{body=VIEWS[S.view]()}catch(err){console.error(err);body=`<div class="card"><p>${esc(err.message)}</p></div>`}
  const vh=(S.view==='home'||S.view==='log')&&S.user.role!=='staff';const entered=S._lastView!==S.view;S._lastView=S.view;
@@ -4628,7 +4662,7 @@ function phKpi(ids){const n=f=>ids.filter(f).length;return{
  all:ids.length,rev:n(id=>rxNew(id)||pmrOf(id).status==='pending'),ddi:n(id=>ddiOpen(id).length),tac:n(id=>tacPending(id)),
  drp:n(id=>D.drp.some(d=>d.pid===id&&['open','sent'].includes(d.status))),cou:n(id=>counsDue(id))}}
 const phPick=pref=>{const mine=myPatients();const pid=mine.some(p=>p.id===S.phPid)?S.phPid:(mine.find(p=>pref(p.id))||mine[0]).id;S.phPid=pid;return pid};
-const phHead=pid=>{const p=P(pid);return `<div class="fu-head"><h2>${esc(L(p.name))} <small>HN ${p.hn} · ${p.age} ${_('ปี','y')}${p.txDate?' · '+_(`หลังปลูกถ่าย ${daysBetween(p.txDate,todayISO)} วัน`,`day ${daysBetween(p.txDate,todayISO)} post-transplant`):''}</small></h2><button class="btn sm ghost" data-a="openpt" data-pid="${pid}">${_('เปิด Patient Profile','Open profile')} ${icon('chev')}</button></div>`};
+const phHead=pid=>{const p=P(pid);return `<div class="fu-head"><h2>${esc(L(p.name))} <small>HN ${p.hn} · ${p.age??'—'} ${_('ปี','y')}${p.txDate?' · '+_(`หลังปลูกถ่าย ${daysBetween(p.txDate,todayISO)} วัน`,`day ${daysBetween(p.txDate,todayISO)} post-transplant`):''}</small></h2><button class="btn sm ghost" data-a="openpt" data-pid="${pid}">${_('เปิด Patient Profile','Open profile')} ${icon('chev')}</button></div>`};
 const d2=d=>d?fmtDate(d,{day:'numeric',month:'short'}):'—';
 const freqTxt=m=>m.times?.length?_(`วันละ ${m.times.length} ครั้ง`,`${m.times.length}× daily`):(L(m.freq)||'—');
 const routeTxt=m=>/inj|ฉีด/i.test(L(m.form)||'')?_('ฉีด','Injection'):_('รับประทาน','Oral');
@@ -4704,7 +4738,7 @@ function vPren(){const pid=phPick(id=>renHits(id).length&&!renDone(id));const r=
  const H=r.H;const hb=(c,f)=>H[c]&&f(H[c].value);
  return `${ptPicker(pid,'phpt',id=>renHits(id).length&&!renDone(id)?` · <em class="dotw">!</em>`:'')}${phHead(pid)}
  <section class="card"><div class="card-h"><h3>${icon('flask')} ${_('การทำงานของไต','Kidney function')}</h3></div><div class="ph-kv">${kv(r.cr,'Creatinine',r.cr?.value,'mg/dL',r.cr&&r.cr.refHigh&&r.cr.value>r.cr.refHigh)}${kv(r.eg,'eGFR',r.eg?.value,'mL/min/1.73m²',r.eg&&r.eg.value<60)}${kv(r.bun,'BUN',r.bun?.value,'mg/dL')}${kv(r.w,_('น้ำหนัก','Weight'),r.w?.wt,_('กก.','kg'))}<div class="ph-crcl ${r.crcl!=null&&r.crcl<60?'bad':''}"><small>CrCl (Cockcroft–Gault)</small><b class="num">${r.crcl??'—'}</b><em>mL/min</em></div></div>
- ${r.miss.length?`<div class="notice warn">${icon('alert')}<div><b>${_('ยังคำนวณ CrCl ไม่ได้','Can’t calculate CrCl yet')}</b><br>${_('ต้องมี','Needs')}: ${r.miss.join(', ')}</div></div>`:`<p class="hint tiny">CrCl = (140 − ${_('อายุ','age')} ${p.age}) × ${r.w.wt} ${_('กก.','kg')} ÷ (72 × Cr ${r.cr.value})${p.sex==='F'?' × 0.85':''} = <b>${r.crcl}</b> mL/min · ${_('ใช้น้ำหนักจริง หากผู้ป่วยบวมหรือมีน้ำในช่องท้องอาจต้องใช้น้ำหนักที่ปรับ','Uses actual weight — adjust if oedema or ascites')}</p>`}</section>
+ ${r.miss.length?`<div class="notice warn">${icon('alert')}<div><b>${_('ยังคำนวณ CrCl ไม่ได้','Can’t calculate CrCl yet')}</b><br>${_('ต้องมี','Needs')}: ${r.miss.join(', ')}</div></div>`:`<p class="hint tiny">CrCl = (140 − ${_('อายุ','age')} ${p.age??'—'}) × ${r.w.wt} ${_('กก.','kg')} ÷ (72 × Cr ${r.cr.value})${p.sex==='F'?' × 0.85':''} = <b>${r.crcl}</b> mL/min · ${_('ใช้น้ำหนักจริง หากผู้ป่วยบวมหรือมีน้ำในช่องท้องอาจต้องใช้น้ำหนักที่ปรับ','Uses actual weight — adjust if oedema or ascites')}</p>`}</section>
  <section class="card"><div class="card-h"><h3>${icon('heart')} ${_('การทำงานของตับ','Liver function')}</h3>${r.hepAbn?chip('warn',_('ตับทำงานบกพร่อง','Impaired')):chip('ok',_('ไม่พบความผิดปกติสำคัญ','No major impairment'))}</div><div class="ph-kv">${kv(H.AST,'AST',H.AST?.value,'U/L',hb('AST',v=>v>80))}${kv(H.ALT,'ALT',H.ALT?.value,'U/L',hb('ALT',v=>v>80))}${kv(H.TBIL,'Total bilirubin',H.TBIL?.value,'mg/dL',hb('TBIL',v=>v>2))}${kv(H.ALB,'Albumin',H.ALB?.value,'g/dL',hb('ALB',v=>v<3))}${kv(H.INR,'INR',H.INR?.value,'',hb('INR',v=>v>1.5))}</div><p class="hint tiny">${_('การประเมินความรุนแรงของตับ (เช่น Child-Pugh) ต้องดูอาการทางคลินิกร่วม เช่น ท้องมาน ภาวะสมองจากตับ','Grading (e.g. Child-Pugh) also needs clinical signs such as ascites or encephalopathy')}</p></section>
  <section class="card"><div class="card-h"><h3>${icon('pill')} ${_('ยาที่ต้องพิจารณาปรับขนาด','Medicines to consider')}</h3></div><div class="tbl-wrap"><table class="mp-tbl ph-ren"><thead><tr><th>${_('ยา','Medicine')}</th><th>${_('ขนาดปัจจุบัน','Current')}</th><th>${_('คำแนะนำตามไต','Renal guidance')}</th><th>${_('คำแนะนำตามตับ','Hepatic guidance')}</th><th></th></tr></thead><tbody>${r.flags.map(f=>`<tr class="${f.rhit||f.hhit?'hit':''}"><td><b>${esc(f.m.name)}</b>${f.m.st==='pending'?chip('warn',_('ใบสั่งใหม่','New order')):''}</td><td class="num">${esc(doseTxt(f.m)||'—')}${f.m.times?.length?' × '+f.m.times.length:''}</td><td>${f.di.ren?`${f.rhit?chip('danger',_('ควรทบทวน','Review')):''} ${_(...f.di.ren)}`:'<span class="muted">—</span>'}</td><td>${f.di.hep?`${f.hhit?chip('warn',_('ควรทบทวน','Review')):''} ${_(...f.di.hep)}`:'<span class="muted">—</span>'}</td><td>${f.rhit||f.hhit?`<button class="btn sm ghost" data-a="drpq" data-pid="${pid}" data-type="renal" data-desc="${esc(`${f.m.name} ${doseTxt(f.m)} · CrCl ${r.crcl??'—'} mL/min`)}" data-rec="${esc(f.rhit?_(...f.di.ren):_(...f.di.hep))}">${_('บันทึกเป็นปัญหา','Log problem')}</button>`:''}</td></tr>`).join('')}</tbody></table></div>
  <p class="hint tiny">${_('แสดงผลเป็นข้อเสนอแนะสำหรับเภสัชกร ไม่ใช่ระบบปรับขนาดยาอัตโนมัติ · ข้อมูลอ้างอิงตัวอย่าง ต้องตรวจกับเอกสารกำกับยาและแนวทางของโรงพยาบาล','Suggestions for the pharmacist — not automatic dosing · sample reference; check the label and hospital guidance')}</p>
@@ -4929,5 +4963,70 @@ vAlerts=function(){const ids=myPatients().map(p=>p.id);const f=S.alf||'all';cons
  <p class="hint tiny">${_('แตะรายการเพื่อรับเรื่อง แจ้งแพทย์ บันทึกคำสั่ง และปิดเคส','Tap an alert to take it, notify a doctor, log orders and close it')}</p></div>`};
 ACT.alsel=d=>{S.alSel=S.alSel===d.k?null:d.k;render()};VIEWS.alerts=vAlerts;
 
-seed();seedHealth();seedPharm();loadPhotos();render();
+/* ================= v31 · patient sign-in / activation + registry search ================= */
+const normTxt=s=>String(s||'').normalize('NFC').toLowerCase().replace(/\s+/g,' ').trim();
+const hnDigits=s=>String(s||'').replace(/\D/g,'');
+const splitName=n=>{const t=normTxt(n).split(' ');return [t[0]||'',t.slice(1).join(' ')]};
+function findPatientByName(first,last){const f=normTxt(first),l=normTxt(last);return D.patients.filter(p=>[p.name.th,p.name.en].some(n=>{const [a,b]=splitName(n);return a===f&&b===l}))}
+let ptFails=0,ptLockUntil=0;
+const mShell=(title,body,label,cls='')=>`<div class="overlay" data-close="modal"><div class="modal ${cls}" role="dialog" aria-modal="true" aria-label="${esc(label||title)}"><div class="modal-h"><h2 style="font-size:1.3rem">${title}</h2><button class="btn sm ghost" data-a="close" aria-label="${_('ปิด','Close')}">${icon('x')}</button></div>${body}</div></div>`;
+function ptAuthModal(){const t=S.modal.t||'login';const pre=S.modal.pre||{};
+ const tabs=`<div class="seg big lg-tabs" role="tablist"><button role="tab" aria-selected="${t==='login'}" class="${t==='login'?'on':''}" data-a="ptauth" data-t="login">${_('เข้าสู่ระบบ','Sign in')}</button><button role="tab" aria-selected="${t==='reg'}" class="${t==='reg'?'on':''}" data-a="ptauth" data-t="reg">${_('เปิดใช้งานบัญชีครั้งแรก','Activate account')}</button></div>`;
+ const nameF=`<div class="fgrid2"><label class="field">${_('ชื่อ','First name')}<input name="first" autocomplete="given-name" value="${esc(pre.first||'')}" required></label><label class="field">${_('นามสกุล','Surname')}<input name="last" autocomplete="family-name" value="${esc(pre.last||'')}" required></label></div>`;
+ const demo=`<div class="pa-demo"><span>${_('บัญชีทดลอง','Demo accounts')}</span><button type="button" class="chip brand" data-a="login" data-id="p1">${esc(L(P('p1').name))} · ${_('ปลูกถ่ายแล้ว','post-transplant')}</button><button type="button" class="chip" data-a="login" data-id="p3">${esc(L(P('p3').name))} · ${_('รอปลูกถ่าย','waiting')}</button></div>`;
+ const body=t==='login'?`<form class="form pa-form" data-form="ptlogin" novalidate>${nameF}<label class="field">${_('รหัสผ่าน (HN)','Password (HN)')}<input name="hn" type="password" inputmode="text" autocomplete="current-password" placeholder="${_('เช่น 65-001234','e.g. 65-001234')}" required></label><p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${_('เข้าสู่ระบบ','Sign in')}</button><p class="hint tiny">${_('ยังไม่เคยใช้งาน? กด "เปิดใช้งานบัญชีครั้งแรก" ด้านบน','First time? Choose “Activate account” above')}</p></form>${demo}`
+ :`<form class="form pa-form" data-form="ptreg" novalidate><p class="muted tiny">${_('ใช้ชื่อ นามสกุล และ HN ตามบัตรโรงพยาบาล HN จะเป็นรหัสผ่านของคุณ','Use your name and HN as on your hospital card. Your HN becomes your password.')}</p>${nameF}
+  <div class="fgrid2"><label class="field">HN<input name="hn" inputmode="text" autocomplete="off" placeholder="${_('เช่น 66-002211','e.g. 66-002211')}" required></label><label class="field">${_('ยืนยัน HN อีกครั้ง','Confirm HN')}<input name="hn2" inputmode="text" autocomplete="off" required></label></div>
+  <fieldset class="pa-st"><legend>${_('สถานะการปลูกถ่ายตับ','Transplant status')}</legend><label class="pst-r"><input type="radio" name="st" value="post"><span><b>${_('ปลูกถ่ายตับแล้ว','I’ve had my transplant')}</b><small>${_('ดูแลตัวเองหลังปลูกถ่าย','Aftercare')}</small></span></label><label class="pst-r"><input type="radio" name="st" value="pre"><span><b>${_('รอปลูกถ่ายตับ','Waiting for a transplant')}</b><small>${_('เตรียมตัวก่อนปลูกถ่าย','Getting ready')}</small></span></label>
+  <label class="field pa-tx">${_('วันที่ปลูกถ่ายตับ (ถ้าจำได้)','Transplant date (if you know it)')}<input type="date" name="tx" max="${todayISO}"></label></fieldset>
+  <label class="chk pa-ok"><input type="checkbox" name="consent" value="1"><span>${_('ยินยอมให้ทีมรักษาเข้าถึงข้อมูลสุขภาพที่บันทึกในแอปนี้ เพื่อใช้ในการดูแลรักษา','I agree the care team can see the health information I record in this app, for my care')}</span></label>
+  <p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${_('เปิดใช้งานบัญชี','Activate account')}</button>
+  <p class="hint tiny">${_('ถ้ามีข้อมูลในโรงพยาบาลแล้ว ระบบจะใช้ข้อมูลจากโรงพยาบาล · ถ้ายังไม่พบ พยาบาลผู้ประสานงานจะตรวจสอบและยืนยันบัญชีให้','If the hospital already has your record we use it · if not, a coordinator nurse will check and confirm your account')}</p></form>`;
+ return mShell(_('ผู้ป่วย','Patient'),tabs+body,_('บัญชีผู้ป่วย','Patient account'),'pa-modal')}
+{const _mh=modalHTML;modalHTML=function(){return S.modal?.kind==='ptauth'?ptAuthModal():_mh()}}
+ACT.regok=d=>{const p=P(d.pid);if(!p)return;p.regOk=true;audit('พยาบาลยืนยันข้อมูลผู้ป่วยลงทะเบียนใหม่','Nurse confirmed self-registered patient',p.id);render();toast(_('ยืนยันแล้ว','Confirmed'))};
+ACT.ptstatus=()=>{S.modal={kind:'ptauth',t:'login'};render()};
+ACT.ptauth=d=>{S.modal={kind:'ptauth',t:d.t};render();setTimeout(()=>document.querySelector('.pa-form input')?.focus(),30)};
+Object.assign(FORMS,{
+ ptlogin:(o,fd,f)=>{if(Date.now()<ptLockUntil)return fail(f,_('ลองผิดหลายครั้ง โปรดรอ 1 นาทีแล้วลองใหม่','Too many tries — wait a minute and try again'));
+  if(!o.first.trim()||!o.last.trim()||!o.hn.trim())return fail(f,_('กรอกชื่อ นามสกุล และ HN ให้ครบ','Enter your name, surname and HN'));
+  const p=findPatientByName(o.first,o.last).find(x=>hnDigits(x.hn)===hnDigits(o.hn));
+  if(!p){ptFails++;if(ptFails>=5){ptLockUntil=Date.now()+60e3;ptFails=0}return fail(f,_('ชื่อ นามสกุล หรือ HN ไม่ถูกต้อง','Name, surname or HN doesn’t match'))}
+  if(!p.activated)return fail(f,_('บัญชีนี้ยังไม่ได้เปิดใช้งาน กด "เปิดใช้งานบัญชีครั้งแรก" ด้านบน','This account isn’t active yet — choose “Activate account” above'));
+  ptFails=0;S.modal=null;ACT.login({id:p.id})},
+ ptreg:(o,fd,f)=>{const first=o.first.trim(),last=o.last.trim(),hn=o.hn.trim();
+  if(!first||!last)return fail(f,_('กรอกชื่อและนามสกุล','Enter your first name and surname'));
+  if(hnDigits(hn).length<6)return fail(f,_('HN ดูไม่ถูกต้อง โปรดตรวจสอบจากบัตรโรงพยาบาล','That HN looks wrong — check your hospital card'));
+  if(hnDigits(hn)!==hnDigits(o.hn2))return fail(f,_('HN ทั้งสองช่องไม่ตรงกัน','The two HNs don’t match'));
+  if(!o.st)return fail(f,_('เลือกสถานะการปลูกถ่ายตับ','Choose your transplant status'));
+  if(!o.consent)return fail(f,_('โปรดยืนยันความยินยอมก่อนเปิดใช้งาน','Please tick the consent box'));
+  const byHn=D.patients.find(p=>hnDigits(p.hn)===hnDigits(hn));
+  if(byHn){const ok=findPatientByName(first,last).includes(byHn);if(!ok)return fail(f,_('HN นี้มีในระบบแล้ว แต่ชื่อไม่ตรงกับข้อมูลโรงพยาบาล โปรดติดต่อพยาบาลผู้ประสานงาน','This HN exists but the name doesn’t match hospital records — please contact the coordinator nurse'));
+   if(byHn.activated)return fail(f,_('บัญชีนี้เปิดใช้งานแล้ว กลับไปที่ "เข้าสู่ระบบ"','This account is already active — use “Sign in”'));
+   byHn.activated=true;byHn.activatedAt=nowStamp();S.modal=null;ACT.login({id:byHn.id});audit('ผู้ป่วยเปิดใช้งานบัญชี','Patient activated account',byHn.id);toast(_('เปิดใช้งานบัญชีแล้ว ครั้งต่อไปเข้าสู่ระบบด้วยชื่อ นามสกุล และ HN','Account active — next time sign in with your name and HN'));return}
+  const post=o.st==='post';const tx=post?(o.tx||null):null;const days=tx?daysBetween(tx,todayISO):null;
+  const p={id:uid('p'),name:{th:`${first} ${last}`,en:`${first} ${last}`},hn,age:null,sex:null,phase:post?(days!=null&&days>180?4:3):1,txDate:post?(tx||dOff(-30)):null,discharge:post?(tx?(days>14?dAdd(tx,14):todayISO):dOff(-16)):null,staff:['s1','s2'],checklist:{},activated:true,activatedAt:nowStamp(),selfReg:true,txUnknown:post&&!tx};
+  D.patients.push(p);S.modal=null;ACT.login({id:p.id});audit('ผู้ป่วยลงทะเบียนใหม่ รอพยาบาลยืนยัน','New self-registered patient, awaiting nurse check',p.id);toast(_('สร้างบัญชีแล้ว พยาบาลผู้ประสานงานจะตรวจสอบข้อมูลกับโรงพยาบาลอีกครั้ง','Account created — a coordinator nurse will check it against hospital records'))}});
+/* registry: compact stats + search */
+const ptHay=p=>normTxt([p.name.th,p.name.en,p.hn,hnDigits(p.hn)].join(' '));
+const ptMatch=(p,q)=>{const t=normTxt(q);if(!t)return true;const h=ptHay(p);return t.split(' ').every(w=>h.includes(w)||(/^\d[\d-]*$/.test(w)&&hnDigits(p.hn).includes(hnDigits(w))))};
+{const _nb=nurseBoard;nurseBoard=function(mine){return _nb(mine).replace(/<article class="nb-card([^"]*)"><button class="nb-top" data-a="openpt" data-pid="([\w-]+)"/g,(m,c,pid)=>`<article class="nb-card${c}" data-q="${esc(ptHay(P(pid)))}" data-hn="${hnDigits(P(pid).hn)}"><button class="nb-top" data-a="openpt" data-pid="${pid}"`)}}
+{const _vp=vPatients;vPatients=function(){const mine=myPatients(),ids=mine.map(p=>p.id),pend=pendingFor(ids);const ap7=D.appts.filter(a=>ids.includes(a.patientId)&&a.status==='scheduled'&&a.date>=todayISO&&a.date<=dOff(7)).length;
+ const nNew=mine.filter(p=>p.selfReg&&!p.regOk).length;
+ const st=(v,lab,tone)=>`<div class="sh-stat ${v&&tone?tone:''}"><b class="num">${v}</b><span>${lab}</span></div>`;
+ let h=_vp();h=h.replace(/^<div class="grid g4">[\s\S]*?<\/div><\/div>/,`<div class="sh-stats sm">${st(mine.length,_('ผู้ป่วยที่ได้รับมอบหมาย','Assigned'),'')}${st(pend.syms.length+pend.vit.length,_('บันทึกรอตรวจสอบ','Entries to review'),'warn')}${st(pend.rx.length,_('ใบสั่งยารอตรวจทาน','Prescriptions to check'),'warn')}${st(ap7,_('นัดหมายใน 7 วัน','Visits, next 7 days'),'info')}</div>
+ <div class="pt-search"><span class="ps-ic">${icon('search')}</span><input type="search" data-ptq placeholder="${_('ค้นหาชื่อ นามสกุล หรือ HN','Search name, surname or HN')}" aria-label="${_('ค้นหาผู้ป่วย','Search patients')}" value="${esc(S.ptq||'')}" autocomplete="off"><span class="ps-n" aria-live="polite"></span></div>
+ ${nNew?`<div class="sh-tip reg-tip">${icon('user')}<div><b>${_(`ผู้ป่วยลงทะเบียนเองใหม่ ${nNew} ราย รอตรวจสอบข้อมูลกับโรงพยาบาล`,`${nNew} self-registered patient(s) to check against hospital records`)}</b>${mine.filter(p=>p.selfReg&&!p.regOk).map(p=>`<div class="reg-r"><span>${esc(L(p.name))} · HN ${esc(p.hn)} · ${p.txDate?_('แจ้งว่าปลูกถ่ายแล้ว','says post-transplant'):_('แจ้งว่ารอปลูกถ่าย','says waiting')}</span><button class="btn sm" data-a="regok" data-pid="${p.id}">${icon('check')} ${_('ยืนยันข้อมูลแล้ว','Confirmed')}</button></div>`).join('')}</div></div>`:''}`);
+ h=h.replace(/<button class="pt" data-a="openpt" data-pid="([\w-]+)">/g,(m,pid)=>`<button class="pt" data-a="openpt" data-pid="${pid}" data-q="${esc(ptHay(P(pid)))}" data-hn="${hnDigits(P(pid).hn)}">`);
+ h=h.replace(/<small>HN ([^<]*) · null ปี<\/small>|<small>HN ([^<]*) · null yrs<\/small>/g,(m,a,b)=>`<small>HN ${a||b}</small>`);
+ h=h.replace(/(<button class="pt" data-a="openpt" data-pid="([\w-]+)"[^>]*><div><b>[^<]*<\/b>)/g,(m,pre,pid)=>P(pid).selfReg&&!P(pid).regOk?pre+` <span class="chip warn">${_('ลงทะเบียนใหม่','New')}</span>`:pre);
+ return `<div class="pt-page ${S.ptq?'searching':''}">${h}<p class="pt-none" hidden>${_('ไม่พบผู้ป่วยที่ตรงกับคำค้น','No patients match')}</p></div>`};VIEWS.patients=vPatients}
+function applyPtSearch(root=document){const page=root.querySelector('.pt-page');if(!page)return;const q=S.ptq||'';page.classList.toggle('searching',!!q.trim());const t=normTxt(q);let n=0;
+ page.querySelectorAll('.pt-list [data-q]').forEach(el=>{const ok=!t||t.split(' ').every(w=>el.dataset.q.includes(w)||(/^\d[\d-]*$/.test(w)&&el.dataset.hn.includes(hnDigits(w))));el.hidden=!ok;if(ok)n++});
+ const c=page.querySelector('.ps-n');if(c)c.textContent=t?_(`พบ ${n} ราย`,`${n} found`):'';const none=page.querySelector('.pt-none');if(none)none.hidden=!t||n>0}
+document.addEventListener('input',e=>{const el=e.target.closest('[data-ptq]');if(!el)return;S.ptq=el.value;applyPtSearch()});
+{const _r=render;render=function(){_r();try{applyPtSearch()}catch(e){}}}
+Object.assign(ICON,{search:'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4'});
+
+seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);loadPhotos();render();
 </script>
