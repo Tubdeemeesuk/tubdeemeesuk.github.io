@@ -5718,7 +5718,7 @@ let lastAct=Date.now();['pointerdown','keydown'].forEach(t=>document.addEventLis
 setInterval(()=>{if(LIVE&&S.user?.role==='staff'&&Date.now()-lastAct>30*60e3){ACT.logout();toast(_('ออกจากระบบอัตโนมัติ เพราะไม่ได้ใช้งาน 30 นาที','Signed out after 30 minutes of no activity'))}},60e3);
 
 /* ================= v39 · central store: Google Apps Script web app (two-way sync) ================= */
-const SJ_API_DEFAULT='';/*SJ_API*/
+const SJ_API_DEFAULT='https://script.google.com/macros/s/AKfycbzAt3Z6jGbCOmdGGFwo9m0vsRGCFUtaaAXzxO45S2Une7nS8qBwTRzF8Q5gm-bEEnJt/exec';/*SJ_API*/
 const API={url:(window.SJ_API_OVERRIDE&&/^(file:|http:\/\/(localhost|127\.0\.0\.1))/.test(location.href)?window.SJ_API_OVERRIDE:SJ_API_DEFAULT),tok:null,since:{},base:{},busy:false,pullT:0,pushT:0,err:null,last:null,lastErrToast:0};
 const APIMODE=LIVE&&!!API.url;
 if(APIMODE){_n=1e12+Math.floor(Math.random()*8e12)}
