@@ -2418,6 +2418,31 @@ div.rbar{cursor:default}
 .rrows-m .rr-t b{font-size:1.08rem}
 @media (max-width:640px){.rrow{gap:12px;padding:10px 12px 10px 10px;border-radius:22px}.rr-ic{width:64px;height:64px;border-radius:19px}.rr-t b{font-size:1.08rem}.rr-t small{font-size:.8rem}.rr-go{width:30px;height:30px}}
 @media (prefers-reduced-motion:reduce){.rrow{transition:none}}
+/* v46 · registration approval */
+.rw{display:flex;flex-direction:column;gap:12px;text-align:left}
+.rw-ic{display:flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:50%;background:var(--gold-soft);color:var(--gold);align-self:center}
+.rw-ic svg{width:32px;height:32px}.rw-ic.no{background:var(--surface-2);color:var(--ink-2)}
+.rw-lead{font-family:var(--f-display);font-weight:700;font-size:1.15rem;text-align:center;margin:0}
+.rw p{margin:0;line-height:1.6}
+.rw-steps{list-style:none;margin:4px 0;padding:0;display:flex;flex-direction:column;gap:8px;counter-reset:rw}
+.rw-steps li{counter-increment:rw;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--surface-2);font-weight:500}
+.rw-steps li::before{content:counter(rw);display:flex;align-items:center;justify-content:center;flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--surface);border:1px solid var(--line);font-size:.85rem}
+.rw-steps li b{margin-left:auto;color:var(--ok)}.rw-steps li b svg{width:18px;height:18px}
+.rw-steps li.cur{background:var(--gold-soft);color:var(--ink)}.rw-steps li.cur::before{background:var(--gold);color:#fff;border-color:var(--gold)}
+.reg-note{display:flex;gap:8px;align-items:flex-start;background:var(--brand-soft);border-radius:12px;padding:10px 12px;margin:4px 0;color:var(--ink)}
+.reg-note svg{flex-shrink:0;width:18px;height:18px;margin-top:2px;color:var(--brand)}
+.reg-pend{border:1.5px solid var(--gold-2);background:var(--surface)}
+.reg-pend h3{display:flex;align-items:center;gap:8px}
+.rp-n{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 8px;border-radius:13px;background:var(--gold);color:#fff;font-size:.85rem;font-weight:700}
+.rp-tip{margin:-4px 0 10px}
+.rp-list{display:flex;flex-direction:column;gap:10px}
+.rp-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;padding:12px;border-radius:16px;background:var(--surface-2)}
+.rp-who{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1 1 260px}
+.rp-who b{font-size:1.02rem}.rp-who small{color:var(--ink-2);line-height:1.45}
+.rp-k{align-self:flex-start;background:var(--brand-soft);color:var(--brand-2);font-size:.75rem}.rp-k.cg{background:var(--gold-soft);color:var(--gold)}
+.rp-act{display:flex;gap:8px;flex-wrap:wrap}
+.reg-dot{position:absolute;top:2px;right:calc(50% - 22px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--gold);color:#fff;font-size:.7rem;font-weight:700;line-height:18px;text-align:center;pointer-events:none}
+[data-v="coord"]{position:relative}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3266,7 +3291,7 @@ function pendingFor(pids){return{
   syms:D.symptoms.filter(s=>pids.includes(s.patientId)&&!s.reviewed&&s.level!=='none').sort((a,b)=>LEVELS[b.level].w-LEVELS[a.level].w||byStamp(b,a)),
   vit:D.vitals.filter(v=>pids.includes(v.patientId)&&v.verified===false).sort((a,b)=>byStamp(b,a)),
   rx:D.prescriptions.filter(r=>pids.includes(r.patientId)&&r.status==='pending')}}
-const myPatients=()=>LIVE?D.patients.filter(p=>!p.archived):D.patients.filter(p=>p.staff.includes(S.user.id));
+const myPatients=()=>LIVE?D.patients.filter(p=>!p.archived&&!regBlocked(p)):D.patients.filter(p=>p.staff.includes(S.user.id));
 function countdown(d){const n=daysBetween(todayISO,d);return n===0?_('วันนี้','Today'):n===1?_('พรุ่งนี้','Tomorrow'):n>1?_(`อีก ${n} วัน`,`In ${n} days`):_(`${-n} วันก่อน`,`${-n} days ago`)}
 function spark(vals,w=160,h=34){if(vals.length<2)return'';const min=Math.min(...vals),max=Math.max(...vals),r=max-min||1;const pts=vals.map((v,i)=>[i*(w-8)/(vals.length-1)+4,h-4-(v-min)/r*(h-10)]);const d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');const last=pts[pts.length-1];return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true"><path class="spark-a" d="${d} L${last[0].toFixed(1)} ${h} L${pts[0][0].toFixed(1)} ${h}Z"/><path class="spark-l" d="${d}"/><circle class="spark-d" cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="3"/></svg>`}
 function byChip(id){const r=roleOf(id);return r==='caregiver'?chip('info',icon('users')+_('ญาติบันทึก','By caregiver')):r==='staff'?chip('brand',_('บุคลากรบันทึก','By staff')):chip('',_('ผู้ป่วยบันทึก','By patient'))}
@@ -4423,7 +4448,7 @@ document.addEventListener('toggle',e=>{const d=e.target;if(d&&d.dataset&&d.datas
 function render(){
  document.documentElement.classList.toggle('large',S.large);document.documentElement.lang=S.lang;
  const app=document.getElementById('app');
- if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus','ptauth','cgauth','pin','stauth','howto','stpick'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
+ if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus','ptauth','cgauth','pin','stauth','howto','stpick','regwait','regno'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
  if(!allowed(S.view))S.view=homeView();
  let body;try{body=VIEWS[S.view]()}catch(err){console.error(err);body=`<div class="card"><p>${esc(err.message)}</p></div>`}
  const vh=(S.view==='home'||S.view==='log')&&S.user.role!=='staff';const entered=S._lastView!==S.view;S._lastView=S.view;
@@ -6131,6 +6156,108 @@ function stPickModal(){
  return mShell(_('เลือกตำแหน่งของคุณ','Choose your role'),`<p class="muted" style="margin:-4px 0 12px">${_('สำหรับบุคลากรทีมปลูกถ่ายตับ เข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่าน','For transplant team staff · sign in with your username and password')}</p><div class="rrows rrows-m">${rows}</div>`,_('บุคลากรทางการแพทย์','Care team'),'pa-modal')}
 ACT.stpick=()=>{S.modal={kind:'stpick'};render();setTimeout(()=>document.querySelector('.modal .rrow')?.focus(),40)};
 {const _mh45=modalHTML;modalHTML=function(){return S.modal?.kind==='stpick'?stPickModal():_mh45()}}
+
+/* ================= v46 · patients and caregivers wait for a nurse to approve their registration ================= */
+function regBlocked(x){return !!x&&(x.approval==='pending'||x.approval==='rejected')}
+const regPendPts=()=>D.patients.filter(p=>p.approval==='pending'&&!p.archived);
+const regPendCgs=()=>D.consents.filter(c=>c.approval==='pending'&&c.active!==false&&P(c.patientId)&&P(c.patientId).approval!=='rejected');
+const regCount=()=>regPendPts().length+regPendCgs().length;
+const regWhen=t=>t?esc(fmtDate(String(t).slice(0,10)))+' '+esc(String(t).slice(11,16)):'';
+const canApprove=()=>S.user?.role==='staff'&&!isPh();
+/* --- what the person sees after registering --- */
+function regWaitModal(){const m=S.modal,cg=m.t==='cg';
+ return mShell(_('ลงทะเบียนเรียบร้อย','Registration received'),`<div class="rw">
+  <span class="rw-ic">${icon('clock')}</span>
+  <p class="rw-lead">${m.again?_('ข้อมูลของคุณอยู่ระหว่างรอพยาบาลยืนยัน','Your registration is still waiting for a nurse to approve it'):_('รอพยาบาลผู้ประสานงานยืนยันข้อมูล','Waiting for a coordinator nurse to approve it')}</p>
+  <p>${cg?_('พยาบาลจะตรวจสอบชื่อผู้ป่วย HN และข้อมูลผู้ดูแลก่อนเปิดให้เข้าใช้งาน เพื่อป้องกันบุคคลภายนอกเข้าถึงข้อมูลผู้ป่วย','The nurse checks the patient’s name, HN and your details before opening access, so outsiders can’t see patient information.'):_('พยาบาลจะตรวจสอบชื่อ นามสกุล และ HN กับเวชระเบียนก่อนเปิดให้เข้าใช้งาน เพื่อป้องกันบุคคลภายนอกลงทะเบียนแทนผู้ป่วย','The nurse checks your name and HN against hospital records before opening access, so no one else can register in your place.')}</p>
+  <ol class="rw-steps"><li>${_('ลงทะเบียน','Register')} <b>${icon('check')}</b></li><li class="cur">${_('พยาบาลยืนยัน','Nurse approves')}</li><li>${cg?_('เข้าสู่ระบบด้วยชื่อของคุณ และ HN ผู้ป่วยเป็นรหัสผ่าน','Sign in with your name and the patient’s HN'):_('เข้าสู่ระบบด้วยชื่อ นามสกุล และ HN','Sign in with your name and HN')}</li></ol>
+  <p class="hint">${_('ลองเข้าสู่ระบบอีกครั้งภายหลัง หากรอนาน ติดต่อพยาบาลผู้ประสานงานปลูกถ่ายตับ','Try signing in again later. If it takes a while, contact the transplant coordinator nurse.')}</p>
+  <button class="btn primary block" data-a="close">${_('ตกลง','OK')}</button></div>`,_('ลงทะเบียนเรียบร้อย','Registration received'),'pa-modal')}
+function regNoModal(){return mShell(_('ยังเข้าใช้งานไม่ได้','Can’t sign in yet'),`<div class="rw"><span class="rw-ic no">${icon('alert')}</span><p class="rw-lead">${_('การลงทะเบียนนี้ไม่ได้รับการยืนยัน','This registration wasn’t approved')}</p><p>${_('ข้อมูลอาจไม่ตรงกับเวชระเบียน โปรดติดต่อพยาบาลผู้ประสานงานปลูกถ่ายตับเพื่อตรวจสอบ','The details may not match hospital records. Please contact the transplant coordinator nurse.')}</p><button class="btn primary block" data-a="close">${_('ตกลง','OK')}</button></div>`,'','pa-modal')}
+{const _mh46=modalHTML;modalHTML=function(){const k=S.modal?.kind;if(k==='regwait')return regWaitModal();if(k==='regno')return regNoModal();if(k==='regrej')return regRejModal();return _mh46()}}
+/* tell people up front, on both registration forms */
+{const note=()=>`<p class="hint reg-note">${icon('shield')} ${_('หลังลงทะเบียน พยาบาลผู้ประสานงานจะตรวจสอบข้อมูลและยืนยันก่อน จึงจะเข้าใช้งานได้','After you register, a coordinator nurse checks and approves it before you can sign in.')}</p>`;
+ const add=(h,form)=>{const i=h.indexOf(`data-form="${form}"`);if(i<0)return h;const j=h.indexOf('<p class="ferr"',i);return j<0?h:h.slice(0,j)+note()+h.slice(j)};
+ const _pa46=ptAuthModal;ptAuthModal=function(){return add(_pa46(),'ptreg')};
+ const _ca46=cgAuthModal;cgAuthModal=function(){return add(_ca46(),'cgreg')}}
+/* --- sign-in and registration: server mode --- */
+if(APIMODE){
+ const showRes=(j,t)=>{if(j.code==='pending'){S.modal={kind:'regwait',t,again:true};render();return true}if(j.code==='rejected'){S.modal={kind:'regno'};render();return true}return false};
+ FORMS.ptlogin=apiForm(async(o,fd,f)=>{const first=o.first.trim(),last=o.last.trim(),hn=o.hn.trim();if(!first||!last||!hn)return fail(f,_('กรอกชื่อ นามสกุล และ HN','Enter your name, surname and HN'));
+  const j=await api('ptlogin',{first,last,hn});if(!j.ok){if(showRes(j,'pt'))return;if(j.code==='not_activated'){S.modal={kind:'ptauth',t:'reg'};render();toast(_('บัญชียังไม่เปิดใช้งาน กรอกข้อมูลเพื่อเปิดใช้งานครั้งแรก','Not activated yet — fill in to activate'));return}return fail(f,j.msg||_('เข้าสู่ระบบไม่สำเร็จ','Sign-in failed'))}
+  S.modal=null;await apiStart(j.token,j.user.id);pinOffer();render()});
+ FORMS.ptreg=apiForm(async(o,fd,f)=>{const first=o.first.trim(),last=o.last.trim(),hn=o.hn.trim();
+  if(!first||!last)return fail(f,_('กรอกชื่อและนามสกุล','Enter your first name and surname'));
+  if(hnDigits(hn).length<6)return fail(f,_('HN ดูไม่ถูกต้อง โปรดตรวจสอบจากบัตรโรงพยาบาล','That HN looks wrong — check your hospital card'));
+  if(hnDigits(hn)!==hnDigits(o.hn2))return fail(f,_('HN ทั้งสองช่องไม่ตรงกัน','The two HNs don’t match'));
+  if(!o.st)return fail(f,_('เลือกสถานะการปลูกถ่ายตับ','Choose your transplant status'));
+  if(!o.consent)return fail(f,_('โปรดยืนยันความยินยอมก่อนเปิดใช้งาน','Please tick the consent box'));
+  const j=await api('ptreg',{first,last,hn,st:o.st,tx:o.tx||''});
+  if(j.ok&&j.pending){S.modal={kind:'regwait',t:'pt',again:!!j.again};render();return}
+  if(!j.ok){if(showRes(j,'pt'))return;return fail(f,j.msg||_('ลงทะเบียนไม่สำเร็จ','Couldn’t register'))}
+  S.modal=null;await apiStart(j.token,j.user.id);pinOffer();render()});
+ FORMS.cglogin=apiForm(async(o,fd,f)=>{if(!o.first.trim()||!o.last.trim()||!o.hn.trim())return fail(f,_('กรอกชื่อ นามสกุล และรหัสผ่านให้ครบ','Enter your name, surname and password'));
+  const j=await api('cglogin',{first:o.first.trim(),last:o.last.trim(),hn:o.hn.trim()});if(!j.ok){if(showRes(j,'cg'))return;return fail(f,j.msg||_('เข้าสู่ระบบไม่สำเร็จ','Sign-in failed'))}
+  S.modal=null;await apiStart(j.token,j.user.id,{pid:j.pid});pinOffer();render()});
+ FORMS.cgreg=apiForm(async(o,fd,f)=>{const v=k=>String(o[k]||'').trim();
+  if(!v('first')||!v('last'))return fail(f,_('กรอกชื่อและนามสกุลของผู้ดูแล','Enter your first name and surname'));
+  if(hnDigits(v('phone')).length<9)return fail(f,_('กรอกเบอร์โทรศัพท์ให้ถูกต้อง','Enter a valid phone number'));
+  if(!v('pfirst')||!v('plast'))return fail(f,_('กรอกชื่อและนามสกุลของผู้ป่วย','Enter the patient’s name and surname'));
+  if(hnDigits(v('hn')).length<6)return fail(f,_('HN ของผู้ป่วยดูไม่ถูกต้อง โปรดตรวจสอบจากบัตรโรงพยาบาล','That HN looks wrong — check the hospital card'));
+  if(!o.consent)return fail(f,_('โปรดยืนยันก่อนลงทะเบียน','Please tick the confirmation box'));
+  const j=await api('cgreg',{first:v('first'),last:v('last'),phone:v('phone'),rel:v('rel'),pfirst:v('pfirst'),plast:v('plast'),hn:v('hn')});
+  if(j.ok&&j.pending){S.modal={kind:'regwait',t:'cg',again:!!j.again};render();return}
+  if(!j.ok){if(showRes(j,'cg'))return;return fail(f,j.msg||_('ลงทะเบียนไม่สำเร็จ','Couldn’t register'))}
+  S.modal=null;await apiStart(j.token,j.user.id,{pid:j.pid});pinOffer();render()});
+}else if(LIVE){
+ /* --- the same rules when everything lives on one device --- */
+ const _pl=FORMS.ptlogin;FORMS.ptlogin=(o,fd,f)=>{const p=findPatientByName(o.first||'',o.last||'').find(x=>hnDigits(x.hn)===hnDigits(o.hn||''));
+  if(p&&p.activated&&p.approval==='pending'){S.modal={kind:'regwait',t:'pt',again:true};render();return}
+  if(p&&p.approval==='rejected'){S.modal={kind:'regno'};render();return}return _pl(o,fd,f)};
+ const quiet=fn=>{const lg=ACT.login,po=pinOffer,tt=toast;let who=null;ACT.login=d=>{who=d.id;S.user={id:d.id,role:roleOf(d.id)}};pinOffer=()=>{};toast=()=>{};try{fn()}catch(e){console.warn(e)}finally{ACT.login=lg;pinOffer=po;toast=tt}return who};
+ const _pr=FORMS.ptreg;FORMS.ptreg=(o,fd,f)=>{const pre=D.patients.find(p=>hnDigits(p.hn)===hnDigits(o.hn||''));
+  if(pre&&pre.approval==='pending'&&findPatientByName(o.first||'',o.last||'').includes(pre)){S.modal={kind:'regwait',t:'pt',again:true};render();return}
+  if(pre&&pre.approval==='rejected'){S.modal={kind:'regno'};render();return}
+  const id=quiet(()=>_pr(o,fd,f));if(!id)return;const p=P(id);if(p){p.approval='pending';p.regAt=nowStamp()}S.user=null;S.modal={kind:'regwait',t:'pt'};render()};
+ const _cl=FORMS.cglogin;FORMS.cglogin=(o,fd,f)=>{const fn=fullName(o.first||'',o.last||'');
+  const cs=D.consents.find(x=>x.active&&hnDigits(P(x.patientId)?.hn)===hnDigits(o.hn||'')&&(()=>{const c=C(x.caregiverId);return c&&normTxt(L(c.name))===fn})());
+  if(cs&&(cs.approval==='pending'||P(cs.patientId)?.approval==='pending')){S.modal={kind:'regwait',t:'cg',again:true};render();return}
+  if(cs&&P(cs.patientId)?.approval==='rejected'){S.modal={kind:'regno'};render();return}return _cl(o,fd,f)};
+ const _cr=FORMS.cgreg;FORMS.cgreg=(o,fd,f)=>{const n=D.consents.length;const id=quiet(()=>_cr(o,fd,f));if(!id)return;
+  D.consents.slice(n).forEach(c=>{if(c.caregiverId===id){c.approval='pending';c.regAt=nowStamp()}});
+  const nt=D.notifs[D.notifs.length-1];if(nt&&/ลงทะเบียนเป็นผู้ดูแลของคุณ/.test(nt.text?.th||''))nt.text={th:nt.text.th.replace('ลงทะเบียนเป็นผู้ดูแลของคุณ','ลงทะเบียนเป็นผู้ดูแลของคุณ รอพยาบาลผู้ประสานงานยืนยัน'),en:nt.text.en};
+  S.user=null;S.pid=null;S.modal={kind:'regwait',t:'cg'};render()};
+}
+/* --- the nurse's approval list --- */
+function regCard(){if(!canApprove())return '';const pts=regPendPts(),cgs=regPendCgs();if(!pts.length&&!cgs.length)return '';
+ const btns=(k,id)=>`<div class="rp-act"><button class="btn sm primary" data-a="regapprove" data-k="${k}" data-id="${id}">${icon('check')} ${_('ยืนยัน','Approve')}</button><button class="btn sm ghost" data-a="regreject" data-k="${k}" data-id="${id}">${_('ไม่อนุมัติ','Decline')}</button></div>`;
+ const ptRow=p=>`<div class="rp-row"><div class="rp-who"><span class="chip rp-k">${_('ผู้ป่วย','Patient')}</span><b>${esc(L(p.name))}</b><small>HN ${esc(p.hn)} · ${p.selfReg?(p.txDate||p.txUnknown?_('แจ้งว่าปลูกถ่ายแล้ว','says post-transplant')+(p.txDate&&!p.txUnknown?' '+esc(fmtDate(p.txDate)):''):_('แจ้งว่ารอปลูกถ่าย','says waiting for transplant')):_('ขอเปิดใช้งานบัญชีที่พยาบาลสร้างไว้','activating a record the team created')}${p.regAt||p.activatedAt?' · '+_('ลงทะเบียน','registered')+' '+regWhen(p.regAt||p.activatedAt):''}</small></div>${btns('pt',p.id)}</div>`;
+ const cgRow=c=>{const g=C(c.caregiverId)||{},p=P(c.patientId)||{};return `<div class="rp-row"><div class="rp-who"><span class="chip rp-k cg">${_('ญาติ/ผู้ดูแล','Caregiver')}</span><b>${esc(L(g.name))}${c.relation?` <span class="muted">(${esc(L(c.relation))})</span>`:''}</b><small>${_('โทร','Tel')} ${esc(g.phone||'-')} · ${_('ดูแล','for')} ${esc(L(p.name))} HN ${esc(p.hn||'')}${p.approval==='pending'?' · '+_('ผู้ป่วยยังรอยืนยัน','patient also pending'):''}${c.regAt?' · '+regWhen(c.regAt):''}</small></div>${btns('cg',c.id)}</div>`};
+ return `<section class="card reg-pend" id="regpend"><div class="card-h"><h3>${icon('user')} ${_('รอยืนยันการลงทะเบียน','Registrations to approve')} <span class="rp-n">${pts.length+cgs.length}</span></h3></div>
+ <p class="muted rp-tip">${_('ตรวจชื่อ นามสกุล และ HN กับเวชระเบียนก่อนกดยืนยัน ระหว่างรอ ผู้ลงทะเบียนยังเข้าใช้งานไม่ได้','Check name and HN against hospital records before approving. Until then they can’t sign in.')}</p>
+ <div class="rp-list">${pts.map(ptRow).join('')}${cgs.map(cgRow).join('')}</div></section>`}
+ACT.regapprove=d=>{if(!canApprove())return;const now=nowStamp();
+ if(d.k==='pt'){const p=P(d.id);if(!p)return;Object.assign(p,{approval:'approved',approvedBy:S.user.id,approvedAt:now,regOk:true});
+  notify(p.id,'พยาบาลผู้ประสานงานยืนยันการลงทะเบียนของคุณแล้ว ยินดีต้อนรับสู่ตับดีมีสุข','Your registration has been approved. Welcome to Tub Dee Mee Suk.');
+  audit(`ยืนยันการลงทะเบียนผู้ป่วย ${L(p.name)} (HN ${p.hn})`,`Approved patient registration ${L(p.name)}`,p.id);toast(_('ยืนยันแล้ว ผู้ป่วยเข้าสู่ระบบได้แล้ว','Approved — the patient can sign in now'))}
+ else{const c=D.consents.find(x=>x.id===d.id);if(!c)return;Object.assign(c,{approval:'approved',approvedBy:S.user.id,approvedAt:now});const g=C(c.caregiverId);
+  notify(c.patientId,`พยาบาลยืนยัน ${L(g?.name)} เป็นผู้ดูแลของคุณแล้ว`,`${L(g?.name)} is now approved as your caregiver`);
+  audit(`ยืนยันผู้ดูแล ${L(g?.name)}`,`Approved caregiver ${L(g?.name)}`,c.patientId);toast(_('ยืนยันแล้ว ผู้ดูแลเข้าสู่ระบบได้แล้ว','Approved — the caregiver can sign in now'))}
+ render()};
+ACT.regreject=d=>{if(!canApprove())return;S.modal={kind:'regrej',k:d.k,id:d.id};render()};
+function regRejModal(){const m=S.modal;const who=m.k==='pt'?L(P(m.id)?.name):L(C(D.consents.find(x=>x.id===m.id)?.caregiverId)?.name);
+ return mShell(_('ไม่อนุมัติการลงทะเบียน','Decline registration'),`<form class="form" data-form="regrej"><p>${_('ไม่อนุมัติการลงทะเบียนของ','Decline the registration of')} <b>${esc(who||'')}</b>? ${_('ผู้ลงทะเบียนจะเข้าใช้งานไม่ได้ และจะเห็นข้อความให้ติดต่อพยาบาล','They won’t be able to sign in and will be asked to contact the nurse.')}</p>
+ <label class="field">${_('เหตุผล (เห็นเฉพาะทีม)','Reason (team only)')}<textarea name="why" rows="2" placeholder="${_('เช่น HN ไม่ตรงกับเวชระเบียน','e.g. HN doesn’t match hospital records')}"></textarea></label>
+ <p class="ferr" role="alert"></p><div class="row"><button class="btn" type="button" data-a="close">${_('ยกเลิก','Cancel')}</button><button class="btn danger" type="submit">${_('ไม่อนุมัติ','Decline')}</button></div></form>`,'','')}
+FORMS.regrej=(o,fd,f)=>{const m=S.modal;if(!m||!canApprove())return;const why=String(o.why||'').trim(),now=nowStamp();
+ if(m.k==='pt'){const p=P(m.id);if(!p)return;Object.assign(p,{approval:'rejected',rejectedBy:S.user.id,rejectedAt:now,rejectReason:why});audit(`ไม่อนุมัติการลงทะเบียนผู้ป่วย ${L(p.name)}${why?' · '+why:''}`,`Declined patient registration`,p.id)}
+ else{const c=D.consents.find(x=>x.id===m.id);if(!c)return;Object.assign(c,{approval:'rejected',active:false,rejectedBy:S.user.id,rejectedAt:now,rejectReason:why});audit(`ไม่อนุมัติการลงทะเบียนผู้ดูแล${why?' · '+why:''}`,`Declined caregiver registration`,c.patientId)}
+ S.modal=null;render();toast(_('บันทึกแล้ว','Saved'))};
+/* show the list where nurses start their day, and on the patient list */
+{const _vc=VIEWS.coord;VIEWS.coord=function(){const h=_vc();const card=regCard();if(!card)return h;const i=h.indexOf('<section');return i<0?card+h:h.slice(0,i)+card+h.slice(i)}}
+{const _vp46=VIEWS.patients;VIEWS.patients=function(){const h=_vp46();const card=regCard();if(!card)return h;const i=h.indexOf('<div class="pt-search"');return i<0?card+h:h.slice(0,i)+card+h.slice(i)}}
+/* a small count on the home tab so a new registration is noticed */
+{const _r46=render;render=function(){_r46();if(!canApprove())return;const n=regCount();document.querySelectorAll('[data-v="coord"]').forEach(b=>{let s=b.querySelector('.reg-dot');if(n&&!s){s=document.createElement('span');s.className='reg-dot';b.appendChild(s)}if(s){if(n)s.textContent=n>9?'9+':String(n);else s.remove()}})}}
 
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
