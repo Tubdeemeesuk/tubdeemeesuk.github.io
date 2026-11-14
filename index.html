@@ -2396,6 +2396,28 @@ div.rbar{cursor:default}
 .rxp-head{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:4px 0 8px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--warn) 12%,transparent);font-size:.9rem}
 .rxp-diff{margin:0 0 8px}.pt-tips{margin:8px 0 0;padding-left:20px;color:var(--ink-2);font-size:.9rem}
 .code-box{padding:10px 12px 4px;margin:0 0 10px;border-radius:14px;background:color-mix(in srgb,var(--brand) 8%,transparent);border:1px solid color-mix(in srgb,var(--brand) 25%,transparent)}.code-box .hint{display:flex;gap:6px;align-items:center;margin:4px 0 6px}
+/* v45 · one row per user type */
+.rrows{display:flex;flex-direction:column;gap:12px;max-width:640px;width:100%;margin:0}
+.rrow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px;width:100%;border:1px solid var(--line);background:var(--surface);border-radius:24px;padding:12px 14px 12px 12px;cursor:pointer;font:inherit;color:var(--ink);text-align:left;box-shadow:0 10px 24px -18px rgba(30,90,85,.55);transition:transform .18s var(--ease),box-shadow .18s}
+.rrow:hover{transform:translateY(-2px);box-shadow:0 16px 30px -18px rgba(30,90,85,.6)}
+.rrow:active{transform:scale(.985)}
+.rrow:focus-visible{outline:3px solid var(--brand);outline-offset:3px}
+.rr-ic{display:block;width:76px;height:76px;border-radius:22px;overflow:hidden;flex-shrink:0;box-shadow:0 8px 16px -10px rgba(30,90,85,.55)}
+.rr-ic img,.rr-ic svg{display:block;width:100%;height:100%}
+.rr-t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.rr-t b{font-family:var(--f-display);font-weight:700;font-size:1.22rem;line-height:1.3;color:var(--ink)}
+.rr-t small{color:var(--ink-2);font-size:.86rem;line-height:1.4}
+.rr-go{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--brand-soft);color:var(--brand)}
+.rr-go svg{width:18px;height:18px}
+.rr-ic-f{background:linear-gradient(160deg,#DCEFEA,#A9D3CB);padding:7px;box-sizing:border-box}
+.rr-folder{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;width:100%;height:100%}
+.rr-folder i{display:block;border-radius:9px;overflow:hidden;box-shadow:0 2px 4px rgba(30,70,68,.18)}
+.rr-folder i img,.rr-folder i svg{display:block;width:100%;height:100%}
+.rrows-m .rrow{box-shadow:none;border-radius:20px}
+.rrows-m .rr-ic{width:60px;height:60px;border-radius:18px}
+.rrows-m .rr-t b{font-size:1.08rem}
+@media (max-width:640px){.rrow{gap:12px;padding:10px 12px 10px 10px;border-radius:22px}.rr-ic{width:64px;height:64px;border-radius:19px}.rr-t b{font-size:1.08rem}.rr-t small{font-size:.8rem}.rr-go{width:30px;height:30px}}
+@media (prefers-reduced-motion:reduce){.rrow{transition:none}}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3362,12 +3384,7 @@ function vLogin(){
   <h1 class="lg-h">${_('ดูแลด้วยหัวใจ <em class="nw">ใส่ใจทุกก้าวของชีวิต</em>','Caring with heart, <em>at every step of life</em>')}</h1></div>
   <div class="hg-art">${careNet()}</div></section>
  <section class="lg-roles" aria-labelledby="lg-rh"><h2 id="lg-rh">${_('เลือกผู้ใช้งาน','Who is using Tub Dee Mee Suk?')}</h2>
- ${pinWelcome()}<div class="rpick r4">
-  <button class="rtile" data-a="ptstatus"><span class="rimg"><img src="media/ico-patient.webp" alt="" width="320" height="320"></span><b>${_('ผู้ป่วย','Patient')}</b><small>${_('เข้าสู่ระบบด้วยชื่อและ HN','Sign in with name and HN')}</small></button>
-  <button class="rtile" data-a="cgstatus"><span class="rimg">${icoCare()}</span><b>${_('ญาติ / <span class="nw">ผู้ดูแล</span>','Caregiver')}</b><small>${_('ลงทะเบียนด้วยชื่อและ HN ผู้ป่วย','Register with the patient’s name and HN')}</small></button>
-  ${LIVE?stTile('nurse','<img src="media/ico-coord.webp" alt="" width="320" height="320">','พยาบาล<br><span class="nw">ผู้ประสานงาน</span>','Nurse<br>coordinator'):rtile('<img src="media/ico-coord.webp" alt="" width="320" height="320">','พยาบาล<br><span class="nw">ผู้ประสานงาน</span>','Nurse<br>coordinator','s1')}
-  ${LIVE?stTile('pharm','<img src="media/ico-pharm.webp" alt="" width="320" height="320">','เภสัชกร','Pharmacist'):rtile('<img src="media/ico-pharm.webp" alt="" width="320" height="320">','เภสัชกร','Pharmacist','s2')}
-</div>
+ ${pinWelcome()}${roleRows()}
 </section>
  <footer class="lg-foot2"><span>© 2569 <b>ตับดีมีสุข</b> by LT CMU</span>${installBtn('btn sm')}</footer>
  </div></div>`;
@@ -4406,7 +4423,7 @@ document.addEventListener('toggle',e=>{const d=e.target;if(d&&d.dataset&&d.datas
 function render(){
  document.documentElement.classList.toggle('large',S.large);document.documentElement.lang=S.lang;
  const app=document.getElementById('app');
- if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus','ptauth','cgauth','pin','stauth','howto'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
+ if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus','ptauth','cgauth','pin','stauth','howto','stpick'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
  if(!allowed(S.view))S.view=homeView();
  let body;try{body=VIEWS[S.view]()}catch(err){console.error(err);body=`<div class="card"><p>${esc(err.message)}</p></div>`}
  const vh=(S.view==='home'||S.view==='log')&&S.user.role!=='staff';const entered=S._lastView!==S.view;S._lastView=S.view;
@@ -5619,7 +5636,7 @@ async function pwCheck(pw,rec){if(!rec)return false;return (await pwHash(pw,rec.
 const pwWeak=p=>p.length<8||!/[A-Za-z฀-๿]/.test(p)||!/\d/.test(p);
 const tempPw=()=>{const A='abcdefghjkmnpqrstuvwxyz',N='23456789';const r=n=>crypto.getRandomValues(new Uint32Array(1))[0]%n;let s='';for(let i=0;i<4;i++)s+=A[r(A.length)];s+=A[r(A.length)].toUpperCase();for(let i=0;i<4;i++)s+=N[r(N.length)];return s};
 const normUser=u=>String(u||'').trim().toLowerCase();
-const PROF={nurse:['พยาบาลผู้ประสานงานปลูกถ่ายตับ','Liver transplant nurse coordinator'],pharm:['เภสัชกร','Pharmacist'],dev:['ผู้พัฒนาแอปพลิเคชัน','App developer']};
+const PROF={doctor:['แพทย์','Physician'],nurse:['พยาบาลผู้ประสานงานปลูกถ่ายตับ','Liver transplant nurse coordinator'],pharm:['เภสัชกร','Pharmacist'],dev:['ผู้พัฒนาแอปพลิเคชัน','App developer']};
 const stActive=()=>D.staff.filter(s=>s.pw&&s.active!==false);
 const meAdmin=()=>S.user?.role==='staff'&&!!ST(S.user.id)?.admin;
 const stLock={};
@@ -6049,7 +6066,7 @@ const STCODE={s:'sj-staff-code-v1',it:150000,h:'aac134e5e4e47f070a4eddb437392f14
 const stCodeOk=async c=>(await pwHash(String(c||'').trim(),STCODE.s,STCODE.it))===STCODE.h;
 let codeFails=0,codeLock=0;
 stAuthModal=function(){const m=S.modal,r=m.r||'nurse';
- const shell=b=>mShell(_('เจ้าหน้าที่ · พยาบาลและเภสัชกร','Staff · nurses and pharmacists'),b,_('เจ้าหน้าที่','Staff'),'pa-modal');
+ const shell=b=>mShell(_('บุคลากรทางการแพทย์','Care team'),b,_('เจ้าหน้าที่','Staff'),'pa-modal');
  if(m.loading)return shell(`<p class="muted" style="padding:20px 0;text-align:center">${_('กำลังเชื่อมต่อ…','Connecting…')}</p>`);
  if(m.err)return shell(`<p class="ferr">${esc(m.err)}</p><button class="btn primary block" data-a="stauth" data-r="${r}">${_('ลองอีกครั้ง','Try again')}</button>`);
  const first=APIMODE?!!m.first:!stActive().length;const t=first?'signup':(m.t||'login');
@@ -6087,6 +6104,33 @@ FORMS.stsignup=async(o,fd,f)=>{const v=k=>String(o[k]||'').trim();const u=normUs
   D.staff.push(s);stEnter(s);audit(first?'สร้างบัญชีผู้ดูแลระบบ (ด้วยรหัสสมัคร)':'สมัครบัญชีเจ้าหน้าที่ด้วยรหัสสมัคร',first?'Created administrator with sign-up code':'Staff signed up with the code',null);
   toast(first?_('สร้างบัญชีผู้ดูแลระบบแล้ว','Administrator account created'):_('สมัครบัญชีเจ้าหน้าที่แล้ว','Staff account created'))}
  catch(e){fail(f,e.message||String(e))}finally{busy(f,false)}};
+
+/* ================= v45 · landing: one row per user type; staff roles live inside one "care team" row ================= */
+const icoDoctor=()=>`<svg viewBox="0 0 320 320" aria-hidden="true"><defs><linearGradient id="idr-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFE8F0"/><stop offset="1" stop-color="#7DB8C4"/></linearGradient><filter id="idr-s"><feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#1E4A55" flood-opacity=".28"/></filter></defs>
+ <rect width="320" height="320" rx="70" fill="url(#idr-g)"/><circle cx="160" cy="130" r="120" fill="#fff" opacity=".22"/>
+ <g filter="url(#idr-s)" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M104 66v58c0 34 24 56 56 56s56-22 56-56V66" stroke="#2C6F73" stroke-width="16"/><circle cx="104" cy="62" r="11" fill="#2C6F73" stroke="none"/><circle cx="216" cy="62" r="11" fill="#2C6F73" stroke="none"/>
+ <path d="M160 180v26c0 36 26 52 52 52s40-18 40-44v-18" stroke="#2C6F73" stroke-width="16"/><circle cx="252" cy="178" r="30" fill="#fff" stroke="#2C6F73" stroke-width="14"/><circle cx="252" cy="178" r="11" fill="#EDB45C" stroke="none"/></g></svg>`;
+const icoDev=()=>`<svg viewBox="0 0 320 320" aria-hidden="true"><defs><linearGradient id="idv-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E5EFD9"/><stop offset="1" stop-color="#9CC59A"/></linearGradient><filter id="idv-s"><feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#2E4A2E" flood-opacity=".25"/></filter></defs>
+ <rect width="320" height="320" rx="70" fill="url(#idv-g)"/><circle cx="160" cy="130" r="120" fill="#fff" opacity=".22"/>
+ <g filter="url(#idv-s)"><rect x="62" y="74" width="196" height="136" rx="16" fill="#fff"/><rect x="62" y="74" width="196" height="136" rx="16" fill="none" stroke="#2E6B4F" stroke-width="12"/><path d="M40 226h240l-16 22H56z" fill="#2E6B4F"/>
+ <path d="M124 122l-26 20 26 20M196 122l26 20-26 20" fill="none" stroke="#2E6B4F" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M172 114l-24 56" stroke="#EDB45C" stroke-width="12" stroke-linecap="round"/></g></svg>`;
+const ROLEIMG={doctor:icoDoctor,nurse:()=>'<img src="media/ico-coord.webp" alt="" width="320" height="320">',pharm:()=>'<img src="media/ico-pharm.webp" alt="" width="320" height="320">',dev:icoDev};
+const ROLEDESC={doctor:['ดูข้อมูลและติดตามผู้ป่วยในความดูแล','Follow the patients in your care'],nurse:['ติดตามผู้ป่วย นัดหมาย และบันทึกยา','Follow-up, appointments and medicines'],pharm:['ทบทวนยาและให้คำปรึกษาด้านยา','Medicine review and counselling'],dev:['ดูแลระบบและบัญชีผู้ใช้','System and account administration']};
+function roleRows(){
+ const row=(a,img,th,en,sth,sen,extra='')=>`<button class="rrow" data-a="${a}"${extra}><span class="rr-ic">${img}</span><span class="rr-t"><b>${_(th,en)}</b><small>${_(sth,sen)}</small></span><span class="rr-go">${icon('chev')}</span></button>`;
+ const folder=`<span class="rr-folder">${['doctor','nurse','pharm','dev'].map(k=>`<i>${ROLEIMG[k]()}</i>`).join('')}</span>`;
+ return `<div class="rrows">
+ ${row('ptstatus','<img src="media/ico-patient.webp" alt="" width="320" height="320">','ผู้ป่วย','Patient','เข้าสู่ระบบด้วยชื่อและ HN','Sign in with your name and HN')}
+ ${row('cgstatus',icoCare(),'ญาติ / ผู้ดูแล','Family / caregiver','ลงทะเบียนด้วยชื่อและ HN ผู้ป่วย','Register with the patient’s name and HN')}
+ <button class="rrow rr-team" data-a="stpick"><span class="rr-ic rr-ic-f">${folder}</span><span class="rr-t"><b>${_('บุคลากรทางการแพทย์','Care team')}</b><small>${_('แพทย์ · พยาบาลผู้ประสานงาน · เภสัชกร · ผู้พัฒนาแอป','Doctors · nurse coordinators · pharmacists · app developer')}</small></span><span class="rr-go">${icon('chev')}</span></button>
+ </div>`}
+function stPickModal(){
+ const keys=LIVE?['doctor','nurse','pharm','dev']:['nurse','pharm'];
+ const rows=keys.map(k=>{const act=LIVE?`data-a="stauth" data-r="${k}"`:`data-a="login" data-id="${k==='pharm'?'s2':'s1'}"`;
+  return `<button class="rrow" ${act}><span class="rr-ic">${ROLEIMG[k]()}</span><span class="rr-t"><b>${k==='nurse'?_('พยาบาลผู้ประสานงาน','Nurse coordinator'):_(...PROF[k])}</b><small>${LIVE?_(...ROLEDESC[k]):_('บัญชีทดลอง','Demo')+': '+esc(L(person(k==='pharm'?'s2':'s1').name))}</small></span><span class="rr-go">${icon('chev')}</span></button>`}).join('');
+ return mShell(_('เลือกตำแหน่งของคุณ','Choose your role'),`<p class="muted" style="margin:-4px 0 12px">${_('สำหรับบุคลากรทีมปลูกถ่ายตับ เข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่าน','For transplant team staff · sign in with your username and password')}</p><div class="rrows rrows-m">${rows}</div>`,_('บุคลากรทางการแพทย์','Care team'),'pa-modal')}
+ACT.stpick=()=>{S.modal={kind:'stpick'};render();setTimeout(()=>document.querySelector('.modal .rrow')?.focus(),40)};
+{const _mh45=modalHTML;modalHTML=function(){return S.modal?.kind==='stpick'?stPickModal():_mh45()}}
 
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
