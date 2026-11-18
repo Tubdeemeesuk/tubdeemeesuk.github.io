@@ -2443,6 +2443,27 @@ div.rbar{cursor:default}
 .rp-act{display:flex;gap:8px;flex-wrap:wrap}
 .reg-dot{position:absolute;top:2px;right:calc(50% - 22px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--gold);color:#fff;font-size:.7rem;font-weight:700;line-height:18px;text-align:center;pointer-events:none}
 [data-v="coord"]{position:relative}
+/* v47 · closed-app reminders */
+.pushbox{display:flex;flex-direction:column;gap:12px;padding:14px;border-radius:18px;background:var(--brand-soft);margin-bottom:14px}
+.pb-h{display:flex;gap:12px;align-items:flex-start}
+.pb-h>svg{flex-shrink:0;width:26px;height:26px;color:var(--brand);margin-top:2px}
+.pb-h b{display:block;font-size:1.02rem}.pb-h small{color:var(--ink-2);line-height:1.45}
+.pb-on{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.pb-on .hint{text-align:left}
+.pb-act{gap:8px;flex-wrap:wrap}
+.pb-steps{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:4px}
+.pb-sub{margin:4px 0 8px;font-weight:600;color:var(--ink-2);font-size:.9rem}
+.pushbox .sw{background:var(--surface);border-radius:14px;padding:10px 12px}
+/* on/off switches (label text first, checkbox last) — kept apart from the colour-swatch chips that share the .sw class */
+.sw:has(>input:last-child){display:flex;justify-content:space-between;align-items:center;gap:14px;min-height:54px;border-bottom:1px solid var(--line)}
+.sw:has(>input:last-child)>span,.sw:has(>input:last-child:checked)>span{display:block;padding:0;border:0;border-radius:0;background:none;font-size:inherit;box-shadow:none;color:inherit;font-weight:inherit}
+.sw>input[type=checkbox]:last-child{position:relative;opacity:1;pointer-events:auto;appearance:none;-webkit-appearance:none;flex-shrink:0;width:50px;height:30px;border-radius:15px;background:var(--line);cursor:pointer;border:0;transition:background .15s}
+.sw>input[type=checkbox]:last-child::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .15s}
+.sw>input[type=checkbox]:last-child:checked{background:var(--brand)}
+.sw>input[type=checkbox]:last-child:checked::after{transform:translateX(20px)}
+.sw>input[type=checkbox]:last-child:disabled{opacity:.4;cursor:not-allowed}
+.sw>input[type=checkbox]:last-child:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.pushbox .sw{border-bottom:0}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -6258,6 +6279,88 @@ FORMS.regrej=(o,fd,f)=>{const m=S.modal;if(!m||!canApprove())return;const why=St
 {const _vp46=VIEWS.patients;VIEWS.patients=function(){const h=_vp46();const card=regCard();if(!card)return h;const i=h.indexOf('<div class="pt-search"');return i<0?card+h:h.slice(0,i)+card+h.slice(i)}}
 /* a small count on the home tab so a new registration is noticed */
 {const _r46=render;render=function(){_r46();if(!canApprove())return;const n=regCount();document.querySelectorAll('[data-v="coord"]').forEach(b=>{let s=b.querySelector('.reg-dot');if(n&&!s){s=document.createElement('span');s.className='reg-dot';b.appendChild(s)}if(s){if(n)s.textContent=n>9?'9+':String(n);else s.remove()}})}}
+
+/* ================= v47 · medicine reminders that arrive while the app is closed (Web Push) ================= */
+/* The phone subscribes to push; the Sheet's script wakes it at each dose time with an empty push, and the
+   service worker writes the notification from the schedule saved on this phone. Medicine names stay on the phone. */
+if(REM.pnames===undefined)REM.pnames=true;
+const PUSH=(()=>{let v=null;try{v=JSON.parse(LS.get('sj-push')||'null')}catch(e){}return Object.assign({on:false,ep:'',sig:'',pid:''},v&&typeof v==='object'?v:{})})();
+const savePush=()=>LS.set('sj-push',JSON.stringify(PUSH));
+const isIOS=()=>/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+function pushSupport(){if(!APIMODE)return 'nolive';
+ if(isIOS()&&!isStandalone())return 'ios-install';
+ if(!('serviceWorker' in navigator)||!('PushManager' in window)||!notifOK())return 'no';
+ if(notifOK()&&Notification.permission==='denied')return 'denied';return 'ok'}
+const b64ToU8=s=>{const p='='.repeat((4-s.length%4)%4),b=atob((s+p).replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from(b,c=>c.charCodeAt(0))};
+const addDays=(iso,n)=>{const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+/* the next 7 days of dose times for this patient */
+function pushPlan(pid){const days={},count={};
+ for(let i=0;i<7;i++){const d=addDays(todayISO,i);let sl=[];try{sl=slotsOn(pid,d)}catch(e){}
+  const g={};sl.forEach(x=>{{const d=rxDoseText(x.item);(g[x.time]=g[x.time]||[]).push(x.item.name+(d?' '+d:''))}});if(Object.keys(g).length)days[d]=g;
+  Object.entries(g).forEach(([t,a])=>{if(i===0||count[t]===undefined)count[t]=i===0?a.length:Math.max(count[t]||0,a.length)})}
+ const times=Object.keys(count).sort().map(t=>({t,n:count[t]}));
+ return {days,times,sig:JSON.stringify([times,REM.lead])}}
+function rxDoseText(it){try{return typeof rxDose==='function'?rxDose(it):''}catch(e){return ''}}
+async function swReg(){if(!('serviceWorker' in navigator))throw new Error('no sw');
+ let r=await navigator.serviceWorker.getRegistration();if(!r)r=await navigator.serviceWorker.register('sw.js');
+ return await Promise.race([navigator.serviceWorker.ready,new Promise((_r,j)=>setTimeout(()=>j(new Error('sw timeout')),10000))])}
+async function pushCache(pid,extra={}){try{if(!('caches' in window))return;const plan=pushPlan(pid);const c=await caches.open('tdms-rem');
+ let old={};try{const r=await c.match('rem.json');if(r)old=await r.json()}catch(e){}
+ const who=S.user?.role==='caregiver'?L(P(pid)?.name):'';
+ await c.put('rem.json',new Response(JSON.stringify(Object.assign({testAt:old.testAt||0},{lang:S.lang,lead:REM.lead||0,names:REM.pnames!==false,who,days:plan.days,at:Date.now()},extra)),{headers:{'Content-Type':'application/json'}}))}catch(e){}}
+async function pushOn(){const pid=remTarget();if(!pid)return;
+ const st=pushSupport();if(st!=='ok'){render();return}
+ S.pushBusy=true;render();
+ try{
+  const perm=await Notification.requestPermission();if(perm!=='granted'){toast(_('ยังไม่ได้อนุญาตการแจ้งเตือน','Notifications weren’t allowed'));return}
+  const reg=await swReg();const k=await api('vapid');if(!k.ok||!k.key)throw new Error(k.msg||'key');
+  let sub=await reg.pushManager.getSubscription();
+  if(sub){const cur=sub.options&&sub.options.applicationServerKey;let same=false;try{same=!!cur&&btoa(String.fromCharCode(...new Uint8Array(cur))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')===k.key}catch(e){}
+   if(!same){try{await sub.unsubscribe()}catch(e){}sub=null}}
+  if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64ToU8(k.key)});
+  const plan=pushPlan(pid);await pushCache(pid);
+  const j=await api('pushsub',{sub:sub.toJSON(),times:plan.times,lead:REM.lead||0,pid});if(!j.ok)throw new Error(j.msg||j.error||'sub');
+  Object.assign(PUSH,{on:true,ep:sub.endpoint,sig:plan.sig,pid});savePush();
+  toast(_('เปิดแล้ว จะแจ้งเตือนเวลากินยาแม้ปิดแอป','On — dose reminders will arrive even when the app is closed'))}
+ catch(e){toast(_('เปิดการแจ้งเตือนไม่สำเร็จ','Couldn’t turn on reminders')+' · '+(e.message||e))}
+ finally{S.pushBusy=false;render()}}
+async function pushOff(silent){try{const reg=await navigator.serviceWorker?.getRegistration();const sub=reg&&await reg.pushManager.getSubscription();
+  const ep=sub?.endpoint||PUSH.ep;if(ep&&API.tok)await api('pushdel',{sub:{endpoint:ep}}).catch(()=>{});if(sub)await sub.unsubscribe().catch(()=>{})}catch(e){}
+ Object.assign(PUSH,{on:false,ep:'',sig:''});savePush();if(!silent){toast(_('ปิดการแจ้งเตือนแม้ปิดแอปแล้ว','Closed-app reminders are off'));render()}}
+async function pushTest(){const pid=remTarget();if(!pid)return;S.pushBusy=true;render();
+ try{await pushCache(pid,{testAt:Date.now()});const j=await api('pushtest',{endpoint:PUSH.ep});
+  toast(j.ok?_('ส่งแล้ว ลองปิดแอปแล้วรอสักครู่ การแจ้งเตือนจะขึ้นมา','Sent — close the app and the notification will appear shortly'):_('ส่งไม่สำเร็จ','Couldn’t send')+(j.msg?' · '+j.msg:''))}
+ catch(e){toast(e.message||String(e))}finally{S.pushBusy=false;render()}}
+/* keep the phone's copy of the schedule, and the Sheet's dose times, up to date */
+let pushT=0;
+function pushKeep(){if(!PUSH.on||!APIMODE||!API.tok)return;const pid=remTarget();if(!pid||pid!==PUSH.pid)return;
+ if(Date.now()-pushT<15000)return;pushT=Date.now();pushCache(pid);
+ const plan=pushPlan(pid);if(plan.sig!==PUSH.sig){(async()=>{try{const reg=await swReg();const sub=await reg.pushManager.getSubscription();if(!sub){PUSH.on=false;savePush();render();return}
+  const j=await api('pushsub',{sub:sub.toJSON(),times:plan.times,lead:REM.lead||0,pid});if(j.ok){PUSH.sig=plan.sig;PUSH.ep=sub.endpoint;savePush()}}catch(e){}})()}}
+{const _r47=render;render=function(){if(S._goMeds&&S.user&&S.user.role!=='staff'){S._goMeds=false;S.view='meds'}_r47();try{pushKeep()}catch(e){}}}
+{const _lo47=ACT.logout;ACT.logout=d=>{if(PUSH.on)pushOff(true);_lo47(d)}}
+ACT.pushon=()=>pushOn();ACT.pushoff=()=>pushOff();ACT.pushtest=()=>pushTest();
+try{navigator.serviceWorker?.addEventListener('message',e=>{if(e.data&&e.data.go==='meds'&&S.user&&S.user.role!=='staff'){S.modal=null;S.view='meds';render()}})}catch(e){}
+/* the reminder card: closed-app reminders first, then the in-app options */
+function pushBlock(){const st=pushSupport(),busy=S.pushBusy;
+ const head=`<div class="pb-h">${icon('bell')}<div><b>${_('แจ้งเตือนแม้ปิดแอป','Reminders when the app is closed')}</b><small>${_('ขึ้นบนหน้าจอมือถือเมื่อถึงเวลากินยา แม้ไม่ได้เปิดแอปไว้','Shows on your phone at each dose time, even when the app isn’t open')}</small></div></div>`;
+ let body='';
+ if(st==='nolive')body=`<p class="muted">${_('ใช้ได้เมื่อแอปเชื่อมกับที่เก็บข้อมูลกลางแล้ว','Available once the app is connected to the central store')}</p>`;
+ else if(st==='ios-install')body=`<p>${_('บน iPhone/iPad ต้องเพิ่มแอปลงหน้าจอโฮมก่อน','On iPhone/iPad, add the app to your Home Screen first')}</p><ol class="pb-steps"><li>${_('เปิดลิงก์แอปใน Safari','Open the app link in Safari')}</li><li>${_('แตะปุ่มแชร์ แล้วเลือก "เพิ่มไปยังหน้าจอโฮม"','Tap Share, then “Add to Home Screen”')}</li><li>${_('เปิดแอปจากไอคอนบนหน้าจอโฮม แล้วกลับมาที่หน้านี้','Open the app from the Home Screen icon and come back here')}</li></ol><p class="hint tiny">${_('ต้องใช้ iOS 16.4 ขึ้นไป','Needs iOS 16.4 or later')}</p>`;
+ else if(st==='denied')body=`<p>${_('เครื่องนี้ปิดการแจ้งเตือนของแอปไว้ เปิดได้ที่การตั้งค่าของเบราว์เซอร์หรือมือถือ → การแจ้งเตือน → ตับดีมีสุข','Notifications are blocked for this app. Turn them on in your browser or phone settings → Notifications.')}</p>`;
+ else if(st==='no')body=`<p class="muted">${_('เบราว์เซอร์นี้ยังไม่รองรับ แนะนำ Chrome บน Android หรือ Safari บน iPhone ที่เพิ่มแอปลงหน้าจอโฮมแล้ว','This browser doesn’t support it. Use Chrome on Android, or Safari on iPhone with the app added to the Home Screen.')}</p>`;
+ else if(PUSH.on)body=`<div class="pb-on">${chip('ok',icon('check')+_('เปิดอยู่ในเครื่องนี้','On for this phone'))}<span class="hint tiny">${_('แจ้งเตือนอาจช้าได้ไม่เกิน 5 นาที และจะไม่เตือนถ้าบันทึกการกินยารอบนั้นแล้ว','May arrive up to 5 minutes late; skipped if that dose is already recorded')}</span></div>
+  <label class="sw"><span><b>${_('แสดงชื่อยาในการแจ้งเตือน','Show medicine names in the notification')}</b><br><small class="muted">${_('ปิดไว้ถ้าไม่อยากให้คนอื่นเห็นชื่อยาบนหน้าจอล็อก','Turn off to keep names off the lock screen')}</small></span><input type="checkbox" data-c="rem" data-k="pnames" ${REM.pnames!==false?'checked':''}></label>
+  <div class="row pb-act"><button class="btn" data-a="pushtest" ${busy?'disabled':''}>${icon('bell')} ${_('ส่งแจ้งเตือนทดสอบ','Send a test')}</button><button class="btn ghost" data-a="pushoff" ${busy?'disabled':''}>${_('ปิด','Turn off')}</button></div>`;
+ else body=`<button class="btn primary block" data-a="pushon" ${busy?'disabled':''}>${icon('bell')} ${busy?_('กำลังเปิด…','Turning on…'):_('เปิดการแจ้งเตือนแม้ปิดแอป','Turn on closed-app reminders')}</button><p class="hint tiny">${_('มือถือจะถามขออนุญาตการแจ้งเตือน ให้กด "อนุญาต"','Your phone will ask to allow notifications — tap Allow')}</p>`;
+ return `<div class="pushbox">${head}${body}</div>`}
+{const _rc47=remCard;remCard=function(pid){let h=_rc47(pid);
+ const i=h.indexOf('<div class="rem-grid">');if(i>=0)h=h.slice(0,i)+pushBlock()+`<p class="pb-sub">${_('ขณะเปิดแอปอยู่','While the app is open')}</p>`+h.slice(i);
+ h=h.replace(/<div class="lockline">[\s\S]*?<\/span><\/div>/,`<div class="lockline">${icon('info')}<span>${_('บน iPhone และ iPad เว็บสั่นเครื่องไม่ได้ และจะไม่มีเสียงถ้าเปิดโหมดเงียบ การแจ้งเตือนแม้ปิดแอปใช้เสียงแจ้งเตือนของมือถือแทน','iPhone and iPad can’t vibrate from a web page and stay silent in silent mode. Closed-app reminders use your phone’s own notification sound.')}</span></div>`);
+ return h}}
+{const _crem=CHG.rem;CHG.rem=el=>{_crem(el);if(el.dataset.k==='pnames'){const pid=remTarget();if(pid)pushCache(pid)}}}
+{const _cl=CHG.remlead;if(_cl)CHG.remlead=el=>{_cl(el);PUSH.sig='';pushT=0}}
+if(new URLSearchParams(location.search).get('v')==='meds'){try{history.replaceState(null,'',location.pathname)}catch(e){}S._goMeds=true}
 
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
