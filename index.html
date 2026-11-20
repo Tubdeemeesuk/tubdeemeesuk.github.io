@@ -6362,5 +6362,26 @@ function pushBlock(){const st=pushSupport(),busy=S.pushBusy;
 {const _cl=CHG.remlead;if(_cl)CHG.remlead=el=>{_cl(el);PUSH.sig='';pushT=0}}
 if(new URLSearchParams(location.search).get('v')==='meds'){try{history.replaceState(null,'',location.pathname)}catch(e){}S._goMeds=true}
 
+/* ================= v48 · readable report tabs in the Sheet fill themselves ================= */
+/* Every staff device sends the rows that changed since it last sent them, a few seconds after opening and every 3 minutes. */
+const GSA={key:'sj-gs-sent-v1',busy:false,last:0,err:null,at:null,n:0};
+const gsHash=s=>{let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return (h>>>0).toString(36)};
+async function gsAuto(force){if(!APIMODE||!API.tok||S.user?.role!=='staff'||GSA.busy)return;if(!force&&Date.now()-GSA.last<150000)return;
+ GSA.busy=true;GSA.last=Date.now();
+ try{let sent={};try{sent=JSON.parse(LS.get(GSA.key)||'{}')||{}}catch(e){}
+  const todo=[];gsRecords().forEach(r=>{const k=r.tab+'|'+r.key,h=gsHash(JSON.stringify(r.data));if(sent[k]!==h)todo.push([k,h,r])});
+  for(let i=0;i<todo.length;i+=150){const part=todo.slice(i,i+150);const j=await api('records',{records:part.map(x=>x[2])});
+   if(!j||j.ok===false)throw new Error((j&&(j.error||j.msg))||'records');part.forEach(([k,h])=>{sent[k]=h});try{LS.set(GSA.key,JSON.stringify(sent))}catch(e){}}
+  GSA.err=null;GSA.at=new Date().toTimeString().slice(0,5);GSA.n=todo.length;if(force)toast(_(`อัปเดตแท็บรายงานแล้ว (${todo.length} แถว)`,`Report tabs updated (${todo.length} rows)`))}
+ catch(e){GSA.err=e.message||String(e);if(force)toast(_('อัปเดตแท็บรายงานไม่สำเร็จ · ','Couldn’t update report tabs · ')+GSA.err)}
+ finally{GSA.busy=false;if(S.view==='gsync')render()}}
+setInterval(()=>{gsAuto().catch(()=>{})},180000);
+{let seen='';const _r48=render;render=function(){_r48();const u=S.user?.role==='staff'&&API.tok?S.user.id:'';if(u&&u!==seen){seen=u;setTimeout(()=>gsAuto(),6000)}if(!u)seen=''}}
+ACT.gsall2=async()=>{if(meAdmin()&&!GSA.busy){try{LS.set(GSA.key,'{}')}catch(e){}}await gsAuto(true)};
+{const _vg48=vGsync;vGsync=function(){if(!APIMODE)return _vg48();let h=_vg48();
+ h=h.replace(/<p class="hint tiny">[\s\S]*?<\/p><\/section>$/,`<p class="hint tiny">${_('ข้อมูลหลักเก็บในแท็บ db_… ที่ซ่อนไว้ (ห้ามแก้ไขด้วยมือ) ส่วนแท็บภาษาไทยอ่านง่าย เช่น ผู้ป่วย บันทึกสุขภาพ การรับประทานยา จะอัปเดตเองทุกครั้งที่เจ้าหน้าที่เปิดแอป และทุก 3 นาทีระหว่างเปิดใช้งาน','The app’s data lives in the hidden db_… tabs (don’t edit them). Readable Thai tabs such as patients, health records and medicines update by themselves whenever staff have the app open, every 3 minutes.')}</p>
+ <p class="${GSA.err?'ferr':'muted'} tiny">${GSA.busy?_('กำลังอัปเดตแท็บรายงาน…','Updating report tabs…'):GSA.err?_('อัปเดตแท็บรายงานไม่สำเร็จ: ','Report tabs not updated: ')+esc(GSA.err):GSA.at?_('อัปเดตแท็บรายงานล่าสุด','Report tabs last updated')+' '+esc(GSA.at)+(GSA.n?` · ${GSA.n} ${_('แถว','rows')}`:''):''}</p></section>`);
+ return h.replace(_('อัปเดตแท็บรายงานใน Sheet','Update report tabs in the Sheet'),_('ส่งแท็บรายงานใหม่ทั้งหมด','Resend all report tabs'))};VIEWS.gsync=vGsync}
+
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
