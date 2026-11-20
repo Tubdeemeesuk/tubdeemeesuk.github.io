@@ -2443,6 +2443,7 @@ div.rbar{cursor:default}
 .rp-act{display:flex;gap:8px;flex-wrap:wrap}
 .reg-dot{position:absolute;top:2px;right:calc(50% - 22px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--gold);color:#fff;font-size:.7rem;font-weight:700;line-height:18px;text-align:center;pointer-events:none}
 [data-v="coord"]{position:relative}
+.gs-file{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0;padding:10px 12px;border-radius:12px;background:var(--brand-soft)}.gs-file svg{width:18px;height:18px;color:var(--brand)}
 /* v47 · closed-app reminders */
 .pushbox{display:flex;flex-direction:column;gap:12px;padding:14px;border-radius:18px;background:var(--brand-soft);margin-bottom:14px}
 .pb-h{display:flex;gap:12px;align-items:flex-start}
@@ -4469,7 +4470,7 @@ document.addEventListener('toggle',e=>{const d=e.target;if(d&&d.dataset&&d.datas
 function render(){
  document.documentElement.classList.toggle('large',S.large);document.documentElement.lang=S.lang;
  const app=document.getElementById('app');
- if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus','ptauth','cgauth','pin','stauth','howto','stpick','regwait','regno'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
+ if(!S.user){clearInterval(carT);app.innerHTML=vLogin()+(['lginfo','ptstatus','ptauth','cgauth','pin','stauth','howto','stpick','regwait','regno','stpinoffer'].includes(S.modal?.kind)?modalHTML():'');clearTimeout(window._mc);window._mc=setTimeout(()=>{try{missCheck()}catch(e){}},4000);if(!S._lgSeen){app.querySelector('.lg')?.classList.add('enter');S._lgSeen=true}const bn=document.getElementById('lg-banner');if(bn){const c=()=>{if(bn.scrollWidth>bn.clientWidth)bn.scrollLeft=(bn.scrollWidth-bn.clientWidth)/2};c();bn.querySelector('img')?.addEventListener('load',c,{once:true})}popModal(app);S._lastView=null;return}
  if(!allowed(S.view))S.view=homeView();
  let body;try{body=VIEWS[S.view]()}catch(err){console.error(err);body=`<div class="card"><p>${esc(err.message)}</p></div>`}
  const vh=(S.view==='home'||S.view==='log')&&S.user.role!=='staff';const entered=S._lastView!==S.view;S._lastView=S.view;
@@ -6379,9 +6380,57 @@ setInterval(()=>{gsAuto().catch(()=>{})},180000);
 {let seen='';const _r48=render;render=function(){_r48();const u=S.user?.role==='staff'&&API.tok?S.user.id:'';if(u&&u!==seen){seen=u;setTimeout(()=>gsAuto(),6000)}if(!u)seen=''}}
 ACT.gsall2=async()=>{if(meAdmin()&&!GSA.busy){try{LS.set(GSA.key,'{}')}catch(e){}}await gsAuto(true)};
 {const _vg48=vGsync;vGsync=function(){if(!APIMODE)return _vg48();let h=_vg48();
+ if(GSA.sheet===undefined&&!GSA.pinging){GSA.pinging=true;api('ping').then(j=>{GSA.sheet=j&&j.ok?(j.sheet||''):null}).catch(()=>{GSA.sheet=null}).finally(()=>{GSA.pinging=false;if(S.view==='gsync')render()})}
+ const fileLine=`<p class="gs-file">${icon('grid')} ${_('ข้อมูลบันทึกอยู่ในไฟล์','Saving into the file')}: <b>${GSA.sheet?esc(GSA.sheet):GSA.sheet===null?_('ติดต่อไม่ได้','unreachable'):'…'}</b></p>`;
+ h=h.replace(/(<p class="muted tiny">)/,fileLine+'$1');
  h=h.replace(/<p class="hint tiny">[\s\S]*?<\/p><\/section>$/,`<p class="hint tiny">${_('ข้อมูลหลักเก็บในแท็บ db_… ที่ซ่อนไว้ (ห้ามแก้ไขด้วยมือ) ส่วนแท็บภาษาไทยอ่านง่าย เช่น ผู้ป่วย บันทึกสุขภาพ การรับประทานยา จะอัปเดตเองทุกครั้งที่เจ้าหน้าที่เปิดแอป และทุก 3 นาทีระหว่างเปิดใช้งาน','The app’s data lives in the hidden db_… tabs (don’t edit them). Readable Thai tabs such as patients, health records and medicines update by themselves whenever staff have the app open, every 3 minutes.')}</p>
  <p class="${GSA.err?'ferr':'muted'} tiny">${GSA.busy?_('กำลังอัปเดตแท็บรายงาน…','Updating report tabs…'):GSA.err?_('อัปเดตแท็บรายงานไม่สำเร็จ: ','Report tabs not updated: ')+esc(GSA.err):GSA.at?_('อัปเดตแท็บรายงานล่าสุด','Report tabs last updated')+' '+esc(GSA.at)+(GSA.n?` · ${GSA.n} ${_('แถว','rows')}`:''):''}</p></section>`);
  return h.replace(_('อัปเดตแท็บรายงานใน Sheet','Update report tabs in the Sheet'),_('ส่งแท็บรายงานใหม่ทั้งหมด','Resend all report tabs'))};VIEWS.gsync=vGsync}
+
+/* ================= v49 · staff can sign in with a 6-digit PIN as well ================= */
+/* For staff the PIN only reopens a session started with the password, so it works for one shift (12 hours, the
+   same as a staff session). After that the password is needed once more. Handy after the 30-minute idle sign-out. */
+const ST_PIN_TTL=12*3600e3-5*60e3;
+const pinStaffLive=v=>!!v&&v.role==='staff'&&(v.exp||0)>Date.now()&&(!APIMODE||!!v.tok);
+const stPinFresh=()=>{const v=pinMine();if(v&&v.role==='staff'){v.exp=(S._stPwAt||Date.now())+ST_PIN_TTL;if(APIMODE)v.tok=API.tok;v.fails=0;pinSave(v)}};
+{const _po49=pinOffer;pinOffer=function(){const u=S.user;if(!u)return;if(u.role!=='staff')return _po49();
+ if(ST(u.id)?.mustChange)return;if(pinMine()){stPinFresh();return}S.modal={kind:'stpinoffer'}}}
+function stPinOfferModal(){return mShell(_('ตั้ง PIN เข้าสู่ระบบ','Set a sign-in PIN'),`<div class="pin-box"><span class="pin-ic">${icon('shield')}</span><h3>${_('ตั้ง PIN 6 หลักไหม?','Set a 6-digit PIN?')}</h3>
+ <p class="muted">${_('ระหว่างเวร ถ้าแอปออกจากระบบเองเพราะไม่ได้ใช้งาน 30 นาที กลับเข้าได้ด้วย PIN ไม่ต้องพิมพ์รหัสผ่าน PIN ใช้ได้ 12 ชั่วโมงหลังเข้าสู่ระบบด้วยรหัสผ่าน และใช้ได้เฉพาะเครื่องนี้','During your shift, if the app signs you out after 30 idle minutes, come back with your PIN instead of the password. It works for 12 hours after a password sign-in, on this device only.')}</p>
+ <button type="button" class="btn primary block" data-a="pinset">${_('ตั้ง PIN','Set PIN')}</button><button type="button" class="btn ghost block" data-a="close">${_('ไว้ทีหลัง','Not now')}</button>
+ <p class="hint tiny">${_('ไม่ควรตั้ง PIN บนคอมพิวเตอร์ที่ใช้ร่วมกันหลายคน','Don’t set a PIN on a computer that several people share')}</p></div>`,_('PIN','PIN'),'pin-modal')}
+{const _mh49=modalHTML;modalHTML=function(){if(S.modal?.kind==='stpinoffer')return stPinOfferModal();return _mh49()}}
+/* offer after the password sign-in, sign-up, or the first forced password change */
+for(const k of ['stlogin','stsignup','stsetup','pwchange']){const f0=FORMS[k];if(!f0)continue;
+ FORMS[k]=async(o,fd,f)=>{const before=S.user?.id,forced=k==='pwchange'&&!!S.modal?.forced;await f0(o,fd,f);
+  if(S.user?.role!=='staff')return;if(k!=='pwchange'&&before!==S.user.id)S._stPwAt=Date.now();
+  if((k!=='pwchange'&&before!==S.user.id)||(forced&&!S.modal)){if(!S.modal||S.modal.kind==='stauth'){pinOffer();render()}}}}
+/* saving the PIN, and signing in with it */
+{const _pd49=pinDone;pinDone=function(){const m=S.modal;const v0=pinGet();
+ if(m?.kind==='pin'&&v0?.role==='staff'){const v=v0,p=S.pinBuf;S.pinBuf='';const back=msg=>{ACT.stauth({r:v.prof||'nurse'});if(msg)toast(msg)};
+  if(pinHash(p,v.salt)!==v.h){v.fails=(v.fails||0)+1;if(v.fails>=5){pinSave(null);back(_('ใส่ PIN ผิด 5 ครั้ง PIN ถูกปิดแล้ว กรุณาเข้าสู่ระบบด้วยรหัสผ่าน','5 wrong PINs — PIN turned off. Sign in with your password'));return}
+   pinSave(v);return pinPaint(_(`PIN ไม่ถูกต้อง เหลืออีก ${5-v.fails} ครั้ง`,`Wrong PIN — ${5-v.fails} tries left`))}
+  v.fails=0;pinSave(v);
+  if(!pinStaffLive(v)){back(_('PIN ของเจ้าหน้าที่ใช้ได้ 12 ชั่วโมงหลังเข้าสู่ระบบด้วยรหัสผ่าน กรุณาใส่รหัสผ่านอีกครั้ง','Staff PINs last 12 hours after a password sign-in — please enter your password'));return}
+  if(APIMODE){pinPaint(_('กำลังเปิดข้อมูล…','Opening…'));
+   apiStart(v.tok,v.id,{user:v.user}).then(()=>{S.modal=null;render()}).catch(e=>{if(String(e.message).includes('session')||!API.tok){v.exp=0;pinSave(v);back(_('หมดเวลาของ PIN แล้ว กรุณาเข้าสู่ระบบด้วยรหัสผ่าน','PIN session ended — sign in with your password'))}else pinPaint(e.message)});return}
+  if(!ST(v.id)||ST(v.id).active===false){pinSave(null);back();return}
+  S.modal=null;ACT.login({id:v.id});render();return}
+ const r=_pd49();
+ if(m?.kind==='pinset'&&!S.modal&&S.user?.role==='staff'){const v=pinGet();if(v&&v.id===S.user.id){const s=ST(S.user.id)||{};
+  v.prof=s.prof||'nurse';v.exp=(S._stPwAt||Date.now())+ST_PIN_TTL;v.user={id:s.id,name:s.name,title:s.title,prof:s.prof,admin:!!s.admin,user:s.user,active:true};if(APIMODE)v.tok=API.tok;pinSave(v)}}
+ return r}}
+{const _pu49=ACT.pinuse;ACT.pinuse=d=>{const v=pinGet();if(v?.role==='staff'){ACT.stauth({r:v.prof||'nurse'});return}_pu49(d)}}
+{const _pw49=pinWelcome;pinWelcome=function(){const v=pinGet();if(v?.role==='staff'){if(!pinStaffLive(v))return'';
+  return `<button class="pin-welcome" data-a="pinopen">${icon('shield')}<span><b>${_('เข้าสู่ระบบด้วย PIN','Sign in with PIN')}</b><small>${esc(L(v.user?.name)||v.name||'')} · ${_('ใช้ได้ถึง','until')} ${new Date(v.exp).toTimeString().slice(0,5)}</small></span>${icon('chev')}</button>`}return _pw49()}}
+{const _pl49=pinLoginModal;pinLoginModal=function(){const v=pinGet();let h=_pl49();if(v?.role!=='staff')return h;
+ return h.replace(/<p class="muted">[^<]*<\/p>/,`<p class="muted">${_('ใส่ PIN 6 หลัก','Enter your 6-digit PIN')} · ${_('ใช้ได้ถึง','valid until')} ${new Date(v.exp).toTimeString().slice(0,5)}</p>`).replace(_('ใช้ชื่อและรหัสผ่านแทน','Use name and password'),_('ใช้รหัสผ่านแทน','Use my password'))}}
+{const _ps49=pinSetModal;pinSetModal=function(){let h=_ps49();if(S.user?.role!=='staff')return h;
+ return h.replace(_('ครั้งต่อไปเข้าสู่ระบบด้วย PIN บนโทรศัพท์เครื่องนี้ได้เลย ไม่ต้องพิมพ์ชื่อ','Next time, sign in on this phone with your PIN — no typing your name'),_('ใช้ PIN แทนรหัสผ่านบนเครื่องนี้ได้ 12 ชั่วโมงหลังเข้าสู่ระบบด้วยรหัสผ่าน','Use the PIN instead of your password on this device for 12 hours after a password sign-in'))}}
+/* staff profile sheet: PIN row next to the password row */
+{const _ms49=moreSheet;moreSheet=function(){const h=_ms49();if(!S.moreOpen||S.user?.role!=='staff')return h;const on=!!pinMine();
+ const row=`<div class="row sheet-row pin-row"><span class="muted">${icon('shield')} ${_('PIN 6 หลัก','6-digit PIN')}</span><span class="row" style="gap:6px"><button class="btn sm" data-a="pinset">${on?_('เปลี่ยน PIN','Change'):_('ตั้ง PIN','Set PIN')}</button>${on?`<button class="btn sm ghost" data-a="pinoff">${_('ปิด','Turn off')}</button>`:''}</span></div>`;
+ return h.replace('<button class="btn block" data-a="logout">',row+'<button class="btn block" data-a="logout">')}}
 
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
