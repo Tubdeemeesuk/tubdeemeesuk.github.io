@@ -6377,6 +6377,7 @@ async function gsAuto(force){if(!APIMODE||!API.tok||S.user?.role!=='staff'||GSA.
  catch(e){GSA.err=e.message||String(e);if(force)toast(_('อัปเดตแท็บรายงานไม่สำเร็จ · ','Couldn’t update report tabs · ')+GSA.err)}
  finally{GSA.busy=false;if(S.view==='gsync')render()}}
 setInterval(()=>{gsAuto().catch(()=>{})},180000);
+{const _go48=ACT.go;ACT.go=d=>{if(d&&d.v==='gsync')GSA.sheet=undefined;return _go48(d)}}
 {let seen='';const _r48=render;render=function(){_r48();const u=S.user?.role==='staff'&&API.tok?S.user.id:'';if(u&&u!==seen){seen=u;setTimeout(()=>gsAuto(),6000)}if(!u)seen=''}}
 ACT.gsall2=async()=>{if(meAdmin()&&!GSA.busy){try{LS.set(GSA.key,'{}')}catch(e){}}await gsAuto(true)};
 {const _vg48=vGsync;vGsync=function(){if(!APIMODE)return _vg48();let h=_vg48();
