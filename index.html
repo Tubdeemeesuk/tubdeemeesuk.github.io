@@ -2557,6 +2557,28 @@ div.rbar{cursor:default}
 .ex-safe{margin:10px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:4px;font-size:.86rem;color:var(--ink-2)}
 #exwk-box .ex-week{box-shadow:none;padding:0;background:none}
 #exwk-box .ex-week>h3{display:none}
+/* v53 · learning follow-up for staff */
+.ln-card .card-h{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.ln-kpi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:6px 0 12px}
+.ln-kpi>div{background:var(--surface-2);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column}
+.ln-kpi small{color:var(--ink-2);font-size:.78rem}.ln-kpi b{font-family:var(--f-display);font-size:1.5rem;line-height:1.2}.ln-kpi b em,.ln-kpi>div>em{font-style:normal;font-size:.8rem;color:var(--ink-2);font-weight:500}
+.ln-sers{display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
+.ln-sh{display:flex;justify-content:space-between;gap:8px;font-size:.9rem}
+.ln-tr,.ln-mini{display:block;height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin:4px 0}.ln-tr u,.ln-mini u{display:block;height:100%;border-radius:99px;background:var(--brand)}
+.ln-mini{display:inline-block;width:60px;vertical-align:middle;margin:0}
+.ln-pp{font-size:.82rem}.ln-pp b.up{color:var(--ok)}
+.ln-list{list-style:none;margin:0;padding:0}
+.ln-list li{display:grid;grid-template-columns:2em minmax(0,1fr) 7.5em 3.2em;gap:8px;align-items:center;padding:8px 2px;border-bottom:1px solid var(--line);font-size:.86rem}
+.ln-list li.ln-head{font-weight:700;color:var(--ink-2);font-size:.76rem}
+.ln-list li:not(.done) .ln-tt{color:var(--ink-2)}.ln-list em{font-style:normal;color:var(--ink-2)}
+.ln-ep{font-family:var(--f-display);font-weight:700;color:var(--brand-2)}.ln-sc{text-align:right}
+.ln-sc b.ok{color:var(--ok)}.ln-sc b.bad{color:var(--danger,#C9584B)}
+.ln-cg{margin-top:10px;font-size:.88rem}.ln-cg b{display:flex;align-items:center;gap:6px}.ln-cg ul{margin:6px 0 0;padding-left:1.1em}
+.ln-tbl{width:100%;border-collapse:collapse;font-size:.88rem}
+.ln-tbl th{text-align:left;font-size:.76rem;color:var(--ink-2);padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.ln-tbl td{padding:8px;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
+.ln-tbl td small{display:block;color:var(--ink-2);font-size:.74rem}.ln-tbl td.warn{color:#B87420;font-weight:700}
+.tbl-wrap{overflow-x:auto}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3397,7 +3419,7 @@ function slotsOn(pid,date){const rx=activeRx(pid);if(!rx)return[];const out=[];r
 function adherence(pid,days=7){let tot=0,ok=0;const now=nowHM();for(let k=days-1;k>=0;k--){const d=dOff(-k);slotsOn(pid,d).forEach(s=>{if(k===0&&s.time>now&&!s.log)return;tot++;if(s.log?.status==='taken')ok++})}return tot?Math.round(ok/tot*100):null}
 function dayStatus(pid,d){const s=slotsOn(pid,d);if(!s.length)return'none';const t=s.filter(x=>x.log?.status==='taken').length;const bad=s.some(x=>x.log&&x.log.status!=='taken');if(t===s.length)return'full';if(bad)return'partial';if(d===todayISO)return'today';return t?'partial':'empty'}
 const nextAppt=pid=>D.appts.filter(a=>a.patientId===pid&&a.status==='scheduled'&&a.date>=todayISO).sort(byStamp)[0];
-const vitalsOf=pid=>D.vitals.filter(v=>v.patientId===pid&&v.kind!=='ex').sort(byStamp);
+const vitalsOf=pid=>D.vitals.filter(v=>v.patientId===pid&&!v.kind).sort(byStamp);
 const labsOf=(pid,code)=>D.labs.filter(l=>l.patientId===pid&&(!code||l.test===code)).sort(byStamp);
 function flagOf(l){if(l.refLow==null&&l.refHigh==null)return'none';if(l.refLow!=null&&l.value<l.refLow)return'L';if(l.refHigh!=null&&l.value>l.refHigh)return'H';return'N'}
 const refText=l=>l.refLow!=null&&l.refHigh!=null?`${l.refLow}–${l.refHigh}`:l.refLow!=null?`≥ ${l.refLow}`:l.refHigh!=null?`≤ ${l.refHigh}`:'—';
@@ -3544,7 +3566,7 @@ function journeyStep(phase,btn,extra=''){const IC=['clipboard','hospital','sprou
  <div class="jstep">${PHASES.map((p,i)=>{const st=p.n<phase?'done':p.n===phase?'cur':'';return `<div class="js ${st}" ${st==='cur'?'aria-current="step"':''}><span class="b">${icon(IC[i])}${st==='done'?`<span class="ck">${icon('check')}</span>`:''}</span><small>${_('ช่วงที่','Stage')} ${p.n}</small><span>${esc(L(p.title))}</span></div>`}).join('')}</div></section>`}
 function tiles(pid,cg){const c=cg?consentOf(S.user.id,pid):null;const ok=k=>!cg||!!c.perms[k];
  const slots=slotsOn(pid,todayISO),done=slots.filter(s=>s.log?.status==='taken').length,a=nextAppt(pid);
- const logged=D.vitals.some(v=>v.patientId===pid&&v.date===todayISO&&v.kind!=='ex');const flag=(labsOf(pid).filter(l=>['H','L'].includes(flagOf(l))).length);
+ const logged=D.vitals.some(v=>v.patientId===pid&&v.date===todayISO&&!v.kind);const flag=(labsOf(pid).filter(l=>['H','L'].includes(flagOf(l))).length);
  const T=[['pill','c-green','ยาของฉัน','My medicines','meds',{a:'go',v:'meds'},slots.length?`${done}/${slots.length}`:''],
   ['heart','c-leaf','สุขภาพวันนี้','Today’s health','health',{a:'golog',t:'daily'},logged?'✓':''],
   ['flask','c-blue','ผลตรวจ','Lab results','labs',{a:'go',v:'labs'},''],
@@ -4100,7 +4122,7 @@ const ptSave=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 let PTR=ptLoad('sj-pt',{}),WATCH=ptLoad('sj-watched',{});
 const ptRec=ph=>PTR[ptKey(ph)]||{};
 const markWatched=id=>{WATCH[`${S.user?.id||'guest'}|${id}`]=Date.now();ptSave('sj-watched',WATCH)};
-const watchedOf=uid=>VIDEOS.filter(v=>WATCH[`${uid}|${v.id}`]).map(v=>({v,at:+WATCH[`${uid}|${v.id}`]>1?+WATCH[`${uid}|${v.id}`]:null,q:quizDone[`${uid}|${v.id}`]})).sort((a,b)=>(b.at||0)-(a.at||0));
+function watchedOf(uid){const r=D.vitals.find(v=>v.kind==='learn'&&v.learner===uid)||{};const W=r.w||{},Q=r.q||{};return VIDEOS.filter(v=>WATCH[`${uid}|${v.id}`]||W[v.id]).map(v=>{const t=+WATCH[`${uid}|${v.id}`]||+W[v.id]||0;const q=quizDone[`${uid}|${v.id}`]??Q[v.id];return {v,at:t>1?t:null,q}}).sort((a,b)=>(b.at||0)-(a.at||0))}
 const isWatched=id=>!!WATCH[`${S.user?.id||'guest'}|${id}`];
 const serOf=id=>VIDEOS.find(v=>v.id===id)?.ph;
 const serProg=ph=>{const vs=VIDEOS.filter(v=>v.ph===ph);return [vs.filter(v=>isWatched(v.id)).length,vs.length]};
@@ -6037,7 +6059,7 @@ if(APIMODE){GS.on=false}
 {const _gr=gsRecords;gsRecords=function(){const R=_gr();const add=(tab,keyCol,key,data)=>R.push({tab,keyCol,key:String(key),data});
  const lk=(arr,k,i=1)=>{const x=arr.find(a=>a[0]===k);return x?x[i]:(k??'')};const by=id=>id?(person(id)?thv(person(id).name):id):'';
  const who=id=>{const r=id?roleOf(id):'';return r==='patient'?'ผู้ป่วย':r==='caregiver'?'ญาติ/ผู้ดูแล':r==='staff'?'เจ้าหน้าที่':''};
- D.vitals.filter(v=>v.kind!=='ex').forEach(v=>add('บันทึกสุขภาพ','รหัสบันทึก',v.id,{'รหัสบันทึก':v.id,'รหัสผู้ป่วย':v.patientId,'HN':ptHN(v.patientId),'ชื่อผู้ป่วย':ptNm(v.patientId),'วันที่':v.date,'เวลา':v.time||'',
+ D.vitals.filter(v=>!v.kind).forEach(v=>add('บันทึกสุขภาพ','รหัสบันทึก',v.id,{'รหัสบันทึก':v.id,'รหัสผู้ป่วย':v.patientId,'HN':ptHN(v.patientId),'ชื่อผู้ป่วย':ptNm(v.patientId),'วันที่':v.date,'เวลา':v.time||'',
   'ความดันตัวบน (mmHg)':v.sys??'','ความดันตัวล่าง (mmHg)':v.dia??'','ชีพจร (ครั้ง/นาที)':v.hr??'','อุณหภูมิ (°C)':v.temp??'','SpO2 (%)':v.spo2??'','น้ำหนัก (กก.)':v.wt??'',
   'สีปัสสาวะ':v.urine?lk(URINE,v.urine):'','อุจจาระ':v.stool?lk(STOOL,v.stool):'','การขับถ่าย':v.sfreq?lk(SFREQ,v.sfreq):'',
   'ออกกำลังกาย (นาที)':v.actMin??'','ประเภทกิจกรรม':(Array.isArray(v.act)?v.act:[]).map(a=>lk(ACTT,a)).join(', '),'ความเหนื่อยล้า':v.fatigue!=null&&FATIG[v.fatigue]?FATIG[v.fatigue][0]:'',
@@ -6659,6 +6681,61 @@ ACT.exwk=()=>{S.folds=S.folds||{};S.folds.exwk=true;render();setTimeout(()=>docu
  const r=_fv52(o,fd,f);
  if(saved!=null){const e=f.querySelector('.ferr');if(e&&e.textContent===_('กรอกอย่างน้อยหนึ่งช่องก่อนบันทึก','Fill in at least one field')){e.textContent='';f.classList.remove('has-err');render();toast(_(`บันทึกแล้ว ${saved.toLocaleString()} ก้าว`,`Saved ${saved.toLocaleString()} steps`))}}
  return r}}
+
+/* ================= v53 · nurses can follow each patient's video learning and quiz scores ================= */
+/* Progress used to live only on the phone. Now each learner keeps one record in D.vitals (kind:'learn') that syncs
+   like any health entry: videos watched, the 2-question quiz score per video, and the pre/post test per series. */
+const lrnOf=uid=>D.vitals.find(v=>v.kind==='learn'&&v.learner===uid);
+const lrnMine=uid=>{const w={},q={},pt={},pre=uid+'|';
+ Object.keys(WATCH).forEach(k=>{if(k.startsWith(pre))w[k.slice(pre.length)]=+WATCH[k]>1?+WATCH[k]:1});
+ Object.keys(quizDone).forEach(k=>{if(k.startsWith(pre))q[k.slice(pre.length)]=+quizDone[k]});
+ Object.keys(PTR).forEach(k=>{if(k.startsWith(pre))pt[k.slice(pre.length)]=PTR[k]});return {w,q,pt}};
+function lrnMerge(uid){const r=lrnOf(uid);if(!r)return;const pre=uid+'|';
+ Object.entries(r.w||{}).forEach(([v,t])=>{const k=pre+v;if(!WATCH[k]||(+t>+WATCH[k]))WATCH[k]=t});
+ Object.entries(r.q||{}).forEach(([v,s])=>{const k=pre+v;if(quizDone[k]==null||+s>+quizDone[k])quizDone[k]=s});
+ Object.entries(r.pt||{}).forEach(([ph,o])=>{const k=pre+ph;PTR[k]={...(o||{}),...(PTR[k]||{})}});
+ ptSave('sj-watched',WATCH);ptSave('sj-pt',PTR);try{localStorage.setItem('sj-quiz',JSON.stringify(quizDone))}catch(e){}}
+let lrnSeen='';
+function lrnPush(){const u=S.user;if(!u||u.role==='staff')return;const pid=u.role==='patient'?u.id:S.pid;if(!pid||!canRecord(pid))return;
+ if(lrnSeen!==u.id){lrnSeen=u.id;lrnMerge(u.id)}
+ const m=lrnMine(u.id);if(!Object.keys(m.w).length&&!Object.keys(m.q).length&&!Object.keys(m.pt).length)return;
+ let r=lrnOf(u.id);const sig=JSON.stringify(m);if(r&&JSON.stringify({w:r.w||{},q:r.q||{},pt:r.pt||{}})===sig)return;
+ if(!r){r={id:uid('v'),patientId:pid,kind:'learn',learner:u.id,role:u.role,date:todayISO,time:nowHM(),by:u.id,verified:null};D.vitals.push(r)}
+ Object.assign(r,m,{date:todayISO,time:nowHM(),at:nowStamp(),patientId:pid})}
+{const _r53=render;render=function(){try{lrnPush()}catch(e){}_r53()}}
+/* what staff see */
+function lrnSum(uid){const r=lrnOf(uid);const local=S.user?.id===uid?lrnMine(uid):null;const w={...(r?.w||{}),...(local?.w||{})},q={...(r?.q||{}),...(local?.q||{})},pt={...(r?.pt||{}),...(local?.pt||{})};
+ const seen=VIDEOS.filter(v=>w[v.id]);let got=0,max=0;VIDEOS.forEach(v=>{if(q[v.id]!=null&&QZ[v.id]){got+=+q[v.id];max+=QZ[v.id].length}});
+ const last=Math.max(0,...Object.values(w).map(Number).filter(x=>x>1),...Object.values(pt).flatMap(o=>[o?.preAt||0,o?.postAt||0]));
+ return {w,q,pt,seen:seen.length,n:VIDEOS.length,qPct:max?Math.round(got/max*100):null,qGot:got,qMax:max,last:last||null,at:r?.at||null}}
+const fmtAgo=ms=>{if(!ms)return'—';const d=new Date(ms);return fmtDate(iso(d),{day:'numeric',month:'short'})+' '+d.toTimeString().slice(0,5)};
+function learnCard(p){const s=lrnSum(p.id);
+ const ser=SERIES.map(([ph,nm])=>{const vs=VIDEOS.filter(v=>v.ph===ph),d=vs.filter(v=>s.w[v.id]).length,t=s.pt[ph]||{},nq=(PT[ph]||[]).length;
+  const prepost=t.pre!=null||t.post!=null?`<span class="ln-pp">${_('ก่อนเรียน','Pre')} <b>${t.pre??'—'}/${nq}</b> → ${_('หลังเรียน','Post')} <b class="${t.post!=null&&t.pre!=null&&t.post>t.pre?'up':''}">${t.post??'—'}/${nq}</b></span>`:`<span class="ln-pp muted">${_('ยังไม่ได้ทำแบบทดสอบ','No test yet')}</span>`;
+  return `<div class="ln-ser"><div class="ln-sh"><b>${esc(L(nm))}</b><span class="num">${d}/${vs.length}</span></div><div class="ln-tr"><u style="width:${vs.length?Math.round(d/vs.length*100):0}%"></u></div>${prepost}</div>`}).join('');
+ const rows=VIDEOS.map(v=>{const at=s.w[v.id],sc=s.q[v.id],nq=QZ[v.id]?.length||0;
+  return `<li class="${at?'done':''}"><span class="ln-ep">${esc(v.ep||'')}</span><span class="ln-tt">${esc(L(v.name)||L(v.title))}</span><span class="ln-dt">${at?(+at>1?fmtAgo(+at):_('ดูแล้ว','Watched')):`<em>${_('ยังไม่ดู','Not yet')}</em>`}</span><span class="ln-sc">${sc!=null&&nq?`<b class="${+sc===nq?'ok':+sc===0?'bad':''}">${sc}/${nq}</b>`:'—'}</span></li>`}).join('');
+ const cgs=D.consents.filter(c=>c.patientId===p.id&&c.active!==false&&c.approval!=='rejected').map(c=>{const g=C(c.caregiverId);if(!g)return'';const t=lrnSum(g.id);return `<li><b>${esc(L(g.name))}</b>${c.relation?` <span class="muted">(${esc(L(c.relation))})</span>`:''} · ${_('ดูวิดีโอ','videos')} ${t.seen}/${t.n}${t.qPct!=null?` · ${_('คะแนนแบบทดสอบ','quiz')} ${t.qPct}%`:''}</li>`}).filter(Boolean).join('');
+ return `<section class="card ln-card" id="learncard"><div class="card-h"><h3>${icon('book')} ${_('การเรียนรู้','Learning')}</h3><span class="muted tiny">${_('ใช้งานล่าสุด','Last active')} ${fmtAgo(s.last)}</span></div>
+  <div class="ln-kpi"><div><small>${_('ดูวิดีโอแล้ว','Videos watched')}</small><b class="num">${s.seen}<em>/${s.n}</em></b></div><div><small>${_('คะแนนแบบทดสอบท้ายคลิป','End-of-video quizzes')}</small><b class="num">${s.qPct==null?'—':s.qPct+'%'}</b><em>${s.qMax?`${s.qGot}/${s.qMax} ${_('ข้อ','correct')}`:''}</em></div></div>
+  <div class="ln-sers">${ser}</div>
+  ${fold('lnlist-'+p.id,`<h3>${icon('list')} ${_('รายคลิป','By video')}</h3>`,`<ul class="ln-list"><li class="ln-head"><span>#</span><span>${_('คลิป','Video')}</span><span>${_('ดูเมื่อ','Watched')}</span><span>${_('คะแนน','Score')}</span></li>${rows}</ul>`,false)}
+  ${cgs?`<div class="ln-cg"><b>${icon('users')} ${_('ญาติและผู้ดูแล','Family and caregivers')}</b><ul>${cgs}</ul></div>`:''}
+  ${s.at||s.seen?'':`<p class="hint tiny">${_('ข้อมูลการเรียนรู้จะขึ้นเมื่อผู้ป่วยเปิดแอปเวอร์ชันล่าสุดและดูคลิป','Learning shows once the patient opens the latest app version and watches a video')}</p>`}</section>`}
+{const _so53=staffOverview;staffOverview=function(p){return _so53(p)+learnCard(p)}}
+/* everyone's learning on the staff Reports page */
+function learnTable(){const mine=myPatients();if(!mine.length)return'';const rows=mine.map(p=>({p,s:lrnSum(p.id)})).sort((a,b)=>a.s.seen-b.s.seen||(a.s.qPct??-1)-(b.s.qPct??-1));
+ const ppTxt=s=>{const ph=SERIES.map(x=>x[0]).filter(ph=>s.pt[ph]&&(s.pt[ph].pre!=null||s.pt[ph].post!=null)).slice(-1)[0];if(!ph)return'—';const t=s.pt[ph],nq=(PT[ph]||[]).length;return `${_('ชุด','S')}${ph}: ${t.pre??'—'}→${t.post??'—'}/${nq}`};
+ return `<section class="card ln-all"><div class="card-h"><h3>${icon('book')} ${_('ติดตามการเรียนรู้ของผู้ป่วย','Patient learning')}</h3><span class="muted tiny">${_('เรียงจากคนที่ดูน้อยที่สุด','Least watched first')}</span></div>
+ <div class="tbl-wrap"><table class="ln-tbl"><thead><tr><th>${_('ผู้ป่วย','Patient')}</th><th>${_('ดูวิดีโอ','Videos')}</th><th>${_('คะแนนท้ายคลิป','Quiz')}</th><th>${_('ก่อน→หลังเรียน','Pre→post')}</th><th>${_('ล่าสุด','Last')}</th></tr></thead><tbody>
+ ${rows.map(({p,s})=>`<tr><td><button class="link-btn" data-a="openpt" data-pid="${p.id}" data-t="overview">${esc(L(p.name))}</button><small>HN ${esc(p.hn)}</small></td><td><span class="ln-mini"><u style="width:${Math.round(s.seen/s.n*100)}%"></u></span> <span class="num">${s.seen}/${s.n}</span></td><td class="num ${s.qPct!=null&&s.qPct<60?'warn':''}">${s.qPct==null?'—':s.qPct+'%'}</td><td>${ppTxt(s)}</td><td class="muted">${fmtAgo(s.last)}</td></tr>`).join('')}
+ </tbody></table></div></section>`}
+{const _vr53=vReports;vReports=function(){return learnTable()+_vr53()};VIEWS.reports=vReports}
+/* Sheet report tab */
+{const _gr53=gsRecords;gsRecords=function(){const R=_gr53();D.vitals.filter(v=>v.kind==='learn').forEach(v=>{const p=P(v.patientId);if(!p)return;const s=lrnSum(v.learner);const who=person(v.learner);
+ R.push({tab:'การเรียนรู้',keyCol:'รหัสผู้เรียน',key:String(v.learner),data:{'รหัสผู้เรียน':v.learner,'HN':p.hn||'','ชื่อผู้ป่วย':L(p.name),'ผู้เรียน':L(who?.name)||'','บทบาท':v.role==='caregiver'?'ญาติ/ผู้ดูแล':'ผู้ป่วย',
+  'ดูวิดีโอแล้ว':`${s.seen}/${s.n}`,'คะแนนแบบทดสอบท้ายคลิป (%)':s.qPct??'',...Object.fromEntries(SERIES.map(([ph])=>[`ชุดที่ ${ph} ก่อน/หลังเรียน`,s.pt[ph]?`${s.pt[ph].pre??'-'}/${s.pt[ph].post??'-'} (เต็ม ${(PT[ph]||[]).length})`:''])),
+  'คลิปที่ดูแล้ว':VIDEOS.filter(x=>s.w[x.id]).map(x=>'ตอน '+x.ep+(s.q[x.id]!=null?` (${s.q[x.id]}/${QZ[x.id]?.length||0})`:'')).join(', '),'ใช้งานล่าสุด':s.last?(d=>iso(d)+' '+d.toTimeString().slice(0,5))(new Date(s.last)):''}})});return R}}
 
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
