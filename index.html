@@ -2538,6 +2538,25 @@ div.rbar{cursor:default}
 .ex-lvs button small{font-size:.72rem;color:var(--ink-2);line-height:1.3}
 .ex-lvs button.on{border-color:#3E8E6A;background:color-mix(in srgb,#3E8E6A 12%,var(--surface));box-shadow:inset 0 0 0 1px #3E8E6A}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* v52 · steps and exercise inside the daily log */
+.exq{display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:20px;background:color-mix(in srgb,#3E8E6A 9%,var(--surface));border:1.5px solid color-mix(in srgb,#3E8E6A 22%,var(--line))}
+.exq-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.exq-ic{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:#3E8E6A;color:#fff}.exq-ic .ic{width:24px;height:24px}
+.exq-num{display:flex;flex-direction:column;flex:1 1 120px;min-width:0}.exq-num small{color:var(--ink-2);font-size:.8rem;font-weight:600}
+.exq-num b{font-family:var(--f-display);font-size:1.55rem;line-height:1.15}.exq-num em{font-style:normal;font-size:.85rem;color:var(--ink-2);font-weight:500}
+.exq-in{display:flex;gap:6px;align-items:center;flex:1 1 180px}
+.exq-in input{flex:1;min-width:0;min-height:44px;padding:0 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font-size:1.05rem;font-family:var(--f-display)}
+.exq-in .btn{min-height:44px;background:#3E8E6A;border-color:#3E8E6A}
+.exq-bar{height:8px;border-radius:99px;background:color-mix(in srgb,#3E8E6A 14%,var(--surface));overflow:hidden}.exq-bar u{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#7FBF7A,#3E8E6A)}
+.exq-acts{display:flex;flex-wrap:wrap;gap:6px}
+.exq-a{display:inline-flex;align-items:center;gap:6px;padding:4px 4px 4px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:.86rem}
+.exq-a>.ic{width:16px;height:16px;color:#3E8E6A}
+.exq-a button{display:grid;place-items:center;width:26px;height:26px;border:0;border-radius:50%;background:var(--surface-2);color:var(--ink-2);cursor:pointer}.exq-a button .ic{width:14px;height:14px}
+.exq-add{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:4px 14px 4px 10px;border-radius:999px;border:1.5px dashed #3E8E6A;background:none;color:#2F7457;font:inherit;font-size:.88rem;font-weight:600;cursor:pointer}.exq-add .ic{width:16px;height:16px}
+.exq-foot{margin:0;font-size:.84rem;color:var(--ink-2)}
+.ex-safe{margin:10px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:4px;font-size:.86rem;color:var(--ink-2)}
+#exwk-box .ex-week{box-shadow:none;padding:0;background:none}
+#exwk-box .ex-week>h3{display:none}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -6608,6 +6627,38 @@ const exTabBtn=on=>`<button role="tab" aria-selected="${on}" class="${on?'on':''
   'กิจกรรม':(v.acts||[]).map(a=>`${(EXT.find(x=>x[0]===a.type)||[])[1]||a.name} ${a.min} นาที (${(EXLV.find(x=>x[0]===a.lvl)||[])[1]||''})`).join('; '),'บันทึกโดย':L(person(v.by)?.name)||v.by||''}})});return R}}
 /* last sync time shown in the user’s own clock */
 {const _vg51=vGsync;vGsync=function(){let h=_vg51();if(API.last){const d=new Date(API.last);if(!isNaN(d))h=h.replace(API.last.slice(11,16),d.toTimeString().slice(0,5))}return h};VIEWS.gsync=vGsync}
+
+/* ================= v52 · exercise lives inside the daily log (บันทึก) ================= */
+/* no separate tab for patients: steps and today's activities sit in the log form; the 7-day summary folds below it */
+{const _lp52=logPanel2;logPanel2=function(pid,rec,t){if(t==='ex'){S.logTab='daily';t='daily'}
+ return _lp52(pid,rec,t).replace('<div class="ltabs t4" role="tablist">','<div class="ltabs" role="tablist">').replace(/<button role="tab" aria-selected="(?:true|false)" class="[^"]*\bex" data-a="logtab" data-t="ex">[\s\S]*?<\/button>/,'')}}
+function exQuick(pid){const g=exGoal(pid),r=exDay(pid,todayISO),steps=+(r?.steps)||0,acts=r?.acts||[],f=Math.max(0,Math.min(1,steps/g.steps)),min=exMinOf(pid,todayISO);
+ return `<section class="exq" aria-label="${_('ก้าวและการออกกำลังกายวันนี้','Steps and exercise today')}">
+  <div class="exq-top"><span class="exq-ic">${icon('steps')}</span><div class="exq-num"><small>${_('ก้าววันนี้','Steps today')}</small><b class="num">${steps.toLocaleString()}<em> / ${g.steps.toLocaleString()}</em></b></div>
+   <span class="exq-in"><input name="steps" id="v-steps" inputmode="numeric" autocomplete="off" placeholder="${_('จำนวนก้าว','steps')}" aria-label="${_('จำนวนก้าววันนี้','Steps today')}"><button type="button" class="btn sm primary" data-a="exstepq" data-pid="${pid}">${_('บันทึก','Save')}</button></span></div>
+  <div class="exq-bar" aria-hidden="true"><u style="width:${(f*100).toFixed(0)}%"></u></div>
+  <div class="exq-acts">${acts.map(a=>`<span class="exq-a">${icon(exIcon(a))}${esc(exName(a))} ${a.min} ${_('นาที','min')}<button type="button" data-a="exdel" data-pid="${pid}" data-id="${a.id}" aria-label="${_('ลบ','Delete')} ${esc(exName(a))}">${icon('x')}</button></span>`).join('')}
+   <button type="button" class="exq-add" data-a="exadd" data-pid="${pid}">${icon('plus')} ${_('เพิ่มกิจกรรมออกกำลังกาย','Add exercise')}</button></div>
+  <p class="exq-foot">${min?_(`ออกกำลังกายวันนี้ ${min} นาที`,`${min} min of exercise today`)+' · ':''}<button type="button" class="link-btn" data-a="exwk">${_('ดูสรุป 7 วัน','See 7-day summary')}</button></p></section>`}
+{const _dp52=dailyPanel2;dailyPanel2=function(pid,rec,extras){let h=_dp52(pid,rec,extras);if(!rec)return h;
+ const i=h.indexOf('<div class="lgxs">');if(i>=0)h=h.slice(0,i)+exQuick(pid)+h.slice(i);
+ /* the old activity block in the details list keeps only the fatigue level */
+ h=h.replace(/(<details class="lgx" name="lgx" data-k="act">[\s\S]*?<b>)[^<]*(<\/b><small>)[^<]*(<\/small>)/,`$1${_('ความเหนื่อยล้า','Fatigue')}$2${_('ระดับความเหนื่อยวันนี้','How tired you feel today')}$3`)
+  .replace(/<div class="optrow"><label class="opt"><input type="checkbox" name="act"[\s\S]*?<\/div>\s*<div class="lgrow"><b>[^<]*<\/b><span class="stp">[\s\S]*?name="actMin"[\s\S]*?<\/span><\/div>/,'');
+ const j=h.indexOf('</form>');if(j>=0){const wk=fold('exwk',`<h3>${icon('walk')} ${_('สรุปการออกกำลังกาย 7 วัน','Exercise · last 7 days')}</h3>`,exWeek(pid)+exSafe(),false);h=h.slice(0,j+7)+`<div id="exwk-box">${wk}</div>`+h.slice(j+7)}
+ return h}}
+const exSafe=()=>`<ul class="ex-safe">${[['ทำตามแผนของแพทย์และนักกายภาพ เริ่มเบา ๆ แล้วค่อย ๆ เพิ่ม','Follow your doctor’s and physio’s plan; start gently, build up slowly'],['ห้ามยกของหนักหรือเกร็งหน้าท้อง จนกว่าแผลหายและแพทย์อนุญาต','No heavy lifting or straining until the wound heals and your doctor says so'],['หยุดทันทีถ้าเจ็บหน้าอก หายใจลำบาก หน้ามืด ใจสั่น หรือเจ็บแผล แล้วแจ้งทีมรักษา','Stop for chest pain, breathlessness, dizziness, palpitations or wound pain, and tell the team']].map(([a,b])=>`<li>${_(a,b)}</li>`).join('')}</ul>`;
+function exSaveSteps(pid,raw,date){const n=Math.round(+String(raw||'').replace(/[^\d]/g,''));if(String(raw||'').trim()===''||isNaN(n)||n<0||n>80000){toast(_('ใส่จำนวนก้าว 0–80,000','Enter 0–80,000 steps'));return false}
+ const r=exTouch(pid,date||todayISO);r.steps=n;audit(`บันทึกจำนวนก้าว ${n}`,`Logged ${n} steps`,pid);return n}
+ACT.exstepq=d=>{if(!canRecord(d.pid))return;const el=document.getElementById('v-steps');const n=exSaveSteps(d.pid,el?.value);if(n===false)return;render();
+ const g=exGoal(d.pid);toast(n>=g.steps?_('ถึงเป้าหมายก้าววันนี้แล้ว 🎉','Step goal reached 🎉'):_(`บันทึกแล้ว ${n.toLocaleString()} ก้าว`,`Saved ${n.toLocaleString()} steps`))};
+ACT.exwk=()=>{S.folds=S.folds||{};S.folds.exwk=true;render();setTimeout(()=>document.getElementById('exwk-box')?.scrollIntoView({behavior:'smooth',block:'start'}),60)};
+/* the main Save button also keeps a step count typed into the form */
+{const _fv52=FORMS.vitals;FORMS.vitals=(o,fd,f)=>{const pid=f.dataset.pid,st=String(o.steps||'').trim();delete o.steps;let saved=null;
+ if(st&&canRecord(pid)){saved=exSaveSteps(pid,st,o.date||todayISO);if(saved===false)return}
+ const r=_fv52(o,fd,f);
+ if(saved!=null){const e=f.querySelector('.ferr');if(e&&e.textContent===_('กรอกอย่างน้อยหนึ่งช่องก่อนบันทึก','Fill in at least one field')){e.textContent='';f.classList.remove('has-err');render();toast(_(`บันทึกแล้ว ${saved.toLocaleString()} ก้าว`,`Saved ${saved.toLocaleString()} steps`))}}
+ return r}}
 
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
