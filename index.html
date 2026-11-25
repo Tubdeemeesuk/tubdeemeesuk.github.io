@@ -2482,6 +2482,62 @@ div.rbar{cursor:default}
 .lg2 .schip:has(input:focus-visible){outline:3px solid var(--c);outline-offset:2px}
 @media (max-width:380px){.lg2 .schips{gap:6px}.lg2 .schip{min-height:50px;gap:8px;padding:6px 8px 6px 6px;font-size:.84rem}.lg2 .schip .si{width:32px;height:32px;padding:7px}}
 @media (max-width:640px) and (max-height:770px){.lg2 .sgrp{padding:10px 12px;gap:8px}.lg2 .schip{min-height:48px}}
+/* v51 · exercise tab */
+.ltabs.t4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.ltabs.t4 button{flex-direction:column;gap:2px;min-height:56px;font-size:.78rem;padding:4px 2px;line-height:1.2;white-space:nowrap}
+.ltabs button.ex.on{background:linear-gradient(135deg,#7FBF7A,#3E8E6A)}
+@media (min-width:640px){.ltabs.t4 button{flex-direction:row;font-size:.92rem;gap:6px}}
+.ex-wrap{display:flex;flex-direction:column;gap:12px}
+.ex-today{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.ex-ringbox{position:relative;width:128px;height:128px;flex:none}
+.ex-ring{width:128px;height:128px}.ex-ring circle{fill:none;stroke-width:12;stroke-linecap:round}
+.ex-ring .tr{stroke:color-mix(in srgb,var(--brand) 14%,var(--surface-2))}.ex-ring .fg{stroke:var(--brand);transition:stroke-dasharray .5s}
+.ex-ringtxt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.ex-ringtxt b{font-family:var(--f-display);font-size:1.6rem;line-height:1.1}.ex-ringtxt small{color:var(--ink-2);font-size:.74rem}
+.ex-tside{flex:1 1 180px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.ex-tside h3,.ex-acts h3,.ex-week h3,.ex-tip h3,.ex-goal h3{display:flex;align-items:center;gap:8px;margin:0}
+.ex-sform{display:flex;gap:8px;align-items:center}
+.ex-sform input{flex:1;min-width:0;font-size:1.15rem;font-family:var(--f-display);padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+.ex-how{font-size:.86rem}.ex-how summary{cursor:pointer;color:var(--brand-2);display:flex;align-items:center;gap:6px;font-weight:600}
+.ex-how ul{margin:8px 0 4px;padding-left:1.1em;display:flex;flex-direction:column;gap:4px}
+.ex-ah{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.ex-list{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:8px}
+.ex-act{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 8px;border-radius:14px;background:var(--surface-2)}
+.ex-ai{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:color-mix(in srgb,#3E8E6A 15%,var(--surface));color:#3E8E6A}
+.ex-ai .ic{width:22px;height:22px}
+.ex-at{flex:1;min-width:0;display:flex;flex-direction:column}.ex-at small{color:var(--ink-2)}
+.ex-act .icon-btn{flex:none;width:36px;height:36px;border:0;border-radius:10px;background:none;color:var(--ink-2);display:grid;place-items:center;cursor:pointer}
+.ex-act .icon-btn .ic{width:18px;height:18px}
+.ex-bars{width:100%;height:auto;display:block;margin:6px 0 4px}
+.ex-bars rect.ok{fill:#3E8E6A}.ex-bars rect.part{fill:color-mix(in srgb,#3E8E6A 45%,var(--surface))}.ex-bars rect.none{fill:var(--line)}
+.ex-bars rect.td{stroke:var(--ink);stroke-width:1.5}
+.ex-bars text{font-size:11px;fill:var(--ink-2);font-family:var(--f-display)}.ex-bars text.td{fill:var(--ink);font-weight:700}
+.ex-bars line.goal{stroke:#E09A3E;stroke-width:1.5;stroke-dasharray:4 4}.ex-bars text.gl{fill:#B87420;font-size:10px}
+.ex-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:4px}
+.ex-stats>div{background:var(--surface-2);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column}
+.ex-stats small{color:var(--ink-2);font-size:.74rem}.ex-stats b{font-family:var(--f-display);font-size:1.25rem}.ex-stats em{font-style:normal;color:var(--ink-2);font-size:.74rem}
+.ex-bar2{height:8px;border-radius:99px;background:var(--surface-2);margin-top:10px;overflow:hidden}.ex-bar2 u{display:block;height:100%;background:linear-gradient(90deg,#7FBF7A,#3E8E6A);border-radius:99px}
+.ex-tip ul{margin:8px 0 0;padding-left:1.1em;display:flex;flex-direction:column;gap:6px;font-size:.9rem}
+.ex-hist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.ex-hist li{display:grid;grid-template-columns:7.5em 6.5em minmax(0,1fr);gap:8px;padding:8px 2px;border-bottom:1px solid var(--line);font-size:.88rem}
+.ex-hist li span:last-child{color:var(--ink-2)}
+.ex-form{display:flex;flex-direction:column;gap:10px}
+.ex-lab{font-family:var(--f-display);font-size:.95rem}
+.ex-tys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (min-width:560px){.ex-tys{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ex-ty{display:flex;align-items:center;gap:8px;min-height:50px;padding:8px 10px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.86rem;line-height:1.25;text-align:left;cursor:pointer}
+.ex-ty .ic{flex:none;width:30px;height:30px;padding:6px;box-sizing:border-box;border-radius:10px;background:color-mix(in srgb,#3E8E6A 13%,var(--surface));color:#3E8E6A}
+.ex-ty span{min-width:0;text-wrap:balance}
+.ex-ty.on{background:#3E8E6A;border-color:#3E8E6A;color:#fff}.ex-ty.on .ic{background:rgba(255,255,255,.22);color:#fff}
+.ex-mins{display:flex;gap:6px;flex-wrap:wrap}
+.ex-mins button{min-width:48px;min-height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font-family:var(--f-display);font-weight:700;font-size:1rem;cursor:pointer}
+.ex-mins button.on{background:#3E8E6A;border-color:#3E8E6A;color:#fff}
+.ex-mins input{width:84px;min-height:44px;border-radius:12px;border:1.5px solid var(--line);padding:0 10px;font-size:1rem;background:var(--surface);color:var(--ink)}
+.ex-lvs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.ex-lvs button{display:flex;flex-direction:column;gap:2px;align-items:flex-start;padding:8px 10px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.ex-lvs button small{font-size:.72rem;color:var(--ink-2);line-height:1.3}
+.ex-lvs button.on{border-color:#3E8E6A;background:color-mix(in srgb,#3E8E6A 12%,var(--surface));box-shadow:inset 0 0 0 1px #3E8E6A}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3322,7 +3378,7 @@ function slotsOn(pid,date){const rx=activeRx(pid);if(!rx)return[];const out=[];r
 function adherence(pid,days=7){let tot=0,ok=0;const now=nowHM();for(let k=days-1;k>=0;k--){const d=dOff(-k);slotsOn(pid,d).forEach(s=>{if(k===0&&s.time>now&&!s.log)return;tot++;if(s.log?.status==='taken')ok++})}return tot?Math.round(ok/tot*100):null}
 function dayStatus(pid,d){const s=slotsOn(pid,d);if(!s.length)return'none';const t=s.filter(x=>x.log?.status==='taken').length;const bad=s.some(x=>x.log&&x.log.status!=='taken');if(t===s.length)return'full';if(bad)return'partial';if(d===todayISO)return'today';return t?'partial':'empty'}
 const nextAppt=pid=>D.appts.filter(a=>a.patientId===pid&&a.status==='scheduled'&&a.date>=todayISO).sort(byStamp)[0];
-const vitalsOf=pid=>D.vitals.filter(v=>v.patientId===pid).sort(byStamp);
+const vitalsOf=pid=>D.vitals.filter(v=>v.patientId===pid&&v.kind!=='ex').sort(byStamp);
 const labsOf=(pid,code)=>D.labs.filter(l=>l.patientId===pid&&(!code||l.test===code)).sort(byStamp);
 function flagOf(l){if(l.refLow==null&&l.refHigh==null)return'none';if(l.refLow!=null&&l.value<l.refLow)return'L';if(l.refHigh!=null&&l.value>l.refHigh)return'H';return'N'}
 const refText=l=>l.refLow!=null&&l.refHigh!=null?`${l.refLow}–${l.refHigh}`:l.refLow!=null?`≥ ${l.refLow}`:l.refHigh!=null?`≤ ${l.refHigh}`:'—';
@@ -3469,7 +3525,7 @@ function journeyStep(phase,btn,extra=''){const IC=['clipboard','hospital','sprou
  <div class="jstep">${PHASES.map((p,i)=>{const st=p.n<phase?'done':p.n===phase?'cur':'';return `<div class="js ${st}" ${st==='cur'?'aria-current="step"':''}><span class="b">${icon(IC[i])}${st==='done'?`<span class="ck">${icon('check')}</span>`:''}</span><small>${_('ช่วงที่','Stage')} ${p.n}</small><span>${esc(L(p.title))}</span></div>`}).join('')}</div></section>`}
 function tiles(pid,cg){const c=cg?consentOf(S.user.id,pid):null;const ok=k=>!cg||!!c.perms[k];
  const slots=slotsOn(pid,todayISO),done=slots.filter(s=>s.log?.status==='taken').length,a=nextAppt(pid);
- const logged=D.vitals.some(v=>v.patientId===pid&&v.date===todayISO);const flag=(labsOf(pid).filter(l=>['H','L'].includes(flagOf(l))).length);
+ const logged=D.vitals.some(v=>v.patientId===pid&&v.date===todayISO&&v.kind!=='ex');const flag=(labsOf(pid).filter(l=>['H','L'].includes(flagOf(l))).length);
  const T=[['pill','c-green','ยาของฉัน','My medicines','meds',{a:'go',v:'meds'},slots.length?`${done}/${slots.length}`:''],
   ['heart','c-leaf','สุขภาพวันนี้','Today’s health','health',{a:'golog',t:'daily'},logged?'✓':''],
   ['flask','c-blue','ผลตรวจ','Lab results','labs',{a:'go',v:'labs'},''],
@@ -5962,7 +6018,7 @@ if(APIMODE){GS.on=false}
 {const _gr=gsRecords;gsRecords=function(){const R=_gr();const add=(tab,keyCol,key,data)=>R.push({tab,keyCol,key:String(key),data});
  const lk=(arr,k,i=1)=>{const x=arr.find(a=>a[0]===k);return x?x[i]:(k??'')};const by=id=>id?(person(id)?thv(person(id).name):id):'';
  const who=id=>{const r=id?roleOf(id):'';return r==='patient'?'ผู้ป่วย':r==='caregiver'?'ญาติ/ผู้ดูแล':r==='staff'?'เจ้าหน้าที่':''};
- D.vitals.forEach(v=>add('บันทึกสุขภาพ','รหัสบันทึก',v.id,{'รหัสบันทึก':v.id,'รหัสผู้ป่วย':v.patientId,'HN':ptHN(v.patientId),'ชื่อผู้ป่วย':ptNm(v.patientId),'วันที่':v.date,'เวลา':v.time||'',
+ D.vitals.filter(v=>v.kind!=='ex').forEach(v=>add('บันทึกสุขภาพ','รหัสบันทึก',v.id,{'รหัสบันทึก':v.id,'รหัสผู้ป่วย':v.patientId,'HN':ptHN(v.patientId),'ชื่อผู้ป่วย':ptNm(v.patientId),'วันที่':v.date,'เวลา':v.time||'',
   'ความดันตัวบน (mmHg)':v.sys??'','ความดันตัวล่าง (mmHg)':v.dia??'','ชีพจร (ครั้ง/นาที)':v.hr??'','อุณหภูมิ (°C)':v.temp??'','SpO2 (%)':v.spo2??'','น้ำหนัก (กก.)':v.wt??'',
   'สีปัสสาวะ':v.urine?lk(URINE,v.urine):'','อุจจาระ':v.stool?lk(STOOL,v.stool):'','การขับถ่าย':v.sfreq?lk(SFREQ,v.sfreq):'',
   'ออกกำลังกาย (นาที)':v.actMin??'','ประเภทกิจกรรม':(Array.isArray(v.act)?v.act:[]).map(a=>lk(ACTT,a)).join(', '),'ความเหนื่อยล้า':v.fatigue!=null&&FATIG[v.fatigue]?FATIG[v.fatigue][0]:'',
@@ -6449,6 +6505,109 @@ for(const k of ['stlogin','stsignup','stsetup','pwchange']){const f0=FORMS[k];if
 {const _ms49=moreSheet;moreSheet=function(){const h=_ms49();if(!S.moreOpen||S.user?.role!=='staff')return h;const on=!!pinMine();
  const row=`<div class="row sheet-row pin-row"><span class="muted">${icon('shield')} ${_('PIN 6 หลัก','6-digit PIN')}</span><span class="row" style="gap:6px"><button class="btn sm" data-a="pinset">${on?_('เปลี่ยน PIN','Change'):_('ตั้ง PIN','Set PIN')}</button>${on?`<button class="btn sm ghost" data-a="pinoff">${_('ปิด','Turn off')}</button>`:''}</span></div>`;
  return h.replace('<button class="btn block" data-a="logout">',row+'<button class="btn block" data-a="logout">')}}
+
+/* ================= v51 · exercise: daily steps and activities the patient adds ================= */
+/* One record per day in D.vitals with kind:'ex' {steps, acts:[{id,type,name,min,lvl,time}], actMin, act}.
+   Kept apart from the health log (vitalsOf skips kind:'ex'), so it syncs with no Sheet change. */
+Object.assign(ICON,{steps:'M7 3.5c-1.7 0-3 1.9-3 4.6S5.1 12.5 7 12.5s3-1.7 3-4.4S8.7 3.5 7 3.5zM4.8 15h4.4l-.5 3.3a1.7 1.7 0 0 1-3.4 0zM17 6.5c-1.7 0-3 1.9-3 4.6s1.1 4.4 3 4.4 3-1.7 3-4.4-1.3-4.6-3-4.6zM14.8 18h4.4l-.3 1.9a1.9 1.9 0 0 1-3.8 0z',
+ walk:'M13.5 5.5a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5zM9 21l2.6-6.2 2.4 2.2V21M7.5 12l2-4.5L13 7l2.5 3.5 3 1M11.6 14.8L13 7',trash:'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13'});
+const EXT=[['walk','เดินเบา ๆ','Easy walk','walk'],['bwalk','เดินเร็ว','Brisk walk','walk'],['stretch','ยืดเหยียด','Stretching','sprout'],['pt','กายภาพตามแพทย์สั่ง','Physio exercises','clipboard'],
+ ['bike','ปั่นจักรยาน','Cycling','route'],['taichi','ไทเก๊ก / ชี่กง','Tai chi / qigong','sprout'],['yoga','โยคะเบา ๆ','Gentle yoga','heart'],['band','ยางยืด / ยกน้ำหนักเบา','Band / light weights','target'],
+ ['home','ทำงานบ้าน / ทำสวน','Housework / gardening','home'],['swim','ว่ายน้ำ (เมื่อแพทย์อนุญาต)','Swimming (when cleared)','pulse']];
+const EXLV=[['easy','เบา','Light','พูดคุยได้สบาย','Can chat easily'],['mod','ปานกลาง','Moderate','พูดได้ แต่ร้องเพลงไม่ได้','Can talk, not sing'],['hard','หนัก','Hard','พูดเป็นประโยคไม่ได้','Can’t say a full sentence']];
+const exAll=pid=>D.vitals.filter(v=>v.patientId===pid&&v.kind==='ex');
+const exDay=(pid,d)=>D.vitals.find(v=>v.patientId===pid&&v.kind==='ex'&&v.date===d);
+const exGoal=pid=>{const p=P(pid)||{};return {steps:+p.stepGoal||5000,min:+p.exMinGoal||150,set:!!(p.stepGoal||p.exMinGoal)}};
+const exName=a=>{const t=EXT.find(x=>x[0]===a.type);return t?_(t[1],t[2]):(a.name||_('กิจกรรม','Activity'))};
+const exIcon=a=>(EXT.find(x=>x[0]===a.type)||[])[3]||'walk';
+const exMinOf=(pid,d)=>{const r=exDay(pid,d);const m=r?(r.acts||[]).reduce((s,a)=>s+(+a.min||0),0):0;
+ const lg=vitalsOf(pid).filter(v=>v.date===d&&v.actMin).reduce((s,v)=>s+(+v.actMin||0),0);return m+lg};
+const exMine=pid=>{const seen={};exAll(pid).forEach(r=>(r.acts||[]).forEach(a=>{if(a.type==='own'&&a.name)seen[a.name]=1}));return Object.keys(seen).slice(0,12)};
+function exTouch(pid,d){let r=exDay(pid,d);if(!r){r={id:uid('v'),patientId:pid,date:d,time:new Date().toTimeString().slice(0,5),kind:'ex',acts:[],by:S.user.id,verified:null};D.vitals.push(r)}
+ r.time=new Date().toTimeString().slice(0,5);r.by=S.user.id;r.at=nowStamp();return r}
+function exSync(r){r.actMin=(r.acts||[]).reduce((s,a)=>s+(+a.min||0),0)||undefined;if(!r.actMin)delete r.actMin;r.act=[...new Set((r.acts||[]).map(a=>a.type))];if(!r.act.length)delete r.act}
+const ring=(v,goal)=>{const f=Math.max(0,Math.min(1,goal?v/goal:0)),R=52,C=2*Math.PI*R;
+ return `<svg class="ex-ring" viewBox="0 0 128 128" role="img" aria-label="${v} / ${goal}"><circle cx="64" cy="64" r="${R}" class="tr"/><circle cx="64" cy="64" r="${R}" class="fg" stroke-dasharray="${(C*f).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 64 64)"/></svg>`};
+function exWeek(pid){const days=[...Array(7)].map((_x,i)=>dOff(i-6));const g=exGoal(pid);
+ const st=days.map(d=>+(exDay(pid,d)?.steps)||0),mx=Math.max(g.steps,...st)*1.1;const W=320,H=130,B=22,T=8,bw=28,gap=(W-7*bw)/6;
+ const y=v=>T+(H-T-B)*(1-v/mx),gy=y(g.steps);
+ const bars=days.map((d,i)=>{const x=i*(bw+gap),v=st[i],h=v?(H-B-y(v)):0;const lab=parseISO(d).toLocaleDateString(loc(),{weekday:'narrow'});
+  return `<g><rect x="${x.toFixed(1)}" y="${(H-B-h).toFixed(1)}" width="${bw}" height="${Math.max(h,0).toFixed(1)}" rx="7" class="${v>=g.steps?'ok':v?'part':'none'}${d===todayISO?' td':''}"/>${!v?`<rect x="${x.toFixed(1)}" y="${H-B-4}" width="${bw}" height="4" rx="2" class="none"/>`:''}<text x="${(x+bw/2).toFixed(1)}" y="${H-6}" text-anchor="middle" class="${d===todayISO?'td':''}">${lab}</text></g>`}).join('');
+ const wkMin=days.reduce((s,d)=>s+exMinOf(pid,d),0),hit=st.filter(v=>v>=g.steps).length,avg=Math.round(st.reduce((a,b)=>a+b,0)/7);
+ return `<section class="card ex-week"><h3>${icon('chart')} ${_('7 วันที่ผ่านมา','Last 7 days')}</h3>
+ <svg class="ex-bars" viewBox="0 0 ${W} ${H}" role="img" aria-label="${_('จำนวนก้าว 7 วัน','Steps, 7 days')}"><line x1="0" x2="${W}" y1="${gy.toFixed(1)}" y2="${gy.toFixed(1)}" class="goal"/><text x="${W}" y="${(gy-4).toFixed(1)}" text-anchor="end" class="gl">${_('เป้า','goal')} ${g.steps.toLocaleString()}</text>${bars}</svg>
+ <div class="ex-stats"><div><small>${_('เฉลี่ย/วัน','Avg / day')}</small><b class="num">${avg.toLocaleString()}</b><em>${_('ก้าว','steps')}</em></div><div><small>${_('ถึงเป้าก้าว','Step goal met')}</small><b class="num">${hit}/7</b><em>${_('วัน','days')}</em></div><div><small>${_('ออกกำลังกายรวม','Active time')}</small><b class="num">${wkMin}</b><em>/ ${g.min} ${_('นาที','min')}</em></div></div>
+ <div class="ex-bar2" aria-hidden="true"><u style="width:${Math.min(100,Math.round(wkMin/g.min*100))}%"></u></div></section>`}
+function exPanel(pid){const rec=canRecord(pid),staff=S.user.role==='staff',g=exGoal(pid),r=exDay(pid,todayISO),steps=+(r?.steps)||0,acts=r?.acts||[];
+ const left=Math.max(0,g.steps-steps);
+ const stepCard=`<section class="card ex-today"><div class="ex-ringbox">${ring(steps,g.steps)}<div class="ex-ringtxt"><b class="num">${steps.toLocaleString()}</b><small>/ ${g.steps.toLocaleString()} ${_('ก้าว','steps')}</small></div></div>
+  <div class="ex-tside"><h3>${icon('steps')} ${_('ก้าววันนี้','Steps today')}</h3><p class="muted">${steps>=g.steps?_('ถึงเป้าหมายแล้ว เก่งมาก!','Goal reached — well done!'):steps?_(`อีก ${left.toLocaleString()} ก้าวถึงเป้า`,`${left.toLocaleString()} to go`):_('ยังไม่ได้บันทึกวันนี้','Not logged yet today')}</p>
+  ${rec?`<form class="ex-sform" data-form="exsteps" data-pid="${pid}"><label class="sr" for="ex-steps">${_('จำนวนก้าว','Steps')}</label><input id="ex-steps" name="steps" type="number" inputmode="numeric" min="0" max="80000" step="1" value="${steps||''}" placeholder="${_('เช่น 3500','e.g. 3500')}"><button class="btn primary sm" type="submit">${icon('check')} ${_('บันทึก','Save')}</button></form>`:''}
+  ${staff?'':`<details class="ex-how"><summary>${icon('info')} ${_('ดูจำนวนก้าวได้จากไหน','Where to find your steps')}</summary><ul><li><b>iPhone:</b> ${_('แอป "สุขภาพ" (Health) → เรียกดู → กิจกรรม → ก้าว','Health app → Browse → Activity → Steps')}</li><li><b>Android:</b> ${_('แอป Google Fit หรือ Samsung Health หน้าแรกจะมีจำนวนก้าววันนี้','Google Fit or Samsung Health shows today’s steps on its first screen')}</li><li>${_('นาฬิกาหรือสายรัดข้อมือนับก้าว ดูจากแอปของนาฬิกานั้น','A watch or fitness band: check its own app')}</li></ul><p class="hint tiny">${_('บันทึกก่อนนอนวันละครั้ง หรือบันทึกซ้ำได้ ระบบจะใช้ตัวเลขล่าสุดของวัน','Log once before bed, or update any time — the latest number for the day is kept')}</p></details>`}
+  </div></section>`;
+ const actRow=a=>{const lv=EXLV.find(x=>x[0]===a.lvl);return `<li class="ex-act"><span class="ex-ai">${icon(exIcon(a))}</span><span class="ex-at"><b>${esc(exName(a))}</b><small>${a.min} ${_('นาที','min')}${lv?' · '+_(lv[1],lv[2]):''}${a.time?' · '+esc(a.time):''}${a.note?' · '+esc(a.note):''}</small></span>${rec?`<button class="icon-btn" data-a="exdel" data-pid="${pid}" data-id="${a.id}" aria-label="${_('ลบ','Delete')}">${icon('trash')}</button>`:''}</li>`};
+ const todayMin=exMinOf(pid,todayISO);
+ const actCard=`<section class="card ex-acts"><div class="ex-ah"><h3>${icon('walk')} ${_('กิจกรรมวันนี้','Today’s activities')}</h3><span class="chip">${todayMin} ${_('นาที','min')}</span></div>
+  ${acts.length?`<ul class="ex-list">${acts.map(actRow).join('')}</ul>`:`<p class="muted">${_('ยังไม่มีกิจกรรมวันนี้','No activities yet today')}</p>`}
+  ${rec?`<button class="btn block ex-add" data-a="exadd" data-pid="${pid}">${icon('plus')} ${_('เพิ่มกิจกรรม','Add an activity')}</button>`:''}</section>`;
+ const hist=exAll(pid).filter(x=>x.date<todayISO).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,30);
+ const histFold=fold('exhist',`<h3>${icon('list')} ${_('ย้อนหลัง 30 วัน','Past 30 days')}</h3>`,hist.length?`<ul class="ex-hist">${hist.map(x=>`<li><b>${fmtDate(x.date,{weekday:'short',day:'numeric',month:'short'})}</b><span>${x.steps?(+x.steps).toLocaleString()+' '+_('ก้าว','steps'):'—'}</span><span>${(x.acts||[]).map(a=>esc(exName(a))+' '+a.min+"'").join(', ')||''}</span></li>`).join('')}</ul>`:`<p class="muted">${_('ยังไม่มีข้อมูลย้อนหลัง','No history yet')}</p>`,false);
+ const goalCard=staff&&canRecord(pid)?`<form class="card form ex-goal" data-form="exgoal" data-pid="${pid}"><h3>${icon('target')} ${_('เป้าหมายการออกกำลังกาย','Exercise goals')}</h3><div class="fgrid2"><label class="field">${_('ก้าว/วัน','Steps / day')}<input name="steps" type="number" min="500" max="30000" step="500" value="${g.steps}"></label><label class="field">${_('นาที/สัปดาห์','Minutes / week')}<input name="min" type="number" min="10" max="600" step="10" value="${g.min}"></label></div><p class="ferr" role="alert"></p><button class="btn primary sm" type="submit">${icon('check')} ${_('บันทึกเป้าหมาย','Save goals')}</button></form>`:'';
+ const tip=staff?'':`<section class="card ex-tip"><h3>${icon('shield')} ${_('ออกกำลังกายอย่างปลอดภัย','Exercise safely')}</h3><ul>
+  <li>${_('ทำตามแผนของแพทย์และนักกายภาพ เริ่มเบา ๆ แล้วค่อย ๆ เพิ่มทีละน้อย','Follow your doctor’s and physio’s plan — start gently and build up slowly')}</li>
+  <li>${_('ห้ามยกของหนักหรือเกร็งหน้าท้อง จนกว่าแผลหายและแพทย์อนุญาต','No heavy lifting or straining your belly until the wound has healed and your doctor says so')}</li>
+  <li>${_('หยุดทันทีถ้าเจ็บหน้าอก หายใจลำบาก หน้ามืด ใจสั่น หรือเจ็บแผล แล้วแจ้งทีมรักษา','Stop at once for chest pain, breathlessness, dizziness, palpitations or wound pain, and tell the team')}</li>
+  <li>${_('ดื่มน้ำตามที่แพทย์แนะนำ หลีกเลี่ยงแดดจัดและที่แออัด','Drink as your doctor advises; avoid strong sun and crowded places')}</li></ul>
+  ${g.set?'':`<p class="hint tiny">${_('เป้าหมายตอนนี้เป็นค่าเริ่มต้น ทีมรักษาปรับให้เหมาะกับคุณได้','These are starting goals — your care team can adjust them for you')}</p>`}</section>`;
+ return `<div class="ex-wrap">${stepCard}${actCard}${exWeek(pid)}${goalCard}${tip}${histFold}</div>`}
+/* add-an-activity sheet */
+function exAddModal(){const m=S.modal,pid=m.pid,mine=exMine(pid),t=m.type||'walk',lv=m.lvl||'easy';
+ const tile=(v,th,en,ic,nm)=>`<button type="button" class="ex-ty ${t===v&&(!nm||m.name===nm)?'on':''}" data-a="exty" data-v="${v}" ${nm?`data-n="${esc(nm)}"`:''}>${icon(ic)}<span>${nm?esc(nm):_(th,en)}</span></button>`;
+ return mShell(_('เพิ่มกิจกรรม','Add an activity'),`<form class="form ex-form" data-form="exadd" data-pid="${pid}">
+  <b class="ex-lab">${_('ทำอะไร','What did you do?')}</b>
+  <div class="ex-tys">${EXT.map(([v,th,en,ic])=>tile(v,th,en,ic)).join('')}${mine.map(n=>tile('own','','','star',n)).join('')}${tile('new','เพิ่มกิจกรรมใหม่','Something else','plus')}</div>
+  ${t==='new'?`<label class="field">${_('ชื่อกิจกรรม','Activity name')}<input name="name" maxlength="40" placeholder="${_('เช่น รำวง, เดินในห้าง','e.g. dancing, mall walking')}" value="${esc(m.newName||'')}" required></label>`:''}
+  <b class="ex-lab">${_('นานเท่าไร (นาที)','How long (minutes)')}</b>
+  <div class="ex-mins">${[10,15,20,30,45,60].map(x=>`<button type="button" class="${+m.min===x?'on':''}" data-a="exmin" data-v="${x}">${x}</button>`).join('')}<input name="min" type="number" inputmode="numeric" min="1" max="300" value="${m.min||''}" aria-label="${_('นาที','Minutes')}" placeholder="${_('อื่น ๆ','other')}"></div>
+  <b class="ex-lab">${_('เหนื่อยแค่ไหน','How hard?')}</b>
+  <div class="ex-lvs">${EXLV.map(([v,th,en,dt,de])=>`<button type="button" class="${lv===v?'on':''} lv-${v}" data-a="exlv" data-v="${v}"><b>${_(th,en)}</b><small>${_(dt,de)}</small></button>`).join('')}</div>
+  <label class="field">${_('บันทึกเพิ่มเติม (ไม่บังคับ)','Note (optional)')}<input name="note" maxlength="80" value="${esc(m.note||'')}" placeholder="${_('เช่น เหนื่อยนิดหน่อย พักแล้วดีขึ้น','e.g. a bit tired, fine after a rest')}"></label>
+  <p class="ferr" role="alert"></p><button class="btn primary block" type="submit">${icon('check')} ${_('บันทึกกิจกรรม','Save activity')}</button></form>`,'','ex-modal')}
+const exKeep=()=>{const f=document.querySelector('form[data-form=exadd]');if(!f||!S.modal)return;const fd=new FormData(f);S.modal.min=fd.get('min')||S.modal.min;S.modal.note=fd.get('note')||'';if(fd.get('name')!=null)S.modal.newName=fd.get('name')};
+ACT.exadd=d=>{if(!canRecord(d.pid))return;S.modal={kind:'exadd',pid:d.pid,type:'walk',lvl:'easy'};render()};
+ACT.exty=d=>{exKeep();S.modal.type=d.v;S.modal.name=d.n||'';render();if(d.v==='new')setTimeout(()=>document.querySelector('.ex-form [name=name]')?.focus(),40)};
+ACT.exmin=d=>{exKeep();S.modal.min=d.v;render()};
+ACT.exlv=d=>{exKeep();S.modal.lvl=d.v;render()};
+FORMS.exadd=(o,fd,f)=>{const m=S.modal,pid=f.dataset.pid;if(!m||!canRecord(pid))return;const min=Math.round(+o.min);
+ if(!min||min<1||min>300)return fail(f,_('ใส่เวลาเป็นนาที (1–300)','Enter the time in minutes (1–300)'));
+ let type=m.type||'walk',name='';if(type==='new'){name=String(o.name||'').trim();if(!name)return fail(f,_('ใส่ชื่อกิจกรรม','Enter the activity name'));type='own'}else if(type==='own')name=m.name;
+ const r=exTouch(pid,todayISO);r.acts=r.acts||[];r.acts.push({id:uid('xa'),type,name,min,lvl:m.lvl||'easy',time:new Date().toTimeString().slice(0,5),note:String(o.note||'').trim().slice(0,80)});exSync(r);
+ audit(`บันทึกกิจกรรม ${type==='own'?name:(EXT.find(x=>x[0]===type)||[])[1]} ${min} นาที`,`Logged activity ${min} min`,pid);S.modal=null;render();toast(_('บันทึกกิจกรรมแล้ว','Activity saved'))};
+FORMS.exsteps=(o,fd,f)=>{const pid=f.dataset.pid;if(!canRecord(pid))return;const n=Math.round(+String(o.steps||'').replace(/[^\d]/g,''));
+ if(String(o.steps||'').trim()===''||isNaN(n)||n<0||n>80000)return toast(_('ใส่จำนวนก้าว 0–80,000','Enter 0–80,000 steps'));
+ const r=exTouch(pid,todayISO);r.steps=n;audit(`บันทึกจำนวนก้าว ${n}`,`Logged ${n} steps`,pid);render();
+ const g=exGoal(pid);toast(n>=g.steps?_('ถึงเป้าหมายก้าววันนี้แล้ว 🎉','Step goal reached 🎉'):_('บันทึกจำนวนก้าวแล้ว','Steps saved'))};
+ACT.exdel=d=>{if(!canRecord(d.pid))return;const r=exDay(d.pid,todayISO);if(!r)return;r.acts=(r.acts||[]).filter(a=>a.id!==d.id);exSync(r);r.at=nowStamp();render();toast(_('ลบกิจกรรมแล้ว','Activity removed'))};
+FORMS.exgoal=(o,fd,f)=>{const pid=f.dataset.pid;if(S.user.role!=='staff'||!canRecord(pid))return;const s=Math.round(+o.steps),m=Math.round(+o.min);
+ if(!(s>=500&&s<=30000))return fail(f,_('เป้าหมายก้าว 500–30,000','Step goal 500–30,000'));if(!(m>=10&&m<=600))return fail(f,_('เป้าหมาย 10–600 นาที/สัปดาห์','10–600 minutes a week'));
+ const p=P(pid);p.stepGoal=s;p.exMinGoal=m;audit(`ตั้งเป้าหมายออกกำลังกาย ${s} ก้าว/วัน ${m} นาที/สัปดาห์`,'Set exercise goals',pid);render();toast(_('บันทึกเป้าหมายแล้ว','Goals saved'))};
+{const _mh51=modalHTML;modalHTML=function(){if(S.modal?.kind==='exadd')return exAddModal();return _mh51()}}
+/* a fourth tab on the health log */
+{const _lp51=logPanel2;logPanel2=function(pid,rec,t){if(t!=='ex'){let h=_lp51(pid,rec,t);return h.replace('<div class="ltabs" role="tablist">','<div class="ltabs t4" role="tablist">').replace(/(<button role="tab" aria-selected="(?:true|false)" class="[^"]*" data-a="logtab" data-t="trend">)/,exTabBtn(false)+'$1')}
+ const h=_lp51(pid,rec,'trend');const i=h.indexOf('</div>')+6;return h.slice(0,i).replace('<div class="ltabs" role="tablist">','<div class="ltabs t4" role="tablist">').replace(/ class="on"( data-a="logtab" data-t="trend")/,' class=""$1').replace('aria-selected="true" class="" data-a="logtab" data-t="trend"','aria-selected="false" class="" data-a="logtab" data-t="trend"').replace(/(<button role="tab" aria-selected="(?:true|false)" class="[^"]*" data-a="logtab" data-t="trend">)/,exTabBtn(true)+'$1')+exPanel(pid)}}
+const exTabBtn=on=>`<button role="tab" aria-selected="${on}" class="${on?'on':''} ex" data-a="logtab" data-t="ex">${icon('walk')} ${_('ออกกำลังกาย','Exercise')}</button>`;
+/* staff: same tab next to the daily log and symptom check */
+{const _lp51s=logPanel;logPanel=function(pid){if(S.user.role!=='staff')return _lp51s(pid);const t=S.logTab,SEG='<div class="seg big" role="tablist">';
+ const btn=(k,th,en)=>`<button role="tab" aria-selected="${t===k}" class="${t===k?'on':''}" data-a="logtab" data-t="${k}">${_(th,en)}</button>`;
+ if(t==='ex'){S.logTab='daily';let h;try{h=_lp51s(pid)}finally{S.logTab='ex'}const i=h.indexOf(SEG);
+  return (i<0?h:h.slice(0,i))+SEG+btn('daily','บันทึกประจำวัน','Daily log')+btn('sym','ประเมินอาการ','Symptom check')+btn('ex','ออกกำลังกาย','Exercise')+'</div>'+exPanel(pid)}
+ const h=_lp51s(pid);const i=h.indexOf(SEG);if(i<0)return h;const j=h.indexOf('</div>',i);return h.slice(0,j)+btn('ex','ออกกำลังกาย','Exercise')+h.slice(j)}}
+/* Sheet report tab */
+{const _gr51=gsRecords;gsRecords=function(){const R=_gr51();D.vitals.filter(v=>v.kind==='ex').forEach(v=>{const p=P(v.patientId);if(!p)return;
+ R.push({tab:'การออกกำลังกาย',keyCol:'รหัสบันทึก',key:String(v.id),data:{'รหัสบันทึก':v.id,'HN':p.hn||'','ชื่อผู้ป่วย':L(p.name),'วันที่':v.date,'จำนวนก้าว':v.steps??'','เป้าหมายก้าว':exGoal(p.id).steps,'นาทีรวม':v.actMin??0,
+  'กิจกรรม':(v.acts||[]).map(a=>`${(EXT.find(x=>x[0]===a.type)||[])[1]||a.name} ${a.min} นาที (${(EXLV.find(x=>x[0]===a.lvl)||[])[1]||''})`).join('; '),'บันทึกโดย':L(person(v.by)?.name)||v.by||''}})});return R}}
+/* last sync time shown in the user’s own clock */
+{const _vg51=vGsync;vGsync=function(){let h=_vg51();if(API.last){const d=new Date(API.last);if(!isNaN(d))h=h.replace(API.last.slice(11,16),d.toTimeString().slice(0,5))}return h};VIEWS.gsync=vGsync}
 
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
