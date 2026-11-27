@@ -2634,6 +2634,22 @@ div.rbar{cursor:default}
 .ea-lv button.on{border-color:#3E8E6A;background:#F1F8F3;box-shadow:inset 0 0 0 1px #3E8E6A}
 .ea-bars{display:flex;align-items:flex-end;gap:2px;height:14px}.ea-bars i{width:5px;border-radius:2px;background:#DCEBE1}.ea-bars i:nth-child(1){height:6px}.ea-bars i:nth-child(2){height:10px}.ea-bars i:nth-child(3){height:14px}.ea-bars i.f{background:#3E8E6A}
 .ea-note input{border-radius:14px}
+/* v56 · scan */
+.scan{display:flex;flex-direction:column;gap:12px}
+.sc-src{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.sc-b{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:96px;padding:12px;border-radius:18px;border:1.5px dashed color-mix(in srgb,var(--brand) 45%,var(--line));background:var(--brand-soft);color:var(--brand-2);font-weight:600;text-align:center;cursor:pointer}
+.sc-b .ic{width:28px;height:28px}
+.sc-busy{display:flex;flex-direction:column;align-items:center;gap:10px;padding:30px 10px;text-align:center}
+.sc-bar{display:block;width:100%;max-width:320px;height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden}.sc-bar u{display:block;height:100%;background:var(--brand);transition:width .2s}
+.spin{width:34px;height:34px;border-radius:50%;border:4px solid var(--brand-soft);border-top-color:var(--brand);animation:scspin 1s linear infinite}
+@keyframes scspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+#sc-text{font-family:ui-monospace,Menlo,monospace;font-size:.85rem;line-height:1.6}
+.scan-note{display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--gold-soft);font-size:.86rem;line-height:1.6;margin:0 0 10px}
+.scan-note .ic{flex:none;width:18px;height:18px;margin-top:2px;color:var(--gold)}
+input.from-scan{background:var(--gold-soft)!important;border-color:var(--gold)!important;font-weight:700}
+.scan-in{margin-bottom:10px}
+.scan-cta{margin-bottom:12px;border-style:dashed}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -4385,7 +4401,7 @@ function vLabMgmt(){const mine=myPatients();const pid=mine.some(p=>p.id===S.lmPi
   const off=c==='TAC'&&p.tacTarget?(l.value<p.tacTarget[0]?'L':l.value>p.tacTarget[1]?'H':'N'):f;
   return `<tr class="${off==='H'||off==='L'?'off':''}"><th scope="row">${t.name}<small>${esc(L(t.p))}</small></th><td class="num">${tg}<small>${esc(l.unit)}</small></td><td><span class="lres ${off==='H'||off==='L'?'off':''} num">${l.value}</span></td><td>${off==='H'?'<b class="up">↑</b>':off==='L'?'<b class="up">↓</b>':'<b class="okk">✓</b>'}</td><td class="num">${fmtDate(l.date,{day:'numeric',month:'short'})}<small>${l.time||''}</small></td><td>${(l.status||'verified')==='verified'&&(l.src2||'hosp')==='hosp'?`<span class="lst-ok" title="Verified · ${_(...SRC2.hosp)}">${icon('check')}</span>`:`${chip(LSTAT[l.status||'verified'][1],LSTAT[l.status||'verified'][0])}<small>${_(...(SRC2[l.src2||'hosp']))}</small>`}</td><td>${spark(h.map(x=>x.value),90,24)}</td><td><button class="btn sm ghost" data-a="labfix" data-id="${l.id}" aria-label="${_('แก้ไข','Correct')}">${icon('edit')}</button></td></tr>`};
  return `${ptPicker(pid,'lmpt',id=>labAlerts(id).length?` · <em class="dotw">${labAlerts(id).length}</em>`:'')}
- <div class="lm-act"><button class="btn primary" data-a="labpanel" data-pid="${pid}">${icon('plus')} ${_('กรอกผล Lab','Enter lab results')}</button>${drafts.length?`<button class="btn" data-a="labver" data-pid="${pid}">${icon('check')} ${_(`ยืนยันผล Draft ${drafts.length} รายการ`,`Verify ${drafts.length} drafts`)}</button>`:''}</div>
+ <div class="lm-act"><button class="btn" data-a="scan" data-k="lab" data-pid="${pid}">${icon('camera')} ${_('อ่านจากรูป','From picture')}</button><button class="btn primary" data-a="labpanel" data-pid="${pid}">${icon('plus')} ${_('กรอกผล Lab','Enter lab results')}</button>${drafts.length?`<button class="btn" data-a="labver" data-pid="${pid}">${icon('check')} ${_(`ยืนยันผล Draft ${drafts.length} รายการ`,`Verify ${drafts.length} drafts`)}</button>`:''}</div>
  ${al.length?`<section class="card lm-al"><div class="card-h"><h3>${icon('alert')} ${_('ผลที่เข้าเกณฑ์เฝ้าระวัง','Results meeting watch criteria')}</h3></div>${al.map(a=>`<div class="lm-al-r sev-${a.sev}">${chip(SEVL[a.sev][2],_(SEVL[a.sev][0],SEVL[a.sev][1]))}<b>${esc(a.title)}</b><span class="muted">${esc(a.sub)} · ${fmtDate(a.date,{day:'numeric',month:'short'})}</span></div>`).join('')}<p class="hint tiny">${_('ค่าผิดปกติเป็นสัญญาณให้ตรวจสอบ ไม่ใช่การวินิจฉัยภาวะแทรกซ้อน','Abnormal values are a prompt to check, not a diagnosis')}</p></section>`:''}
  <section class="card"><div class="card-h"><h3>${icon('chart')} Lab Trend Monitoring</h3><div class="tp-seg">${[7,30,90].map(d=>`<button class="${days===d?'on':''}" data-a="lmdays" data-d="${d}">${d} ${_('วัน','d')}</button>`).join('')}</div></div>${multiTrend(pid,days)}<p class="hint tiny">${_('แสดงเป็นจำนวนเท่าของค่าสูงสุดปกติ (ULN) เพื่อดู 4 รายการในกราฟเดียว','Shown as multiples of the upper normal limit so all four fit one chart')}</p></section>
  <section class="card"><div class="card-h"><h3>${icon('flask')} ${_('ผล Lab ล่าสุดและแนวโน้ม','Latest results and trends')}</h3><input class="lm-q" type="search" placeholder="${_('ค้นหารายการตรวจ…','Filter by biomarker…')}" value="${esc(S.lmQ||'')}" data-c="lmq" aria-label="${_('ค้นหา','Filter')}"></div>
@@ -6831,6 +6847,80 @@ exAddModal=function(){const m=S.modal,pid=m.pid,mine=exMine(pid),t=m.type||'walk
   <label class="field ea-note">${_('บันทึกเพิ่มเติม','Note')}<input name="note" maxlength="80" value="${esc(m.note||'')}" placeholder="${_('ไม่บังคับ','optional')}"></label>
   <p class="ferr" role="alert"></p><button class="btn primary block ea-save" type="submit">${icon('check')} ${_('บันทึก','Save')}</button></form>`,'','ex-modal')};
 {const _fa=FORMS.exadd;FORMS.exadd=(o,fd,f)=>{if(!String(o.min||'').trim()&&o._m)o.min=o._m;return _fa(o,fd,f)}}
+
+/* ================= v56 · read lab results and prescriptions from a photo, screenshot or copied text ================= */
+Object.assign(ICON,{image:'M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M15.5 9.5a1.5 1.5 0 1 0 0-.01'});
+/* Text recognition runs on this device (Tesseract.js); the picture is never uploaded. Staff always check before saving. */
+const OCRLIB='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+let ocrP=null;
+const ocrLoad=()=>ocrP||(ocrP=new Promise((res,rej)=>{if(window.Tesseract)return res();const s=document.createElement('script');s.src=OCRLIB;s.onload=()=>res();s.onerror=()=>{ocrP=null;rej(new Error(_('โหลดตัวอ่านข้อความไม่ได้ ตรวจสอบอินเทอร์เน็ต','Couldn’t load the text reader — check the internet')))};document.head.appendChild(s)}));
+async function ocrRead(file,langs){await ocrLoad();const r=await Tesseract.recognize(file,langs,{logger:m=>{if(m.status==='recognizing text'&&S.modal?.kind==='scan'){S.modal.pct=Math.round(m.progress*100);const e=document.querySelector('.sc-pct');if(e)e.textContent=S.modal.pct+'%';const b=document.querySelector('.sc-bar u');if(b)b.style.width=S.modal.pct+'%'}}});return r.data.text||''}
+/* ---- lab results ---- */
+const LABRX=[['TAC',/tacro|fk[\s-]?506|prograf|advagraf/i],['DBIL',/direct\s*bili|d[\.\s-]?bil\b|\bdb\b/i],['TBIL',/total\s*bili|t[\.\s-]?bil\b|\btb\b|bilirubin/i],['AST',/\b(ast|sgot)\b/i],['ALT',/\b(alt|sgpt)\b/i],['ALP',/\balp\b|alk(aline)?\.?\s*phos/i],['GGT',/\bggt\b|gamma[\s-]?g|γ[\s-]?gt/i],['ALB',/\balb(umin)?\b/i],
+ ['INR',/\binr\b/i],['PT',/(^|[^a-z])pt\b(?!t)|prothrombin\s*time/i],['EGFR',/e[\s-]?gfr/i],['CR',/creat(inine)?\b|\bcr\b/i],['BUN',/\bbun\b|urea\s*n/i],['WBC',/\bwbc\b|white\s*blood/i],['HCT',/\bhct\b|hematocrit|haematocrit/i],['HB',/\b(hb|hgb)\b|h(a)?emoglobin/i],['PLT',/\bplt\b|platelet/i],
+ ['NA',/\bna\b|sodium/i],['K',/(^|\s)k\b|potassium/i],['CL',/\bcl\b|chloride/i],['CO2',/\bco2\b|\bhco3|bicarb/i]];
+function parseLabs(text){const out={},lines={};String(text).replace(/\r/g,'').split('\n').forEach(raw=>{const ln=raw.replace(/[|]/g,' ').replace(/(\d),(\d{3})\b/g,'$1$2');
+  for(const [c,re] of LABRX){if(out[c]!=null)continue;const m=ln.match(re);if(!m)continue;const rest=ln.slice(m.index+m[0].length).replace(/\([^)]*\)/g,' ').replace(/\b[a-z]+\d+[a-z\d]*\b/gi,' ').replace(/^[^0-9<>-]*?(?=[<>]?\s*-?\d)/,'');const n=rest.match(/[<>]?\s*(-?\d+(?:\.\d+)?)/);if(!n)continue;
+   const v=+n[1];if(isNaN(v))continue;if(c==='CO2'&&/^2\b/.test(rest))continue;out[c]=v;lines[c]=raw.trim();break}});
+ const dm=String(text).match(/(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/);let date=null;if(dm){let y=+dm[3];if(y<100)y+=2500;if(y>2400)y-=543;const d=`${y}-${String(+dm[2]).padStart(2,'0')}-${String(+dm[1]).padStart(2,'0')}`;if(!isNaN(new Date(d))&&d<=todayISO&&y>2000)date=d}
+ return {vals:out,lines,date}}
+/* ---- prescriptions ---- */
+const DRUGRX=/tacro|prograf|advagraf|mycophen|cellcept|myfortic|predniso|methylpred|everolimus|certican|sirolimus|valganci|valcyte|ganciclo|co-?trimox|bactrim|sulfameth|ursodeox|urso\b|ursolin|omepraz|pantopraz|esomepraz|lansopraz|calcium|vitamin|calcifer|amlodip|nifedip|losartan|enalapril|metformin|glipizide|insulin|furosemide|lasix|spironol|entecavir|tenofovir|lamivudine|aspirin|atorvast|simvast|rosuvast|magnes|folic|nystatin|fluconaz|acyclo|valacyclo|sodium\s*bicarb|potassium\s*chl|propranolol|carvedilol|lactulose|metoclopr|domperid|paracetamol|ferrous|zinc|multivit|isoniazid|sitagliptin|ondansetron/i;
+const STRRX=/(\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?)\s*(mg|mcg|µg|ug|g|iu|unit|units|มก\.?|มิลลิกรัม)(?![a-z])/i;
+function parseRx(text){const L0=String(text).replace(/\r/g,'').split('\n').map(s=>s.trim()).filter(Boolean);const blocks=[];
+ L0.forEach(ln=>{if(DRUGRX.test(ln)||(STRRX.test(ln)&&/[a-z]{4,}/i.test(ln)))blocks.push([ln]);else if(blocks.length)blocks[blocks.length-1].push(ln)});
+ return blocks.slice(0,20).map(b=>{const head=b[0],all=b.join(' '),low=all.toLowerCase();const it=blankItem();
+  const sm=head.match(STRRX)||all.match(STRRX);it.strength=sm?`${sm[1]} ${/มก|มิลลิ/.test(sm[2])?'mg':sm[2].toLowerCase().replace('ug','mcg').replace('µg','mcg')}`:'';
+  it.name=(sm&&head.search(STRRX)>0?head.slice(0,head.search(STRRX)):head.split(/[\u0E00-\u0E7F]/)[0]).replace(/\b(tab(let)?s?|caps?(ule)?s?|เม็ด|แคปซูล)\b.*$/i,'').replace(/^[\s\d.)#\-•*]+/,'').replace(/[(\[].*?[)\]]/g,m=>/[a-z]{4,}/i.test(m)?m:'').replace(/\s{2,}/g,' ').trim().slice(0,60);
+  const qm=all.match(/(?:ครั้งละ|รับประทาน|กิน|ทาน|take)?\s*(\d+(?:\.\d+)?|ครึ่ง|1\/2|½)\s*(เม็ด|แคปซูล|ช้อนชา|ซอง|มล\.?|หยด|ยูนิต|tab(?:let)?s?|caps?(?:ule)?s?)/i);
+  if(qm){it.qty=/ครึ่ง|1\/2|½/.test(qm[1])?'0.5':qm[1];const u=qm[2].toLowerCase();it.form=/tab/.test(u)?'เม็ด':/cap/.test(u)?'แคปซูล':qm[2].replace(/\.$/,'')}
+  const t=new Set();(all.match(/\b([01]?\d|2[0-3])[:.]([0-5]\d)\s*(?:น\.?|นาฬิกา|hr|h)?/g)||[]).forEach(x=>{const m=x.match(/([01]?\d|2[0-3])[:.]([0-5]\d)/);if(m&&!/\d[:.]\d{2}\s*(mg|ml)/i.test(x))t.add(String(+m[1]).padStart(2,'0')+':'+m[2])});
+  if(/เช้า/.test(all))t.add('08:00');if(/กลางวัน|เที่ยง/.test(all))t.add('12:00');if(/เย็น/.test(all))t.add('18:00');if(/ก่อนนอน|\bhs\b|bedtime/i.test(all))t.add('21:00');
+  if(!t.size){const f=(all.match(/วันละ\s*(\d)\s*ครั้ง/)||[])[1]||(/\b(od|qd|once\s*(a\s*)?daily)\b/i.test(low)?1:/\b(bid|q12h|twice)\b/i.test(low)?2:/\b(tid|q8h)\b/i.test(low)?3:/\b(qid|q6h)\b/i.test(low)?4:0);
+   ({1:['08:00'],2:['08:00','20:00'],3:['08:00','12:00','18:00'],4:['08:00','12:00','18:00','21:00']}[+f]||[]).forEach(x=>t.add(x))}
+  it.times=[...t].sort().join(', ');
+  it.meal=/ก่อนอาหาร|\bac\b|before\s*(meal|food)/i.test(all)?'before':/หลังอาหาร|\bpc\b|after\s*(meal|food)/i.test(all)?'after':/พร้อมอาหาร|with\s*(meal|food)/i.test(all)?'with':'';
+  it.note=b.slice(1).join(' ').slice(0,120);it._src=b.join('\n');return it}).filter(it=>it.name)}
+/* ---- the scan sheet ---- */
+function scanModal(){const m=S.modal,lab=m.k==='lab';
+ const title=lab?_('อ่านผล Lab จากรูปหรือข้อความ','Read lab results from a picture or text'):_('เพิ่มยาจากรูปใบสั่งยา','Add medicines from a prescription picture');
+ const body=m.busy?`<div class="sc-busy"><span class="spin" aria-hidden="true"></span><b>${_('กำลังอ่านข้อความในรูป','Reading the picture')} <span class="sc-pct">${m.pct||0}%</span></b><span class="sc-bar"><u style="width:${m.pct||0}%"></u></span><small>${_('ครั้งแรกอาจใช้เวลาเกือบนาที เพื่อโหลดตัวอ่านภาษา','The first time can take up to a minute while the reader loads')}</small></div>`
+ :`<div class="sc-src"><label class="sc-b">${icon('camera')}<span>${_('ถ่ายรูป','Take photo')}</span><input type="file" accept="image/*" capture="environment" data-c="scanfile" hidden></label><label class="sc-b">${icon('image')}<span>${_('เลือกรูป / ภาพหน้าจอ','Choose picture / screenshot')}</span><input type="file" accept="image/*" data-c="scanfile" hidden></label></div>
+  <p class="hint tiny">${lab?_('ถ้าผลอยู่บนหน้าจอระบบโรงพยาบาล: คัดลอกข้อความมาวางด้านล่างจะแม่นที่สุด หรือกด Win + Shift + S เพื่อจับภาพหน้าจอ แล้วกด Ctrl + V ในหน้าต่างนี้','If the results are on the hospital system screen, copying the text and pasting it below is most accurate — or press Win + Shift + S, then Ctrl + V here'):_('ถ่ายให้เห็นชื่อยา ขนาด และวิธีรับประทานชัดเจน หรือคัดลอกข้อความจากระบบมาวาง แล้วกด Ctrl + V ได้ทั้งรูปและข้อความ','Make sure names, strength and directions are readable — or paste text copied from the system (Ctrl + V works for pictures too)')}</p>
+  <label class="field">${_('ข้อความที่อ่านได้ / วางข้อความ','Text read / paste text')}<textarea id="sc-text" rows="7" placeholder="${lab?'Tacrolimus 6.2 ng/mL\nAST 35 U/L\nALT 28 U/L':'Tacrolimus 1 mg\nรับประทานครั้งละ 2 เม็ด 08:00 และ 20:00 น.'}">${esc(m.text||'')}</textarea></label>
+  ${m.err?`<p class="ferr" role="alert">${esc(m.err)}</p>`:''}
+  <button class="btn primary block" data-a="scango">${icon('check')} ${lab?_('ใส่ค่าในแบบฟอร์มผล Lab','Fill the lab form'):_('ใส่รายการยาในแบบฟอร์ม','Fill the medicine form')}</button>
+  <p class="hint tiny">${icon('lock')} ${_('รูปอ่านในเครื่องนี้ ไม่ถูกส่งออกไปที่อื่น และไม่ถูกเก็บไว้ ตรวจทุกค่าก่อนกดบันทึกเสมอ','The picture is read on this device, never uploaded or kept. Always check every value before saving.')}</p>`;
+ return mShell(title,`<div class="scan">${body}</div>`,'','wide')}
+{const _mh56=modalHTML;modalHTML=function(){if(S.modal?.kind==='scan')return scanModal();return _mh56()}}
+ACT.scan=d=>{if(S.user?.role!=='staff')return;S.modal={kind:'scan',k:d.k,pid:d.pid||S.pid,text:''};render()};
+async function scanImage(file){const m=S.modal;if(!m||m.kind!=='scan'||!file)return;m.busy=true;m.pct=0;m.err='';render();
+ try{const t=await ocrRead(file,m.k==='lab'?'eng':'tha+eng');if(S.modal!==m)return;m.text=t.trim();if(!m.text)m.err=_('อ่านข้อความไม่ได้ ลองถ่ายให้ชัดขึ้น หรือคัดลอกข้อความมาวาง','No text found — try a clearer picture, or paste the text')}
+ catch(e){m.err=e.message||String(e)}finally{m.busy=false;if(S.modal===m)render()}}
+CHG.scanfile=el=>{const f=el.files&&el.files[0];if(f)scanImage(f)};
+document.addEventListener('paste',e=>{if(S.modal?.kind!=='scan'||S.modal.busy)return;const it=[...(e.clipboardData?.items||[])].find(x=>x.type.startsWith('image/'));if(it){e.preventDefault();scanImage(it.getAsFile())}});
+ACT.scango=()=>{const m=S.modal;if(!m)return;const t=document.getElementById('sc-text')?.value||'';m.text=t;if(!t.trim()){m.err=_('ยังไม่มีข้อความ ถ่ายรูป เลือกรูป หรือวางข้อความก่อน','Nothing to read yet — take or choose a picture, or paste text');render();return}
+ if(m.k==='lab'){const r=parseLabs(t);const n=Object.keys(r.vals).length;if(!n){m.err=_('ไม่พบชื่อผล Lab ที่รู้จัก ลองตรวจข้อความหรือกรอกเอง','No known lab names found — check the text or enter them by hand');render();return}
+  S.modal={kind:'labpanel',pid:m.pid,prefill:r.vals,preLines:r.lines,preDate:r.date};render();toast(_(`อ่านได้ ${n} รายการ ตรวจให้ถูกต้องแล้วกดบันทึก`,`Read ${n} results — check them, then save`));return}
+ const items=parseRx(t);if(!items.length){m.err=_('ไม่พบชื่อยา ลองตรวจข้อความ หรือเพิ่มยาเอง','No medicines found — check the text or add them by hand');render();return}
+ const pid=m.pid;S.modal=null;S.pid=pid;S.rxFrom=null;S.rxFromPt=null;S.rxDraft={doctor:'',date:todayISO,verify:true,items};S.rxScan=items.length;go('rxnew');
+ toast(_(`อ่านได้ ${items.length} รายการ ตรวจชื่อยา ขนาด และเวลาให้ถูกต้องก่อนบันทึก`,`Read ${items.length} medicines — check names, doses and times before saving`))};
+/* fill the lab form with what was read */
+{const _mh56b=modalHTML;modalHTML=function(){let h=_mh56b();const m=S.modal;if(m?.kind!=='labpanel')return h;
+ const btn=`<button type="button" class="btn sm scan-in" data-a="scan" data-k="lab" data-pid="${m.pid}">${icon('camera')} ${_('อ่านจากรูป / ข้อความ','Read from picture / text')}</button>`;
+ h=h.replace('<form class="form" data-form="labpanel"',`${m.prefill?`<p class="scan-note">${icon('info')} ${_('ค่าที่ไฮไลต์อ่านมาจากรูปหรือข้อความ ตรวจกับต้นฉบับทุกค่าก่อนบันทึก','Highlighted values were read from the picture or text — check each against the original before saving')}</p>`:btn}<form class="form" data-form="labpanel"`);
+ if(m.prefill){Object.entries(m.prefill).forEach(([c,v])=>{h=h.replace(`<input name="lv_${c}" inputmode="decimal"`,`<input name="lv_${c}" inputmode="decimal" value="${esc(String(v))}" class="from-scan" title="${esc(m.preLines?.[c]||'')}"`)});
+  if(m.preDate)h=h.replace(`<input type="date" name="date" value="${todayISO}"`,`<input type="date" name="date" value="${m.preDate}" class="from-scan"`)}
+ return h}}
+/* entry points */
+{const _lp56=labsPanel;labsPanel=function(pid){const h=_lp56(pid);if(S.user?.role!=='staff'||h.includes('data-a="scan"'))return h;const i=h.search(/<button[^>]*data-a="labadd"/);if(i<0)return h;
+ return h.slice(0,i)+`<button class="btn sm" data-a="scan" data-k="lab" data-pid="${pid}">${icon('camera')} ${_('อ่านจากรูป','From picture')}</button>`+h.slice(i)}}
+{const _rn56=VIEWS.rxnew;VIEWS.rxnew=function(){const h=_rn56();if(S.user?.role!=='staff')return h;const n=S.rxScan;
+ const bar=n?`<p class="scan-note">${icon('info')} ${_(`รายการยา ${n} รายการด้านล่างอ่านมาจากรูปหรือข้อความ ตรวจกับใบสั่งยาต้นฉบับทุกช่องก่อนบันทึก เมื่อบันทึกแล้วผู้ป่วยจะได้รับแจ้งเตือนและตารางยาจะอัปเดต`,`The ${n} medicines below were read from a picture or text. Check every field against the original prescription before saving. Once saved, the patient is notified and their schedule updates.`)}</p>`
+  :`<button class="btn block scan-cta" data-a="scan" data-k="rx" data-pid="${S.pid}">${icon('camera')} ${_('เพิ่มยาจากรูปใบสั่งยา หรือข้อความที่คัดลอกมา','Add medicines from a prescription picture or copied text')}</button>`;
+ const i=h.indexOf('<form');return i<0?bar+h:h.slice(0,i)+bar+h.slice(i)}}
+{const _go56=ACT.go;ACT.go=d=>{if(d?.v!=='rxnew')S.rxScan=0;return _go56(d)}}
+{const _rx56=ACT.rxnew;ACT.rxnew=d=>{S.rxScan=0;_rx56(d)}}
 
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
