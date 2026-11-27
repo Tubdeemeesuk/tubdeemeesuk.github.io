@@ -2579,6 +2579,61 @@ div.rbar{cursor:default}
 .ln-tbl td{padding:8px;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
 .ln-tbl td small{display:block;color:var(--ink-2);font-size:.74rem}.ln-tbl td.warn{color:#B87420;font-weight:700}
 .tbl-wrap{overflow-x:auto}
+/* v55 · Thai tone marks: give clipped one-line text enough room for stacked marks (e.g. ชั่ว, ที่, น้ำ, นี้) */
+.ucard b,.tb-title h1,.bar-row span:first-child,.jcard .card-h h3,.dg-n,.ha-t span,.hm-n b,.ts-t b,.hc-line b,.lgx-t small,.sq-t small,.mrow-t small{line-height:1.7;padding-block:.06em}
+.lgx-t{line-height:1.45}
+/* v55 · steps and exercise, minimal */
+.exq2{display:flex;flex-direction:column;gap:12px;padding:14px 14px 12px;border-radius:22px;background:var(--surface);box-shadow:0 1px 0 var(--line),0 8px 22px -18px rgba(46,107,79,.5)}
+.eq-row{display:flex;align-items:center;gap:14px}
+.eq-ring{position:relative;flex:none;width:64px;height:64px;display:grid;place-items:center;color:#3E8E6A}
+.eq-ring svg{position:absolute;inset:0;width:64px;height:64px}
+.eq-ring circle{fill:none;stroke-width:7;stroke-linecap:round}.eq-ring .t{stroke:#E6F1EA}.eq-ring .f{stroke:#5FAE7B;transition:stroke-dasharray .5s}
+.eq-ring>.ic{width:24px;height:24px;position:relative}
+.eq-ring.done .f{stroke:#3E8E6A}.eq-ring.done>.ic{color:#fff;background:#3E8E6A;border-radius:50%;padding:6px;width:32px;height:32px;box-sizing:border-box}
+.eq-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.eq-mid>small{font-size:.78rem;color:var(--ink-2);font-weight:600;line-height:1.6}
+.eq-num{display:inline-flex;align-items:baseline;gap:6px;border:0;background:none;padding:0;color:var(--ink);font:inherit;cursor:pointer;text-align:left}
+.eq-num b{font-family:var(--f-display);font-size:1.7rem;line-height:1.1}.eq-num em{font-style:normal;font-size:.85rem;color:var(--ink-2)}
+.eq-num .ic{width:15px;height:15px;color:var(--ink-2);align-self:center}
+.eq-in{display:flex;align-items:center;gap:6px;max-width:260px}
+.eq-in input{flex:1;min-width:0;height:42px;padding:0 14px;border-radius:999px;border:1.5px solid #CFE3D6;background:#F6FAF7;color:var(--ink);font-family:var(--f-display);font-size:1.05rem}
+.eq-in input:focus{outline:none;border-color:#3E8E6A;background:var(--surface)}
+.eq-ok{flex:none;width:42px;height:42px;border-radius:50%;border:0;background:#3E8E6A;color:#fff;display:grid;place-items:center;cursor:pointer}.eq-ok .ic{width:20px;height:20px}
+.eq-week{display:flex;align-items:center;gap:5px;margin-top:2px}
+.eq-week i{width:9px;height:9px;border-radius:50%;background:#E6F1EA}.eq-week i.some{background:#A9D4B5}.eq-week i.hit{background:#3E8E6A}.eq-week i.td{box-shadow:0 0 0 2px var(--surface),0 0 0 3.5px #3E8E6A}
+.eq-week .link-btn{margin-left:6px;font-size:.8rem}
+.eq-acts{display:flex;flex-wrap:wrap;gap:6px}
+.eq-q{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 13px 0 10px;border-radius:999px;border:1px solid #DCEBE1;background:#F6FAF7;color:#2F6E52;font:inherit;font-size:.86rem;cursor:pointer}
+.eq-q .ic{width:17px;height:17px}.eq-q.more{background:none;border-style:dashed}
+.eq-a{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 3px 0 11px;border-radius:999px;background:#E7F3EB;color:#22593F;font-size:.86rem;font-weight:500}
+.eq-a>.ic{width:16px;height:16px}
+.eq-a button{display:grid;place-items:center;width:30px;height:30px;border:0;border-radius:50%;background:none;color:#5E8A72;cursor:pointer}.eq-a button .ic{width:13px;height:13px}
+.eq-foot{margin:0;display:flex;align-items:center;gap:6px;font-size:.82rem;color:#2F6E52}.eq-foot .ic{width:16px;height:16px}
+/* add sheet */
+
+.eq-done{display:flex;flex-wrap:wrap;gap:6px}
+.eq-acts{display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -14px;padding:0 14px 2px;-webkit-overflow-scrolling:touch}
+.eq-acts::-webkit-scrollbar{display:none}
+.eq-q{flex:none;justify-content:flex-start;width:auto;white-space:nowrap}
+.ea{display:flex;flex-direction:column;gap:14px}
+.ea-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media (min-width:560px){.ea-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.ea-t{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px 10px;border-radius:18px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer}
+.ea-t>span{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:#EEF6F1;color:#3E8E6A}.ea-t>span .ic{width:22px;height:22px}
+.ea-t b{font-weight:500;font-size:.8rem;line-height:1.5;text-align:center;text-wrap:balance}
+.ea-t.on{border-color:#3E8E6A;background:#F1F8F3;box-shadow:inset 0 0 0 1px #3E8E6A}.ea-t.on>span{background:#3E8E6A;color:#fff}
+.ea-sec{display:flex;flex-direction:column;gap:8px}.ea-sec>b{font-size:.9rem}
+.ea-min{display:flex;flex-wrap:wrap;gap:6px}
+.ea-min button{min-width:46px;height:40px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-family:var(--f-display);font-weight:600;cursor:pointer}
+.ea-min button.on{background:#3E8E6A;border-color:#3E8E6A;color:#fff}
+.ea-other{display:inline-flex;align-items:center;gap:4px;height:40px;padding:0 12px;border-radius:999px;border:1px dashed var(--line)}
+.ea-other input{width:46px;border:0;background:none;font-size:.95rem;color:var(--ink);font-family:var(--f-display)}.ea-other input:focus{outline:none}.ea-other em{font-style:normal;font-size:.8rem;color:var(--ink-2)}
+.ea-lv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.ea-lv button{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px;border-radius:16px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.ea-lv button b{font-size:.9rem}.ea-lv button small{font-size:.7rem;color:var(--ink-2);line-height:1.5}
+.ea-lv button.on{border-color:#3E8E6A;background:#F1F8F3;box-shadow:inset 0 0 0 1px #3E8E6A}
+.ea-bars{display:flex;align-items:flex-end;gap:2px;height:14px}.ea-bars i{width:5px;border-radius:2px;background:#DCEBE1}.ea-bars i:nth-child(1){height:6px}.ea-bars i:nth-child(2){height:10px}.ea-bars i:nth-child(3){height:14px}.ea-bars i.f{background:#3E8E6A}
+.ea-note input{border-radius:14px}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -6736,6 +6791,46 @@ function learnTable(){const mine=myPatients();if(!mine.length)return'';const row
  R.push({tab:'การเรียนรู้',keyCol:'รหัสผู้เรียน',key:String(v.learner),data:{'รหัสผู้เรียน':v.learner,'HN':p.hn||'','ชื่อผู้ป่วย':L(p.name),'ผู้เรียน':L(who?.name)||'','บทบาท':v.role==='caregiver'?'ญาติ/ผู้ดูแล':'ผู้ป่วย',
   'ดูวิดีโอแล้ว':`${s.seen}/${s.n}`,'คะแนนแบบทดสอบท้ายคลิป (%)':s.qPct??'',...Object.fromEntries(SERIES.map(([ph])=>[`ชุดที่ ${ph} ก่อน/หลังเรียน`,s.pt[ph]?`${s.pt[ph].pre??'-'}/${s.pt[ph].post??'-'} (เต็ม ${(PT[ph]||[]).length})`:''])),
   'คลิปที่ดูแล้ว':VIDEOS.filter(x=>s.w[x.id]).map(x=>'ตอน '+x.ep+(s.q[x.id]!=null?` (${s.q[x.id]}/${QZ[x.id]?.length||0})`:'')).join(', '),'ใช้งานล่าสุด':s.last?(d=>iso(d)+' '+d.toTimeString().slice(0,5))(new Date(s.last)):''}})});return R}}
+
+/* ================= v55 · a lighter, friendlier steps and exercise block ================= */
+const EXQ=[['walk','เดิน','Walk'],['stretch','ยืดเหยียด','Stretch'],['bike','ปั่นจักรยาน','Cycle'],['taichi','ไทเก๊ก','Tai chi']];
+EXT.forEach(t=>{if(t[0]==='swim'){t[1]='ว่ายน้ำ';t[2]='Swimming'}if(t[0]==='band'){t[1]='ยางยืด';t[2]='Resistance band'}if(t[0]==='home'){t[1]='งานบ้าน / ทำสวน'}if(t[0]==='pt'){t[1]='กายภาพบำบัด';t[2]='Physio'}});
+exQuick=function(pid){const g=exGoal(pid),r=exDay(pid,todayISO),steps=+(r?.steps)||0,acts=r?.acts||[],f=Math.max(0,Math.min(1,steps/g.steps)),min=exMinOf(pid,todayISO),R=30,C=2*Math.PI*R,done=steps>=g.steps;
+ const week=[...Array(7)].map((_x,i)=>{const d=dOff(i-6),s=+(exDay(pid,d)?.steps)||0;return `<i class="${s>=g.steps?'hit':s?'some':''}${d===todayISO?' td':''}" title="${d} · ${s}"></i>`}).join('');
+ const ed=S.exEdit||!steps;
+ return `<section class="exq2" aria-label="${_('ก้าวและการออกกำลังกายวันนี้','Steps and exercise today')}">
+  <div class="eq-row">
+   <span class="eq-ring ${done?'done':''}"><svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="${R}" class="t"/><circle cx="36" cy="36" r="${R}" class="f" stroke-dasharray="${(C*f).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 36 36)"/></svg>${icon(done?'check':'steps')}</span>
+   <div class="eq-mid"><small>${_('ก้าววันนี้','Steps today')}</small>
+    ${ed?`<span class="eq-in"><input name="steps" id="v-steps" inputmode="numeric" autocomplete="off" value="${steps||''}" placeholder="${_('ใส่จำนวนก้าว','Enter steps')}" aria-label="${_('จำนวนก้าววันนี้','Steps today')}"><button type="button" class="eq-ok" data-a="exstepq" data-pid="${pid}" aria-label="${_('บันทึกจำนวนก้าว','Save steps')}">${icon('check')}</button></span>`
+     :`<button type="button" class="eq-num" data-a="exedit" aria-label="${_('แก้จำนวนก้าว','Edit steps')}"><b class="num">${steps.toLocaleString()}</b><em>/ ${g.steps.toLocaleString()}</em>${icon('edit')}</button>`}
+    <span class="eq-week" aria-label="${_('7 วันที่ผ่านมา','Last 7 days')}">${week}<button type="button" class="link-btn" data-a="exwk">${_('สรุป 7 วัน','7-day view')}</button></span>
+   </div>
+  </div>
+  ${acts.length?`<div class="eq-done">${acts.map(a=>`<span class="eq-a">${icon(exIcon(a))}<span>${esc(exName(a))} · ${a.min} ${_('นาที','min')}</span><button type="button" data-a="exdel" data-pid="${pid}" data-id="${a.id}" aria-label="${_('ลบ','Delete')} ${esc(exName(a))}">${icon('x')}</button></span>`).join('')}</div>`:''}
+  <div class="eq-acts" aria-label="${_('เพิ่มการออกกำลังกาย','Add exercise')}">
+   ${EXQ.map(([t,th,en])=>`<button type="button" class="eq-q" data-a="exaddq" data-pid="${pid}" data-t="${t}">${icon(exIcon({type:t}))}<span>${_(th,en)}</span></button>`).join('')}
+   <button type="button" class="eq-q more" data-a="exadd" data-pid="${pid}">${icon('plus')}<span>${_('อื่น ๆ','More')}</span></button>
+  </div>
+  ${min?`<p class="eq-foot">${icon('walk')} ${_(`วันนี้ขยับร่างกายแล้ว ${min} นาที`,`${min} active minutes today`)}</p>`:''}
+ </section>`};
+ACT.exedit=()=>{S.exEdit=true;render();setTimeout(()=>{const e=document.getElementById('v-steps');if(e){e.focus();e.select()}},40)};
+{const _q=ACT.exstepq;ACT.exstepq=d=>{_q(d);S.exEdit=false;render()}}
+ACT.exaddq=d=>{if(!canRecord(d.pid))return;S.modal={kind:'exadd',pid:d.pid,type:d.t,lvl:'easy',quick:true};render()};
+/* the add sheet: icon grid, minute chips, three effort levels */
+exAddModal=function(){const m=S.modal,pid=m.pid,mine=exMine(pid),t=m.type||'walk',lv=m.lvl||'easy';
+ const tile=(v,label,ic,nm)=>`<button type="button" class="ea-t ${t===v&&(!nm||m.name===nm)?'on':''}" data-a="exty" data-v="${v}" ${nm?`data-n="${esc(nm)}"`:''}><span>${icon(ic)}</span><b>${esc(label)}</b></button>`;
+ const dot=['easy','mod','hard'].indexOf(lv);
+ return mShell(_('เพิ่มการออกกำลังกาย','Add exercise'),`<form class="form ea" data-form="exadd" data-pid="${pid}">
+  <div class="ea-grid">${EXT.map(([v,th,en,ic])=>tile(v,_(th,en),ic)).join('')}${mine.map(n=>tile('own',n,'star',n)).join('')}${tile('new',_('เพิ่มเอง','Other'),'plus')}</div>
+  ${t==='swim'?`<p class="hint tiny">${_('ว่ายน้ำได้เมื่อแผลหายสนิทและแพทย์อนุญาตแล้วเท่านั้น','Swim only once the wound has fully healed and your doctor agrees')}</p>`:''}
+  ${t==='new'?`<label class="field">${_('ชื่อกิจกรรม','Activity name')}<input name="name" maxlength="40" placeholder="${_('เช่น รำวง เดินในห้าง','e.g. dancing, mall walking')}" value="${esc(m.newName||'')}" required></label>`:''}
+  <div class="ea-sec"><b>${_('นานเท่าไร','How long')}</b><div class="ea-min">${[10,15,20,30,45,60].map(x=>`<button type="button" class="${+m.min===x?'on':''}" data-a="exmin" data-v="${x}">${x}</button>`).join('')}<label class="ea-other"><input name="min" type="text" inputmode="numeric" maxlength="3" value="${m.min&&![10,15,20,30,45,60].includes(+m.min)?m.min:''}" placeholder="${_('อื่น','other')}" aria-label="${_('นาที','Minutes')}"><em>${_('นาที','min')}</em></label></div></div>
+  <div class="ea-sec"><b>${_('เหนื่อยแค่ไหน','How hard')}</b><div class="ea-lv">${EXLV.map(([v,th,en,dt,de],i)=>`<button type="button" class="${lv===v?'on':''}" data-a="exlv" data-v="${v}"><span class="ea-bars" aria-hidden="true">${[0,1,2].map(k=>`<i class="${k<=i?'f':''}"></i>`).join('')}</span><b>${_(th,en)}</b><small>${_(dt,de)}</small></button>`).join('')}</div></div>
+  <input type="hidden" name="_m" value="${m.min||''}">
+  <label class="field ea-note">${_('บันทึกเพิ่มเติม','Note')}<input name="note" maxlength="80" value="${esc(m.note||'')}" placeholder="${_('ไม่บังคับ','optional')}"></label>
+  <p class="ferr" role="alert"></p><button class="btn primary block ea-save" type="submit">${icon('check')} ${_('บันทึก','Save')}</button></form>`,'','ex-modal')};
+{const _fa=FORMS.exadd;FORMS.exadd=(o,fd,f)=>{if(!String(o.min||'').trim()&&o._m)o.min=o._m;return _fa(o,fd,f)}}
 
 if(LIVE){if(APIMODE)apiEmpty();else liveBoot()}else{seed();seedHealth();seedPharm();['p1','p2','p3'].forEach(id=>P(id).activated=true);seedMoments()}loadPhotos();loadMoments();render();gsBaseline();if(GS.queue.length)gsSchedule();{const v=pinGet();if(v&&(APIMODE?v.tok:person(v.id))&&!S.user){S.modal={kind:'pin'};S.pinBuf='';render()}}
 </script>
