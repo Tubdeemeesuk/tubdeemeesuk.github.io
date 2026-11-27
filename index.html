@@ -2650,6 +2650,7 @@ div.rbar{cursor:default}
 input.from-scan{background:var(--gold-soft)!important;border-color:var(--gold)!important;font-weight:700}
 .scan-in{margin-bottom:10px}
 .scan-cta{margin-bottom:12px;border-style:dashed}
+.hc-tel .hc-ic{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand)}.hc-tel .hc-ic svg{width:18px;height:18px}.hc-tel span{flex:1;text-align:left}.hc-tel>svg{width:18px;height:18px;flex:none;color:var(--ink-2)}
 </style>
 
 <div id="app"><p style="padding:24px">กำลังโหลด ตับดีมีสุข…</p></div>
@@ -3702,7 +3703,7 @@ function medHome(pid,cg){if(cg&&!consentOf(S.user.id,pid).perms.meds)return'';co
  return `<section class="card hmed"><div class="hm-h"><h3>${icon('pill')} ${_('ทานยาวันนี้','Today’s medicines')}</h3><span class="hm-c num">${dn}/${sl.length}</span><button class="link-btn" data-a="go" data-v="meds">${_('ดูทั้งหมด','All')} ${icon('chev')}</button></div>
  <div class="hm-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${_('ทานยาแล้ว','Taken')} ${pct}%"><i style="width:${pct}%"></i></div>${next}</section>`}
 /* ---------- v25 · home: recovery bar, Today Summary, LINE OA, missing-data alerts ---------- */
-const LINE_OA='@901hcacw'; /* ใส่ LINE OA ID ของทีม เช่น '@tubdeemeesuk' เมื่อสร้างบัญชีแล้ว */
+const LINE_OA=''; /* ใส่ LINE OA ID ของทีม เช่น '@tubdeemeesuk' เมื่อสร้างบัญชีแล้ว */
 const lineUrl=()=>LINE_OA?'https://line.me/R/ti/p/'+encodeURIComponent(LINE_OA):'';
 const CHAT_IC=`<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="6" fill="#06C755"/><path d="M12 5.2c-4.2 0-7.4 2.6-7.4 5.8 0 2.9 2.6 5.3 6.1 5.7.3.1.5.3.4.7l-.2 1.3c0 .3.3.5.6.3 2.3-1.4 4.9-3.4 6.4-5.3.9-1 1.5-2.1 1.5-3.4 0-3.2-3.3-5.8-7.4-5.1z" fill="#fff"/></svg>`;
 const FOLLOW=[[0,30,'เดือนที่ 1','Month 1','1ด.','M1','ตรวจและเจาะเลือดทุกสัปดาห์','Weekly check-ups and blood tests'],
@@ -3739,6 +3740,7 @@ function todayCard(pid,cg){const c=cg?consentOf(S.user.id,pid):null;const okH=!c
  return `<section class="dlog tsum"><div class="dlog-h"><h3>${_('สรุปวันนี้','Today')}</h3><span class="ts-pills">${okH?pill(_('สุขภาพ','Health'),hd,HREQ.length,hd===HREQ.length):''}${okM&&sl.length?pill(_('ยา','Meds'),dn,sl.length,dn===sl.length):''}</span></div>
  <div class="dlog-g">${HREQ.map(it).join('')}</div>${alert}${med?`<div class="ts-medw">${med}<button class="ts-all" data-a="go" data-v="meds" aria-label="${_('ดูยาทั้งหมด','All medicines')}">${icon('chev')}</button></div>`:''}</section>`}
 function contactRow(){const u=lineUrl();
+ if(!u)return `<div class="hcon2 span"><button class="hc-line hc-tel" data-a="contact"><i class="hc-ic">${icon('phone')}</i><span><b>${_('ติดต่อทีมปลูกถ่ายตับ','Contact the transplant team')}</b><small>${_('โทรหาทีม หรือดูเบอร์ติดต่อ','Call or see contact numbers')}</small></span>${icon('chev')}</button></div>`;
  return `<div class="hcon2 span">${u?`<a class="hc-line" href="${u}" target="_blank" rel="noopener">${CHAT_IC}<span><b>${_('แชทกับทีมปลูกถ่ายตับ','Chat with the transplant team')}</b><small>LINE OA · ${LINE_OA}</small></span></a>`:`<button class="hc-line" data-a="lineoa">${CHAT_IC}<span><b>${_('แชทกับทีมปลูกถ่ายตับ','Chat with the transplant team')}</b><small>LINE OA · ${_('เร็ว ๆ นี้','coming soon')}</small></span></button>`}<button class="hc-call" data-a="contact" aria-label="${_('โทรหาทีม','Call the team')}">${icon('phone')}<span>${_('โทร','Call')}</span></button></div>`}
 const MISS_T=['10:00','19:00'];
 function missCheck(){const u=S.user;if(!u||u.role==='staff')return;const pid=currentPid();if(!pid||!canView('health',pid))return;
@@ -4559,7 +4561,7 @@ const allowed=v=>navFor(S.user.role).some(n=>n[0]===v)||(S.user.role==='staff'&&
 function modalHTML(){
  const m=S.modal;if(!m)return'';
  const shell=(title,body,label,cls='')=>`<div class="overlay" data-close="modal"><div class="modal ${cls}" role="dialog" aria-modal="true" aria-label="${esc(label||title)}"><div class="modal-h"><h2 style="font-size:1.3rem">${title}</h2><button class="btn sm ghost" data-a="close" aria-label="${_('ปิด','Close')}">${icon('x')}</button></div>${body}</div></div>`;
- if(m.kind==='contact'){return shell(_('ติดต่อทีมแพทย์','Contact the care team'),`<div class="stack">${contactRow().replace('hcon2 span','hcon2 inmodal')}<div class="lockline">${icon('phone')}<span><b>${_('ทีมปลูกถ่ายตับ','Liver transplant team')}</b></span></div>${teamContact()}
+ if(m.kind==='contact'){return shell(_('ติดต่อทีมแพทย์','Contact the care team'),`<div class="stack">${lineUrl()?contactRow().replace('hcon2 span','hcon2 inmodal'):''}<div class="lockline">${icon('phone')}<span><b>${_('ทีมปลูกถ่ายตับ','Liver transplant team')}</b></span></div>${teamContact()}
   <div class="call"><a href="tel:1669">1669</a><span class="muted">${_('อาการรุนแรง หายใจลำบาก หมดสติ เลือดออกมาก โทรทันที','Severe symptoms, trouble breathing, fainting or heavy bleeding: call now')}</span></div>
   <button class="btn block" data-a="golog" data-t="sym">${icon('alert')} ${_('ประเมินอาการผิดปกติ','Check a symptom')}</button></div>`)}
  if(m.kind==='labpanel'){const p=P(m.pid);return shell(_('กรอกผล Lab','Enter lab results')+' · '+esc(L(p.name)),`<form class="form" data-form="labpanel" data-pid="${m.pid}"><div class="fgrid2"><label class="field">${_('วันที่เจาะเลือด','Date drawn')}<input type="date" name="date" value="${todayISO}" max="${todayISO}"></label><label class="field">${_('เวลา','Time')}<input type="time" name="time" value="07:00"></label></div>
